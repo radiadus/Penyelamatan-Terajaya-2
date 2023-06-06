@@ -28211,8 +28211,7 @@ MonoBehaviour:
   item: {fileID: 0}
   flee: {fileID: 0}
   textBox: {fileID: 0}
-  skillChoice: {fileID: 0}
-  itemChoice: {fileID: 0}
+  textBoxText: {fileID: 0}
   friendlyPrefabs: []
   enemyPrefabs: []
   canvas: {fileID: 1689020591}
@@ -41852,7 +41851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2119778971
 RectTransform:
   m_ObjectHideFlags: 0
