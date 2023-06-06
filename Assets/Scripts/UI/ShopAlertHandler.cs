@@ -1,0 +1,73 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ShopAlertHandler : MonoBehaviour
+{
+    private int amount = 1, ownedAmount = 0;
+    [SerializeField] private Item item;
+    [SerializeField] private Text amountText, alertText;
+    [SerializeField] private Button increment, decrement, buy, cancel;
+    [SerializeField] private GameObject self;
+    [SerializeField] private Inventory inventory;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        this.transform.position = new Vector3(Screen.width/2, Screen.height/2, 0);
+        
+        increment.onClick.AddListener(delegate { Increment(); });
+        decrement.onClick.AddListener(delegate { Decrement(); });
+        buy.onClick.AddListener(delegate { Buy(); });
+        cancel.onClick.AddListener(delegate { Cancel(); });
+    }
+
+    public void Instantiate(Item item, int ownedAmount)
+    {
+        this.item = item;
+        this.amountText.text = this.amount.ToString();
+        this.alertText.text = "Jumlah Pembelian \"" + this.item.itemName + "\"";
+        Debug.Log("item keset jadi " + this.item.itemName);
+    }
+
+    private void Increment()
+    {
+        if (this.amount < 99 - this.ownedAmount && this.item.buyPrice * (this.amount+1) <= inventory.money)
+            this.amount++;
+        SetAmountText();
+    }
+
+    private void Decrement()
+    {
+        if (this.amount > 1)
+            this.amount--;
+        SetAmountText();
+    }
+
+    private void SetAmountText()
+    {
+        this.amountText.text = this.amount.ToString();
+    }
+
+    private void Buy()
+    {
+        Debug.Log(this.item);
+        int price = this.item.buyPrice * this.amount;
+        if (inventory.money >= price)
+        {
+            inventory.money -= price;
+            inventory.addItem(this.item, this.amount);
+            Destroy(self);
+        }
+        else
+        {
+
+        }
+    }
+
+    private void Cancel()
+    {
+        Destroy(self);
+    }
+}

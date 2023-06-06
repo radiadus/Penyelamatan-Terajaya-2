@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef41ad864fd2a942bfd65b03f42012a, type: 3}
+  m_Name: Item_1
+  m_EditorClassIdentifier: 
+  id: 1
+  itemName: Jamu
+  itemDescription: Menyembuhkan 100 HP.
+  itemIcon: {fileID: 21300000, guid: 8672beae47be0054e96f186adb9950eb, type: 3}
+  buyPrice: 50
+  itemTarget: 0
