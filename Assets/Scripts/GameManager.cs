@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("sceneId", SceneManager.GetActiveScene().buildIndex);
         PlayerPrefs.SetFloat("posX", player.transform.position.x);
+        //easter egg
         PlayerPrefs.SetFloat("posY", player.transform.position.y);
         PlayerPrefs.SetFloat("posZ", player.transform.position.z);
     }
