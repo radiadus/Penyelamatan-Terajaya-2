@@ -12,7 +12,6 @@ public class Stats : ScriptableObject
     public int speed;
     public int level, exp, requiredExp;
     public List<Skill> skillList;
-    public List<StatusEffect> statusEffectList;
     public bool isDead;
 
     public virtual void Reset()
