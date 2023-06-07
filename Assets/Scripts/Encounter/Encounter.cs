@@ -5,6 +5,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class Encounter : MonoBehaviour
 {
@@ -117,7 +118,7 @@ public class Encounter : MonoBehaviour
     private int characterTurn;
     private int enemyRemaining;
     private int friendlyRemaining;
-    [SerializeField] private GameObject canvas, attackPanel, itemPanel;
+    [SerializeField] private GameObject canvas, attackEasy, attackMedium, attackHard, itemPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -125,15 +126,16 @@ public class Encounter : MonoBehaviour
         skillChoice = Resources.Load<GameObject>("Prefab/UI/Encounter/Attack");
         itemChoice = Resources.Load<GameObject>("Prefab/UI/Encounter/Item");
 
+        FetchFriendlies();
+        SpawnPositionsAndInstantiateClasses();
+
         state = BattleState.PLAYER_TURN;
         characterTurn = 0;
-        enemyRemaining = enemies.Count();
-        friendlyRemaining = friendlies.Count(f => !f.IsDead());
 
         attack.onClick.AddListener(delegate { OpenAttackPanel(); });
         item.onClick.AddListener(delegate { OpenItemPanel(); });
         flee.onClick.AddListener(delegate { Flee(); });
-
+        StartCoroutine(StartEncounter());
     }
 
     public void FetchFriendlies()
@@ -146,12 +148,15 @@ public class Encounter : MonoBehaviour
         };
     }
 
-    public void StartEncounter()
+    IEnumerator StartEncounter()
     {
+        yield return new WaitForSecondsRealtime(1);
         foreach (Friendly friendly in friendlies)
         {
+            Debug.Log(friendly.animator);
             if (friendly.IsDead()) friendly.PlayDeadAnimation();
         }
+        StartTurn(characterTurn);
         StartCoroutine(PlayerTurn());
         StartCoroutine(AttackPhase());
         StartCoroutine(StatusCheck());
@@ -205,6 +210,7 @@ public class Encounter : MonoBehaviour
                 }
             }
             state = BattleState.PLAYER_TURN;
+
             yield return null;
         }
     }
@@ -218,40 +224,34 @@ public class Encounter : MonoBehaviour
         }
     }
 
-    public void StartTurn()
+    public void StartTurn(int characterTurn)
     {
         canvas.SetActive(true);
-        InstantiatePanels(friendlies[0]);
+        InstantiatePanels(friendlies[characterTurn]);
     }
 
-    public void InstantiateClasses()
+    public void SpawnPositionsAndInstantiateClasses()
     {
-        this.friendlies = new Friendly[]
-        {
-            friendlyPrefabs[0].GetComponent<Friendly>(),
-            friendlyPrefabs[1].GetComponent<Friendly>(),
-            friendlyPrefabs[2].GetComponent<Friendly>()
-        };
-
-        this.enemies = this.enemyPrefabs.Select(e => e.GetComponent<Enemy>()).ToArray();
-    }
-
-    public void SpawnPositions()
-    {
+        friendlies = new Friendly[3];
         for (int i = 0; i < 3; i++)
         {
             float[] position = characterPositions[i];
             Vector3 spawnVect = new Vector3(position[0], 0, position[1]);
             Debug.Log(position.ToString());
-            Instantiate(friendlyPrefabs[i], spawnVect, Quaternion.identity);
+            GameObject friendly = Instantiate(friendlyPrefabs[i], spawnVect, Quaternion.identity);
+            Debug.Log(friendly);
+            friendlies[i] = friendly.GetComponent<Friendly>();
+            friendlies[i].InitializeStats();
         }
         int enemySize = enemyPrefabs.Length;
+        enemies = new Enemy[enemySize];
         for (int i = 0; i < enemySize; i++)
         {
             float[] position = enemyPositions[i];
             Vector3 spawnVect = new Vector3(position[0], 0, position[1]);
             Debug.Log(position.ToString());
-            Instantiate(enemyPrefabs[i], spawnVect, Quaternion.Euler(0, 180, 0));
+            GameObject enemy = Instantiate(enemyPrefabs[i], spawnVect, Quaternion.Euler(0, 180, 0));
+            enemies[i] = enemy.GetComponent<Enemy>();
         }
     }
     
@@ -260,15 +260,18 @@ public class Encounter : MonoBehaviour
         List<Skill> skills = friendly.stats.skillList;
         int x = 0;
         int y = 0;
+        int[] count = new int[] { 0, 0, 0};
         for (int i = 0; i < skills.Count; i++)
         {
-            x = i / 2 * 150;
-            y = i % 2 * 150;
+            int difficulty = skills[i].difficulty;
+            x = count[difficulty-1] / 2 * 150;
+            y = count[difficulty-1] % 2 * 150;
+            count[difficulty-1]++;
             Vector2 position = new Vector2(x, y);
             RectTransform rtf = skillChoice.GetComponent<RectTransform>();
             rtf.position = position;
             skillChoice.GetComponent<Button>().onClick.AddListener(delegate { ChooseTarget(skills[i]); });
-            Instantiate(skillChoice, attackPanel.transform);
+            Instantiate(skillChoice, skills[i].difficulty == 1 ? attackEasy.transform : skills[i].difficulty == 2 ? attackMedium.transform : attackHard.transform);
         }
 
     }
@@ -300,20 +303,24 @@ public class Encounter : MonoBehaviour
     private void OpenBattlePanel(Friendly character)
     {
         canvas.SetActive(true);
-        attackPanel.SetActive(false);
+        attackEasy.SetActive(false);
+        attackMedium.SetActive(false);
+        attackHard.SetActive(false);
         itemPanel.SetActive(false);
     }
 
     private void OpenAttackPanel()
     {
-        attackPanel.SetActive(true);
+        attackEasy.SetActive(true);
         itemPanel.SetActive(false);
     }
 
     private void OpenItemPanel()
     {
         itemPanel.SetActive(true);
-        attackPanel.SetActive(false);
+        attackEasy.SetActive(false);
+        attackMedium.SetActive(false);
+        attackHard.SetActive(false);
     }
 
     private void Flee()

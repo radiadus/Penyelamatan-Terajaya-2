@@ -6,15 +6,17 @@ public abstract class CombatUnit : MonoBehaviour
 {
     public int HP, maxHP, MP, maxMP, attack, defense, speed;
     public List<StatusEffect> statusEffectList;
-    protected Animator animator;
+    public Animator animator;
 
-    private void Start()
+    protected virtual void Start()
     {
-        animator = GetComponent<Animator>();
+        gameObject.SetActive(true);
+        animator = gameObject.GetComponent<Animator>();
     }
 
     public bool IsDead()
     {
+        if (animator == null) animator = gameObject.GetComponent<Animator>();
         if (this.HP <= 0) return true;
         return false;
     }

@@ -36,7 +36,6 @@ public class QuestionReader : MonoBehaviour
             string[] data = line.Split(';');
             Question question = new Question();
             question.question = System.Text.RegularExpressions.Regex.Unescape(data[0]);
-            Debug.Log(question.question);
             question.answerA = data[1];
             question.answerB = data[2];
             question.answerC = data[3];

@@ -6,12 +6,21 @@ public class Friendly : CombatUnit
 {
     public Stats stats;
     public Equipment equipment;
-    public List<QuestionCategory> questionCategories;
     
 
-    void Start()
+    protected override void Start()
     {
-        
+    }
+
+    public void InitializeStats()
+    {
+        HP = stats.HP;
+        maxHP = stats.maxHP;
+        MP = stats.MP;
+        maxMP = stats.maxMP;
+        attack = stats.attack;
+        defense = stats.defense;
+        speed = stats.speed;
     }
 
     public override void PlayDeadAnimation()

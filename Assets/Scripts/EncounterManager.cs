@@ -30,9 +30,6 @@ public class EncounterManager : MonoBehaviour
             //SceneManager.SetActiveScene(SceneManager.GetSceneByName("Forest Encounter"));
             Encounter encounter = GameObject.FindObjectOfType<Encounter>();
             encounter.enemyPrefabs = enemies;
-            encounter.FetchFriendlies();
-            encounter.InstantiateClasses();
-            encounter.SpawnPositions();
         };
     }
 

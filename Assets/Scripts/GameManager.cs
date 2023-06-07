@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +25,7 @@ public class GameManager : MonoBehaviour
     public Stats mage, swordsman, assassin;
     public Equipment pedang, keris, tongkat;
     public QuestionReader reader;
+    public AudioMixer mixer;
 
     private void Awake()
     {
@@ -29,15 +33,40 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void SetVolume(float master, float sfx, float music)
+    {
+        ChangeVolume(master, "Master");
+        ChangeVolume(sfx, "SFX");
+        ChangeVolume(music, "Music");
+    }
+
     public void ChangeVolume(float volume, string soundType)
     {
-        PlayerPrefs.SetFloat(soundType, volume);
-        AudioListener.volume = volume;
+        if (PlayerPrefs.GetInt("mute", 0) != 1) mixer.SetFloat(soundType, MathF.Log10(volume) * 20);
     }
 
     public void ToggleMute(bool mute)
     {
         PlayerPrefs.SetInt("mute", mute ? 1 : 0);
+        switch (mute)
+        {
+            case true:
+                Mute();
+                break;
+            case false:
+                float master = PlayerPrefs.GetFloat("Master", 1);
+                float sfx = PlayerPrefs.GetFloat("SFX", 1);
+                float music = PlayerPrefs.GetFloat("Music", 1);
+                SetVolume(master, sfx, music);
+                break;
+        }
+    }
+
+    public void Mute()
+    {
+        mixer.SetFloat("Master", MathF.Log10(0.001f) * 20);
+        mixer.SetFloat("SFX", MathF.Log10(0.001f) * 20);
+        mixer.SetFloat("Music", MathF.Log10(0.001f) * 20);
     }
 
     public void ChangeMap(string sceneName, Vector3 spawnPosition)
@@ -46,7 +75,9 @@ public class GameManager : MonoBehaviour
         load.completed += (asyncOperation) =>
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = spawnPosition;
+            player.GetComponent<CharacterController>().enabled = true;
             SaveGame(player);
         };
     }
@@ -55,9 +86,9 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("sceneId", SceneManager.GetActiveScene().buildIndex);
         PlayerPrefs.SetFloat("posX", player.transform.position.x);
-        //easter egg
         PlayerPrefs.SetFloat("posY", player.transform.position.y);
         PlayerPrefs.SetFloat("posZ", player.transform.position.z);
+        Debug.Log(PlayerPrefs.GetFloat("posX") + " " + PlayerPrefs.GetFloat("posY") + " " + PlayerPrefs.GetFloat("posZ"));
     }
 
     public void NewGame()
@@ -80,7 +111,10 @@ public class GameManager : MonoBehaviour
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             Vector3 position = new Vector3(PlayerPrefs.GetFloat("posX"), PlayerPrefs.GetFloat("posY"), PlayerPrefs.GetFloat("posZ"));
+            Debug.Log(PlayerPrefs.GetFloat("posX") + " " + PlayerPrefs.GetFloat("posY") + " " + PlayerPrefs.GetFloat("posZ"));
+            player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = position;
+            player.GetComponent<CharacterController>().enabled = true;
         };
     }
 

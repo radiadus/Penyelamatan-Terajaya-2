@@ -7,8 +7,16 @@ public abstract class Enemy : CombatUnit
     public int id;
     public override void PlayDeadAnimation()
     {
-        throw new System.NotImplementedException();
+        if (animator!= null)
+        {
+            if (animator.runtimeAnimatorController!= null)
+            {
+                animator.SetBool("isDead", true);
+            }
+        }
     }
+
+    public abstract void InitializeStats();
 
     public abstract void Attack(CombatUnit user, List<CombatUnit> target);
 }

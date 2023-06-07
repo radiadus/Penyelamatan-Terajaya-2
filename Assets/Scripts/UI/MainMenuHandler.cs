@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -14,28 +15,37 @@ public class MainMenuHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        master.value = PlayerPrefs.GetFloat("master", 1f);
-        effects.value = PlayerPrefs.GetFloat("effects", 1f);
-        music.value = PlayerPrefs.GetFloat("music", 1f);
-        muteToggle.isOn = PlayerPrefs.GetInt("mute", 0) == 1 ? true : false;
+        master.value = PlayerPrefs.GetFloat("Master", 1f);
+        effects.value = PlayerPrefs.GetFloat("SFX", 1f);
+        music.value = PlayerPrefs.GetFloat("Music", 1f);
+        bool mute = PlayerPrefs.GetInt("mute", 0) == 1 ? true : false;
+        muteToggle.isOn = mute;
 
         newGame.onClick.AddListener(delegate { NewGame(); });
         continueGame.onClick.AddListener(delegate { Continue(); });
 
         settingsButton.onClick.AddListener(delegate { OpenSettings(); });
-        muteToggle.onValueChanged.AddListener(delegate { GameManager.Instance.ToggleMute(muteToggle.isOn); });
-        master.onValueChanged.AddListener(delegate { ChangeVolume(master.value, "master"); });
-        effects.onValueChanged.AddListener(delegate { ChangeVolume(effects.value, "effects"); });
-        music.onValueChanged.AddListener(delegate { ChangeVolume(music.value, "music"); });
+        muteToggle.onValueChanged.AddListener(delegate { ToggleMute(); });
+        master.onValueChanged.AddListener(delegate { ChangeVolume(master.value, "Master"); });
+        effects.onValueChanged.AddListener(delegate { ChangeVolume(effects.value, "SFX"); });
+        music.onValueChanged.AddListener(delegate { ChangeVolume(music.value, "Music"); });
         settingsExit.onClick.AddListener(delegate { ExitSettings(); });
 
         exitButton.onClick.AddListener(delegate { OpenAlert(); });
         alertYes.onClick.AddListener(delegate { Exit(); });
         alertNo.onClick.AddListener(delegate { CloseAlert(); });
+
+        GameManager.Instance.ToggleMute(mute);
     }
 
+    void ToggleMute()
+    {
+        GameManager.Instance.ToggleMute(muteToggle.isOn);
+    }
     void ChangeVolume(float volume, string soundType)
     {
+        Debug.Log(soundType + ": " + volume);
+        PlayerPrefs.SetFloat(soundType, volume);
         GameManager.Instance.ChangeVolume(volume, soundType);
     }
 
