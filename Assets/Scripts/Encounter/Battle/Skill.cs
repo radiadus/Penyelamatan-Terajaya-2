@@ -14,7 +14,7 @@ public class Skill
         ENEMY,
         ALL_ALLY,
         ALL_ENEMY,
-        NONE
+        SELF
     }
 
     public Target target;

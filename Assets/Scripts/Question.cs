@@ -5,11 +5,8 @@ using UnityEngine;
 public class Question
 {
     public string question;
-    public string answerA;
-    public string answerB;
-    public string answerC;
-    public string answerD;
-    public string key;
+    public string[] answer;
+    public char key;
     public int difficulty;
     public int answerCount;
     public QuestionCategory category;

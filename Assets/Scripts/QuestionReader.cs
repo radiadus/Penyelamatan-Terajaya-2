@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,14 +22,13 @@ public class QuestionReader : MonoBehaviour
         }
     }
 
-    private Dictionary<QuestionCategory, List<Question>> ReadQuestions()
+    private Dictionary<int, List<Question>> ReadQuestions()
     {
-        Dictionary<QuestionCategory, List<Question>> questions = new Dictionary<QuestionCategory, List<Question>>();
-        foreach(QuestionCategory category in Enum.GetValues(typeof(QuestionCategory)))
-        {
-            questions.Add(category, new List<Question>());    
-        }
-        StreamReader file = File.OpenText("Assets/Resources/SoalTerajaya4(1).csv");
+        Dictionary<int, List<Question>> questions = new Dictionary<int, List<Question>>();
+        questions.Add(1, new List<Question>());
+        questions.Add(2, new List<Question>());
+        questions.Add(3, new List<Question>());
+        StreamReader file = File.OpenText("Assets/Resources/SoalTerajaya7.csv");
         file.ReadLine();
         string line = "";
         while ((line = file.ReadLine()) != null)
@@ -36,11 +36,13 @@ public class QuestionReader : MonoBehaviour
             string[] data = line.Split(';');
             Question question = new Question();
             question.question = System.Text.RegularExpressions.Regex.Unescape(data[0]);
-            question.answerA = data[1];
-            question.answerB = data[2];
-            question.answerC = data[3];
-            question.answerD = data[4];
-            question.key = data[5];
+            string[] answers = new string[4];
+            answers[0] = data[1];
+            answers[1] = data[2];
+            answers[2] = data[3];
+            answers[3] = data[4];
+            question.answer = answers;
+            question.key = data[5][0];
             question.difficulty = int.Parse(data[6]);
             switch (data[7])
             {
@@ -80,26 +82,26 @@ public class QuestionReader : MonoBehaviour
                     break;
             }
             question.solved = false;
-            questions[question.category].Add(question);
+            questions[question.difficulty].Add(question);
         }
         file.Close();
         return questions;
     }
 
-    public Question GetQuestionByCategoryAndDifficulty(QuestionCategory category, int difficulty)
+    public Question GetQuestionByDifficulty(int difficulty)
     {
-        List<Question> fetched = questionBank.questions[category].FindAll(q => q.difficulty == difficulty && !q.solved);
+        List<Question> fetched = questionBank.questions[difficulty].FindAll(q => q.solved = false);
         if (fetched.Count == 0)
         {
-            ResetByCategoryAndDifficulty(category, difficulty);
-            return GetQuestionByCategoryAndDifficulty(category, difficulty);
+            ResetByDifficulty(difficulty);
+            return GetQuestionByDifficulty(difficulty);
         }
         return fetched[Random.Range(0, fetched.Count)];
     }
 
-    private void ResetByCategoryAndDifficulty(QuestionCategory category, int difficulty)
+    private void ResetByDifficulty(int difficulty)
     {
-        questionBank.questions[category].FindAll(q => q.difficulty == difficulty).ForEach(q => q.solved = false);
+        questionBank.questions[difficulty].ForEach(q => q.solved = false);
     }
 
 }

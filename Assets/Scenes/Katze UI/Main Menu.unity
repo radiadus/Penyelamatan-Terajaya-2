@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3708985, g: 0.3783704, b: 0.35722548, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -208,7 +208,7 @@ MonoBehaviour:
   gameState: 0
   inventory: {fileID: 11400000, guid: aa1689ef5cc515043bf38bd372a31fe7, type: 2}
   mage: {fileID: 11400000, guid: 0e020d87d611b6d4eb4e0518cf932bad, type: 2}
-  swordsman: {fileID: 11400000, guid: 80ea19bfa5db0834994cd5443631270c, type: 2}
+  warrior: {fileID: 11400000, guid: b129bce91e1096b4c81ca8fec557ad36, type: 2}
   assassin: {fileID: 11400000, guid: 803771d241407974cb5614622538a96a, type: 2}
   pedang: {fileID: 11400000, guid: a36c148f8a984ef4da15e42e200ee0ea, type: 2}
   keris: {fileID: 11400000, guid: 7937c0b28641e1048b1af6e5a156eb58, type: 2}

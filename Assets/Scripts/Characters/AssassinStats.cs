@@ -21,4 +21,17 @@ public class AssassinStats : Stats
 
         };
     }
+
+    public override void InitializeSkills()
+    {
+        skillList = new List<Skill>();
+        if (PlayerPrefs.GetInt("assassin2", 0) == 1)
+        {
+            //initialize tier 2 assassin skills
+        }
+        if (PlayerPrefs.GetInt("assassin3", 0) == 1)
+        {
+            //initialize tier 3 assassin skills
+        }
+    }
 }

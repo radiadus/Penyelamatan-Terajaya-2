@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     //public Mage mage;
     //public Swordsman swordsman;
     //public Assassin assassin;
-    public Stats mage, swordsman, assassin;
+    public Stats mage, warrior, assassin;
     public Equipment pedang, keris, tongkat;
     public QuestionReader reader;
     public AudioMixer mixer;
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         inventory.emptyInventory();
         mage.Reset();
-        swordsman.Reset();
+        warrior.Reset();
         assassin.Reset();
         pedang.Reset();
         keris.Reset();
@@ -106,6 +106,9 @@ public class GameManager : MonoBehaviour
 
     public void Continue()
     {
+        mage.InitializeSkills();
+        warrior.InitializeSkills();
+        assassin.InitializeSkills();
         AsyncOperation load = SceneManager.LoadSceneAsync(PlayerPrefs.GetInt("sceneId"));
         load.completed += (asyncOperation) =>
         {

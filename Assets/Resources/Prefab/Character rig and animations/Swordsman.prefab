@@ -2725,7 +2725,7 @@ MonoBehaviour:
   defense: 0
   speed: 0
   animator: {fileID: 4751778678950423160}
-  stats: {fileID: 11400000, guid: 80ea19bfa5db0834994cd5443631270c, type: 2}
+  stats: {fileID: 11400000, guid: b129bce91e1096b4c81ca8fec557ad36, type: 2}
   equipment: {fileID: 11400000, guid: a36c148f8a984ef4da15e42e200ee0ea, type: 2}
 --- !u!1 &4751778678973826851
 GameObject:

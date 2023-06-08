@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class QuestionBank : ScriptableObject
 {
-    public Dictionary<QuestionCategory, List<Question>> questions;
+    public Dictionary<int, List<Question>> questions;
+
 }
