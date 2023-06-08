@@ -18,7 +18,23 @@ public class MageStats : Stats
         speed = 10;
         skillList = new List<Skill>
         {
+            new BolaApi(),
             new BolaApi()
         };
+    }
+
+    public override void InitializeSkills()
+    {
+        skillList = new List<Skill>();
+        skillList.Add(new BolaApi());
+        skillList.Add(new BolaApi());
+        if (PlayerPrefs.GetInt("mage2", 0) == 1)
+        {
+            //initialize tier 2 mage skills
+        }
+        if (PlayerPrefs.GetInt("mage3", 0) == 1)
+        {
+            //initialize tier 3 mage skills
+        }
     }
 }

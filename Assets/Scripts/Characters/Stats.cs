@@ -20,4 +20,9 @@ public class Stats : ScriptableObject
         exp = 0;
         requiredExp = 100;
     }
+
+    public virtual void InitializeSkills()
+    {
+        skillList = new List<Skill>();
+    }
 }
