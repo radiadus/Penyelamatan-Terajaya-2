@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,11 +27,15 @@ public class GameManager : MonoBehaviour
     public Equipment pedang, keris, tongkat;
     public QuestionReader reader;
     public AudioMixer mixer;
+    public GameObject loadingCanvas;
+    public Image loadingBackground;
+    public TextMeshProUGUI loadingText;
 
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(loadingCanvas);
     }
 
     public void SetVolume(float master, float sfx, float music)
@@ -71,15 +76,20 @@ public class GameManager : MonoBehaviour
 
     public void ChangeMap(string sceneName, Vector3 spawnPosition)
     {
-        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
-        load.completed += (asyncOperation) =>
+        Time.timeScale = 0f;
+        loadingCanvas.SetActive(true);
+        int buildIndex = SceneManager.GetSceneByName(sceneName).buildIndex;
+        Debug.Log(buildIndex);
+        StartCoroutine(ChangeScene(sceneName, done =>
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = spawnPosition;
             player.GetComponent<CharacterController>().enabled = true;
             SaveGame(player);
-        };
+            Time.timeScale = 1f;
+            loadingCanvas.SetActive(false);
+        }));
     }
 
     public void SaveGame(GameObject player)
@@ -93,6 +103,11 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
+        ResetProgress();
+        SceneManager.LoadScene("Forest Overworld");
+    }
+    private void ResetProgress()
+    {
         inventory.emptyInventory();
         mage.Reset();
         warrior.Reset();
@@ -100,12 +115,18 @@ public class GameManager : MonoBehaviour
         pedang.Reset();
         keris.Reset();
         tongkat.Reset();
-        PlayerPrefs.SetInt("end", 0);
-        SceneManager.LoadScene("Forest Overworld");
+        float master = PlayerPrefs.GetFloat("Master", 1f);
+        float sfx = PlayerPrefs.GetFloat("SFX", 1f);
+        float music = PlayerPrefs.GetFloat("Music", 1f);
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetFloat("Master", master);
+        PlayerPrefs.SetFloat("SFX", sfx);
+        PlayerPrefs.SetFloat("Music", music);
     }
 
     public void Continue()
     {
+        if (!PlayerPrefs.HasKey("posX")) return;
         mage.InitializeSkills();
         warrior.InitializeSkills();
         assassin.InitializeSkills();
@@ -121,4 +142,71 @@ public class GameManager : MonoBehaviour
         };
     }
 
+    public void ExitToMainMenu()
+    {
+        StartCoroutine(ChangeScene("Main Menu", done =>
+        {
+
+        }));
+    }
+
+    IEnumerator ChangeScene(string sceneName, Action<bool> done)
+    {
+        float a = 0;
+        Color colorBG = loadingBackground.color;
+        Color colorText = loadingText.color;
+        while (a < 1)
+        {
+            a += 0.1f;
+            colorBG.a = a;
+            colorText.a = a;
+            loadingBackground.color = colorBG;
+            loadingText.color = colorText;
+            yield return null;
+        }
+        colorBG.a = 1;
+        colorText.a = 1;
+        loadingBackground.color = colorBG;
+        loadingText.color = colorText;
+        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
+        while (!load.isDone)
+        {
+            yield return null;
+        }
+        a = 1;
+        while (a > 0)
+        {
+            a -= 0.1f;
+            colorBG.a = a;
+            colorText.a = a;
+            loadingBackground.color = colorBG;
+            loadingText.color = colorText;
+            yield return null;
+        }
+        colorBG.a = 0;
+        colorText.a = 0;
+        loadingBackground.color = colorBG;
+        loadingText.color = colorText;
+        done(true);
+    }
+
+    IEnumerator LoadScene(string sceneName)
+    {
+        float a = 1;
+        Color colorBG = loadingBackground.color;
+        Color colorText = loadingText.color;
+        while (a > 0)
+        {
+            a -= 0.1f;
+            colorBG.a = a;
+            colorText.a = a;
+            loadingBackground.color = colorBG;
+            loadingText.color = colorText;
+            yield return null;
+        }
+        colorBG.a = 0;
+        colorText.a = 0;
+        loadingBackground.color = colorBG;
+        loadingText.color = colorText;
+    }
 }

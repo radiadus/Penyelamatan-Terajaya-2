@@ -24,11 +24,12 @@ public class Encounter : MonoBehaviour
         new float[] {1f, 7f}
     };
 
-    public Button attack, item, flee, undoFriendly, undoEnemy;
+    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm;
     public Button[] attackDifficulty, answerButton, enemyButton, friendlyButton;
-    public Slider[] hpBar;
+    public Slider[] hpBar, mpBar;
     public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, enemySelect;
     public GameObject[] attackPanel;
+    public GameObject[] friendlyTarget, enemyTarget;
     public TextMeshProUGUI textBoxText, questionText;
     public TextMeshProUGUI[] answerText;
     public GameObject[] friendlyPrefabs;
@@ -108,8 +109,8 @@ public class Encounter : MonoBehaviour
     }
 
     private BattleState state;
-    private Sorter sorter;
-    private List<Action> actions;
+    private Sorter sorter = new Sorter();
+    private List<Action> actions = new List<Action>();
     private int characterTurn;
     private int enemyRemaining;
     private int friendlyRemaining;
@@ -122,6 +123,7 @@ public class Encounter : MonoBehaviour
 
         state = BattleState.PLAYER_TURN;
         characterTurn = 0;
+        enemyRemaining = enemies.Count();
 
         attack.onClick.AddListener(delegate { OpenAttackPanel(); });
         item.onClick.AddListener(delegate { OpenItemPanel(); });
@@ -136,7 +138,7 @@ public class Encounter : MonoBehaviour
             attackDifficulty[index].onClick.AddListener(delegate { Debug.Log(index); SwitchAttackPanel(index); });
         }
 
-        for(int i = enemies.Count(); i < 5; i++)
+        for(int i = enemyRemaining; i < 5; i++)
         {
             enemyButton[i].gameObject.SetActive(false);
         }
@@ -252,6 +254,8 @@ public class Encounter : MonoBehaviour
             friendlies[i].InitializeStats();
             hpBar[i].maxValue = friendlies[i].maxHP;
             hpBar[i].value = friendlies[i].HP;
+            mpBar[i].maxValue = friendlies[i].maxMP;
+            mpBar[i].value = friendlies[i].MP;
         }
         int enemySize = enemyPrefabs.Length;
         enemies = new Enemy[enemySize];
@@ -291,8 +295,6 @@ public class Encounter : MonoBehaviour
             rtf.anchoredPosition = new Vector2(0, 0);
             rtf.anchoredPosition = position;
             GameObject obj = Instantiate(skillChoice, attackPanel[difficulty-1].transform);
-            Debug.Log(obj.GetComponent<RectTransform>().anchoredPosition.ToString());
-            Debug.Log(position.ToString());
             AttackButton script = obj.GetComponent<AttackButton>();
             script.skill = skill;
             script.InitializeText();
@@ -304,62 +306,125 @@ public class Encounter : MonoBehaviour
 
     void ChooseTarget(Skill skill)
     {
-        Debug.Log("masuk");
         List<CombatUnit> target = new List<CombatUnit>();
         switch (skill.target)
         {
             case Skill.Target.ALLY:
                 OpenFriendlySelect();
-                InitializeFriendlyListener(skill);
+                InitializeFriendlyListener(skill, false, false);
                 break;
             case Skill.Target.ENEMY:
                 OpenEnemySelect();
-                InitializeEnemyListener(skill);
+                InitializeEnemyListener(skill, false);
                 break;
             case Skill.Target.ALL_ALLY:
-                target = friendlies.ToList<CombatUnit>();
-                OpenQuestionPanel(skill, target);
+                OpenFriendlySelect();
+                InitializeFriendlyListener(skill, true, false);
                 break;
             case Skill.Target.ALL_ENEMY:
                 target = enemies.ToList<CombatUnit>();
+                OpenEnemySelect();
+                InitializeEnemyListener(skill, true);
                 OpenQuestionPanel(skill, target);
                 break;
             case Skill.Target.SELF:
-                target.Add(friendlies[characterTurn]);
-                OpenQuestionPanel(skill, target);
+                OpenFriendlySelect();
+                InitializeFriendlyListener(skill, false, true);
                 break;
             default:
                 break;
         }
     }
-    void InitializeFriendlyListener(Skill skill)
+    void InitializeFriendlyListener(Skill skill, bool all, bool self)
     {
-        for (int i = 0; i < 3; i++)
+        bool single = !all && !self;
+        for (int i = 0; i < friendlies.Length; i++)
         {
             int index = i;
-            List<CombatUnit> target = new List<CombatUnit>
-            {
-                friendlies[index]
-            };
             friendlyButton[index].onClick.RemoveAllListeners();
-            friendlyButton[index].onClick.AddListener(delegate { OpenQuestionPanel(skill, target); });
+            if (single)
+            {
+                enemyButton[index].onClick.AddListener(delegate
+                {
+                    ResetEnemyChoice();
+                    enemyTarget[index].SetActive(true);
+                });
+            }
         }
+        if (all)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                friendlyTarget[j].SetActive(true);
+            }
+        }
+        else if (self)
+        {
+            friendlyTarget[characterTurn].SetActive(true);
+        }
+        friendlyConfirm.onClick.RemoveAllListeners();
+        friendlyConfirm.onClick.AddListener(delegate { OpenQuestionPanel(skill, GetSelectedFriendly()); });
     }
     void InitializeFriendlyListener(Item item)
     {
 
     }
-    void InitializeEnemyListener(Skill skill)
+
+    List<CombatUnit> GetSelectedFriendly()
+    {
+        List<CombatUnit> target = new List<CombatUnit>();
+        for (int i = 0; i < 3; i++)
+        {
+            if (friendlyButton[i].gameObject.activeSelf) target.Add(friendlies[i]);
+        }
+        return target;
+    }
+    List<CombatUnit> GetSelectedEnemy()
+    {
+        List<CombatUnit> target = new List<CombatUnit>();
+        for(int i = 0; i < 5; i++)
+        {
+            if (enemyButton[i].gameObject.activeSelf) target.Add(enemies[i]);
+        }
+        return target;
+    }
+    void InitializeEnemyListener(Skill skill, bool all)
     {
         for (int i = 0; i < enemies.Length; i++)
         {
             int index = i;
-            List<CombatUnit> target = new List<CombatUnit>
+            enemyButton[index].onClick.RemoveAllListeners();
+            if (!all)
             {
-                enemies[index]
-            };
-            friendlyButton[index].onClick.RemoveAllListeners();
-            friendlyButton[index].onClick.AddListener(delegate { OpenQuestionPanel(skill, target); });
+                enemyButton[index].onClick.AddListener(delegate 
+                {
+                    ResetEnemyChoice();
+                    enemyTarget[index].SetActive(true);
+                });
+            }
+        }
+        if (all)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                enemyTarget[j].SetActive(true);
+            }
+        }
+        enemyConfirm.onClick.RemoveAllListeners();
+        enemyConfirm.onClick.AddListener(delegate { OpenQuestionPanel(skill, GetSelectedEnemy()); });
+    }
+    void ResetEnemyChoice()
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            enemyTarget[j].SetActive(false);
+        }
+    }
+    void ResetFriendlyChoice()
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            friendlyTarget[j].SetActive(false);
         }
     }
     void OpenQuestionPanel(Skill skill, List<CombatUnit> target)
@@ -376,10 +441,15 @@ public class Encounter : MonoBehaviour
         if (question != null)
         {
             questionText.text = question.question;
+            foreach(Button button in answerButton)
+            {
+                button.gameObject.SetActive(false);
+            }
             for(int i = 0; i < question.answerCount; i++)
             {
                 int index = i;
                 answerButton[index].gameObject.SetActive(true);
+                answerText[index].text = question.answer[i];
                 answerButton[index].onClick.RemoveAllListeners();
                 answerButton[index].onClick.AddListener(delegate { AnswerQuestion(skill, target, question, index); });
             }
@@ -392,6 +462,7 @@ public class Encounter : MonoBehaviour
         {
             actions.Add(new Action(friendlies[characterTurn], skill, target));
         }
+        questionCanvas.SetActive(false);
         characterTurn++;
         StartTurn(characterTurn);
     }
@@ -399,11 +470,13 @@ public class Encounter : MonoBehaviour
     {
         friendlySelect.SetActive(true);
         battleOptions.SetActive(false);
+        ResetFriendlyChoice();
     }
     void OpenEnemySelect()
     {
         enemySelect.SetActive(true);
         battleOptions.SetActive(false);
+        ResetEnemyChoice();
     }
     void UndoEnemySelect()
     {
@@ -443,10 +516,8 @@ public class Encounter : MonoBehaviour
     }
     private void SwitchAttackPanel(int difficulty)
     {
-        Debug.Log(difficulty);
         for(int i = 0; i < 3; i++)
         {
-            Debug.Log(difficulty + " " + i);
             attackPanel[i].SetActive(i == difficulty ? true : false);
         }
     }

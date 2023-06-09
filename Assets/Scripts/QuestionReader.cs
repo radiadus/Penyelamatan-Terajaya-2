@@ -28,7 +28,7 @@ public class QuestionReader : MonoBehaviour
         questions.Add(1, new List<Question>());
         questions.Add(2, new List<Question>());
         questions.Add(3, new List<Question>());
-        StreamReader file = File.OpenText("Assets/Resources/SoalTerajaya7.csv");
+        StreamReader file = File.OpenText("Assets/Resources/Soal/SoalTerajaya7.csv");
         file.ReadLine();
         string line = "";
         while ((line = file.ReadLine()) != null)
@@ -43,7 +43,9 @@ public class QuestionReader : MonoBehaviour
             answers[3] = data[4];
             question.answer = answers;
             question.key = data[5][0];
+            Debug.Log(data[6]);
             question.difficulty = int.Parse(data[6]);
+            Debug.Log(question.difficulty);
             switch (data[7])
             {
                 case "PG2":
@@ -90,7 +92,7 @@ public class QuestionReader : MonoBehaviour
 
     public Question GetQuestionByDifficulty(int difficulty)
     {
-        List<Question> fetched = questionBank.questions[difficulty].FindAll(q => q.solved = false);
+        List<Question> fetched = questionBank.questions[difficulty].FindAll(q => q.solved == false);
         if (fetched.Count == 0)
         {
             ResetByDifficulty(difficulty);
