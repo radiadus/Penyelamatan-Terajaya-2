@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ChangeMapTriggerHandler : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class ChangeMapTriggerHandler : MonoBehaviour
     {
         if (other.tag.Equals("Player"))
         {
+            Debug.Log(SceneManager.GetSceneByName(targetSceneName).buildIndex);
             GameManager.Instance.ChangeMap(targetSceneName, spawnPosition);
         }
     }

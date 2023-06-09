@@ -106,7 +106,7 @@ public class InGameCanvasHandler : MonoBehaviour
     void Exit()
     {
         GameManager.Instance.SaveGame(player);
-        Application.Quit();
+        GameManager.Instance.ExitToMainMenu();
         Debug.Log("quitted");
     }
 }

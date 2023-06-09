@@ -18,13 +18,14 @@ public class WarriorStats : Stats
         speed = 10;
         skillList = new List<Skill>
         {
-
+            new P3K()
         };
     }
 
     public override void InitializeSkills()
     {
         skillList = new List<Skill>();
+        skillList.Add(new P3K());
         if (PlayerPrefs.GetInt("warrior2", 0) == 1)
         {
             //initialize tier 2 warrior skills
