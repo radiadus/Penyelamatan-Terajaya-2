@@ -19,7 +19,9 @@ public class MageStats : Stats
         skillList = new List<Skill>
         {
             new BolaApi(),
-            new BolaApi()
+            new Debus(),
+            new Kilat(),
+            new Penyembuhan(),
         };
     }
 
@@ -27,14 +29,23 @@ public class MageStats : Stats
     {
         skillList = new List<Skill>();
         skillList.Add(new BolaApi());
-        skillList.Add(new BolaApi());
+        skillList.Add(new Debus());
+        skillList.Add(new Kilat());
+        skillList.Add(new Penyembuhan());
+
         if (PlayerPrefs.GetInt("mage2", 0) == 1)
         {
             //initialize tier 2 mage skills
+            skillList.Add(new SemburApi());
+            skillList.Add(new Jimat());
+            skillList.Add(new Petir());
         }
         if (PlayerPrefs.GetInt("mage3", 0) == 1)
         {
             //initialize tier 3 mage skills
+            skillList.Add(new BadaiApi());
+            skillList.Add(new SakratulMaut());
+            skillList.Add(new Bangkit());
         }
     }
 }
