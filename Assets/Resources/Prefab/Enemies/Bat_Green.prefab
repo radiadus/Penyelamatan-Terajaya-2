@@ -1270,7 +1270,9 @@ MonoBehaviour:
   defense: 0
   speed: 0
   animator: {fileID: 0}
+  targetable: 0
   id: 0
+  name: Kelelawar Hijau
 --- !u!1 &1000013833150240
 GameObject:
   m_ObjectHideFlags: 0

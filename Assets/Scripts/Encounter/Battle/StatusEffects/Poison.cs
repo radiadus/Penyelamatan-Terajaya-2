@@ -13,8 +13,8 @@ public class Poison : StatusEffect
         base.DecreaseTurn();
     }
 
-    public Poison()
+    public Poison(int dot)
     {
-        dot = 15;
+        this.dot = dot;
     }
 }

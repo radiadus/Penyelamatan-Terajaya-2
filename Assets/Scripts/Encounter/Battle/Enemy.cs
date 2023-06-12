@@ -5,6 +5,13 @@ using UnityEngine;
 public abstract class Enemy : CombatUnit
 {
     public int id;
+    public enum AttackType
+    {
+        SINGLE,
+        ALL
+    }
+    public AttackType attackType;
+    public int attackTarget;
     public override void PlayDeadAnimation()
     {
         if (animator!= null)
@@ -18,5 +25,5 @@ public abstract class Enemy : CombatUnit
 
     public abstract Enemy InitializeStats();
 
-    public abstract void Attack(CombatUnit user, List<CombatUnit> target);
+    public abstract int Attack(CombatUnit user, List<CombatUnit> targets);
 }

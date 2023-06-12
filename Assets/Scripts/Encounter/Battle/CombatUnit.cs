@@ -8,12 +8,14 @@ public abstract class CombatUnit : MonoBehaviour
     public List<StatusEffect> statusEffectList;
     public Animator animator;
     public bool targetable;
+    public new string name;
 
     protected virtual void Start()
     {
         gameObject.SetActive(true);
         animator = gameObject.GetComponent<Animator>();
         statusEffectList = new List<StatusEffect>();
+        targetable = true;
     }
 
     public bool IsDead()
@@ -25,6 +27,7 @@ public abstract class CombatUnit : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
+        animator.SetTrigger("hit");
         this.HP -= damage;
         Debug.Log(HP);
         if (this.IsDead())

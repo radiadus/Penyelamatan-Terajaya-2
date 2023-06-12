@@ -48,16 +48,18 @@ public class Encounter : MonoBehaviour
     {
         SKILL,
         ITEM,
-        FLEE
+        FLEE,
+        ENEMY
     }
 
     private class Action
     {
         public ActionType type;
-        public delegate void Function(CombatUnit user, List<CombatUnit> targets);
+        public delegate int Function(CombatUnit user, List<CombatUnit> targets);
         public Function func;
         public CombatUnit user;
         public List<CombatUnit> targets;
+        public string actionName;
         public int fleeRoll;
         public bool FleeSuccesful()
         {
@@ -69,6 +71,7 @@ public class Encounter : MonoBehaviour
         {
             this.type = ActionType.SKILL;
             this.func = skill.Cast;
+            this.actionName = skill.skillName;
             this.user = caster;
             this.targets = targets;
         }
@@ -77,13 +80,14 @@ public class Encounter : MonoBehaviour
         {
             this.type = ActionType.ITEM;
             this.func = consumable.Use;
+            this.actionName = consumable.itemName;
             this.user = user;
             this.targets = targets;
         }
 
         public Action(Enemy enemy, List<CombatUnit> targets)
         {
-            this.type = ActionType.SKILL;
+            this.type = ActionType.ENEMY;
             this.func = enemy.Attack;
             this.user = enemy;
             this.targets = targets;
@@ -192,8 +196,30 @@ public class Encounter : MonoBehaviour
             foreach (Action action in actions)
             {
                 Debug.Log(action.user.name);
-                action.func(action.user, action.targets);
+                int number = action.func(action.user, action.targets);
+                if (number != -2)
+                {
+                    textBox.SetActive(true);
+                    string text = action.user.name;
+                    if (action.type == ActionType.ENEMY)
+                    {
+                        text += " menyerang ";
+                        if (((Enemy)(action.user)).attackType == Enemy.AttackType.SINGLE) text += friendlies[((Enemy)action.user).attackTarget].name + "!";
+                        else text += "semua karakter!";
+                    }
+                    else
+                    {
+                        text += " menggunakan " + action.actionName + "!";
+                    }
+                    if (number != -1) text += " (" + number + " total kerusakan)";
+                    textBoxText.text = text;
+                    UpdateHPMPBar(0);
+                    UpdateHPMPBar(1);
+                    UpdateHPMPBar(2);
+                    yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length);
+                }
             }
+            textBox.SetActive(false);
             actions.Clear();
             state = BattleState.STATUS_CHECK;
             yield return null;
@@ -308,9 +334,15 @@ public class Encounter : MonoBehaviour
             script.skill = skill;
             script.InitializeText();
             Button button = obj.GetComponent<Button>();
-            button.onClick.AddListener(delegate { ChooseTarget(skill); });
+            button.onClick.AddListener(delegate { if (friendly.MP >= skill.mpCost) ChooseTarget(skill); });
         }
 
+    }
+
+    void UpdateHPMPBar(int index)
+    {
+        hpBar[index].value = friendlies[index].HP;
+        mpBar[index].value = friendlies[index].MP;
     }
 
     void ChooseTarget(Skill skill)

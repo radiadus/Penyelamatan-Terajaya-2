@@ -19,8 +19,9 @@ public class Skill
 
     public Target target;
 
-    public virtual void Cast(CombatUnit caster, List<CombatUnit> targets)
+    public virtual int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
         caster.MP -= this.mpCost;
+        return -1;
     }
 }
