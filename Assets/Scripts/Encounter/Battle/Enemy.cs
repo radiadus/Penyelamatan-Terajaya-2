@@ -16,7 +16,7 @@ public abstract class Enemy : CombatUnit
         }
     }
 
-    public abstract void InitializeStats();
+    public abstract Enemy InitializeStats();
 
     public abstract void Attack(CombatUnit user, List<CombatUnit> target);
 }

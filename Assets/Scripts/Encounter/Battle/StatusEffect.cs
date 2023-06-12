@@ -4,22 +4,23 @@ using UnityEngine;
 
 public abstract class StatusEffect
 {
-    public CombatUnit unit;
+    public Sprite sprite;
     public int remainingTurn;
+    public CombatUnit unit;
     public virtual void TakeEffect(CombatUnit unit)
     {
-        this.unit.statusEffectList.Add(this);
+        unit.statusEffectList.Add(this);
     }
-    public virtual void DecreaseTurn(CombatUnit unit)
+    public virtual void DecreaseTurn()
     {
         this.remainingTurn--;
         if (this.remainingTurn == 0)
         {
-            this.RemoveEffect(unit);
+            RemoveEffect();
         }
     }
-    public virtual void RemoveEffect(CombatUnit unit)
+    public virtual void RemoveEffect()
     {
-        this.unit.statusEffectList.Remove(this);
+        unit.statusEffectList.Remove(this);
     }
 }

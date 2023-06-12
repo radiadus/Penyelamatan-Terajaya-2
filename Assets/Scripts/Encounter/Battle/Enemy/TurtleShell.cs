@@ -11,13 +11,20 @@ public class TurtleShell : Enemy
     }
     public override void Attack(CombatUnit user, List<CombatUnit> targets)
     {
-        CombatUnit target = targets[0];
+        targets.ForEach(target =>
+        {
+            if (target.IsDead() || target.targetable)
+            {
+                targets.Remove(target);
+            }
+        });
+        CombatUnit target = targets[Random.Range(0, targets.Count)];    
         int baseDamage = 20;
         int damage = (int)(GetAttack()*(baseDamage/100)*Random.Range(0.95f, 1.05f));
         target.TakeDamage(damage);
     }
 
-    public override void InitializeStats()
+    public override Enemy InitializeStats()
     {
         this.maxHP = 100;
         this.HP = 100;
@@ -26,5 +33,6 @@ public class TurtleShell : Enemy
         this.attack = 5;
         this.defense = 5;
         this.speed = 5;
+        return this;
     }
 }
