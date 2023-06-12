@@ -6,10 +6,10 @@ public class Friendly : CombatUnit
 {
     public Stats stats;
     public Equipment equipment;
-    
 
     protected override void Start()
     {
+        base.Start();
     }
 
     public void InitializeStats()

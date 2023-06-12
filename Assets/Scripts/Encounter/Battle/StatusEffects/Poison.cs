@@ -6,10 +6,15 @@ public class Poison : StatusEffect
 {
     public int dot;
 
-    public override void DecreaseTurn(CombatUnit unit)
+    public override void DecreaseTurn()
     {
-        this.unit.HP -= dot;
-        base.DecreaseTurn(unit);
+        unit.HP -= (int)(unit.HP * dot / 100);
+        dot -= 5;
+        base.DecreaseTurn();
     }
 
+    public Poison(int dot)
+    {
+        this.dot = dot;
+    }
 }

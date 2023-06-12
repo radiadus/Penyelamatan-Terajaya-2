@@ -3907,8 +3907,10 @@ MonoBehaviour:
   defense: 10
   speed: 10
   animator: {fileID: 8202437720320454176}
+  targetable: 0
   stats: {fileID: 11400000, guid: 0e020d87d611b6d4eb4e0518cf932bad, type: 2}
   equipment: {fileID: 11400000, guid: 3dcc2f2ce7471d840bdfbeaf1290d555, type: 2}
+  name: Dukun
 --- !u!1 &8202437720345129781
 GameObject:
   m_ObjectHideFlags: 0

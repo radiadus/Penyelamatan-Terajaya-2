@@ -13,5 +13,5 @@ public abstract class Consumable : Item
     }
     [SerializeField] private Target itemTarget;
 
-    public abstract void Use(CombatUnit user, List<CombatUnit> target);
+    public abstract int Use(CombatUnit user, List<CombatUnit> target);
 }

@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurtleShell : Enemy
+public class BatGreen : Enemy
 {
-
-    protected override void Start()
-    {
-        base.Start();
-    }
     public override int Attack(CombatUnit user, List<CombatUnit> targets)
     {
         targets.ForEach(target =>
@@ -22,7 +17,7 @@ public class TurtleShell : Enemy
         {
             int target = Random.Range(0, targets.Count);
             this.attackTarget = target;
-            CombatUnit targetUnit = targets[target];    
+            CombatUnit targetUnit = targets[target];
             int baseDamage = 100;
             int damage = (int)(GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
             animator.SetTrigger("attack");
@@ -43,4 +38,5 @@ public class TurtleShell : Enemy
         this.speed = 5;
         return this;
     }
+
 }

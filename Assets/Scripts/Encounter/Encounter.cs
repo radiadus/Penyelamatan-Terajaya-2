@@ -48,16 +48,18 @@ public class Encounter : MonoBehaviour
     {
         SKILL,
         ITEM,
-        FLEE
+        FLEE,
+        ENEMY
     }
 
     private class Action
     {
         public ActionType type;
-        public delegate void Function(CombatUnit user, List<CombatUnit> targets);
+        public delegate int Function(CombatUnit user, List<CombatUnit> targets);
         public Function func;
         public CombatUnit user;
         public List<CombatUnit> targets;
+        public string actionName;
         public int fleeRoll;
         public bool FleeSuccesful()
         {
@@ -69,6 +71,7 @@ public class Encounter : MonoBehaviour
         {
             this.type = ActionType.SKILL;
             this.func = skill.Cast;
+            this.actionName = skill.skillName;
             this.user = caster;
             this.targets = targets;
         }
@@ -77,13 +80,14 @@ public class Encounter : MonoBehaviour
         {
             this.type = ActionType.ITEM;
             this.func = consumable.Use;
+            this.actionName = consumable.itemName;
             this.user = user;
             this.targets = targets;
         }
 
         public Action(Enemy enemy, List<CombatUnit> targets)
         {
-            this.type = ActionType.SKILL;
+            this.type = ActionType.ENEMY;
             this.func = enemy.Attack;
             this.user = enemy;
             this.targets = targets;
@@ -185,13 +189,39 @@ public class Encounter : MonoBehaviour
         while(enemyRemaining > 0)
         {
             while (state != BattleState.ATTACK_PHASE) yield return null;
+            Debug.Log(actions.Count);
             RandomizeEnemyAction();
             actions.Sort(sorter);
+            Debug.Log(actions.Count);
             foreach (Action action in actions)
             {
-                action.func(action.user, action.targets);
+                Debug.Log(action.user.name);
+                int number = action.func(action.user, action.targets);
+                if (number != -2)
+                {
+                    textBox.SetActive(true);
+                    string text = action.user.name;
+                    if (action.type == ActionType.ENEMY)
+                    {
+                        text += " menyerang ";
+                        if (((Enemy)(action.user)).attackType == Enemy.AttackType.SINGLE) text += friendlies[((Enemy)action.user).attackTarget].name + "!";
+                        else text += "semua karakter!";
+                    }
+                    else
+                    {
+                        text += " menggunakan " + action.actionName + "!";
+                    }
+                    if (number != -1) text += " (" + number + " total kerusakan)";
+                    textBoxText.text = text;
+                    UpdateHPMPBar(0);
+                    UpdateHPMPBar(1);
+                    UpdateHPMPBar(2);
+                    yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length);
+                }
             }
+            textBox.SetActive(false);
             actions.Clear();
+            state = BattleState.STATUS_CHECK;
             yield return null;
         }
     }
@@ -205,17 +235,20 @@ public class Encounter : MonoBehaviour
             {
                 foreach(StatusEffect effect in friendly.statusEffectList)
                 {
-
+                    effect.DecreaseTurn();
+                    if (effect.remainingTurn == 0) friendly.statusEffectList.Remove(effect);
                 }
             }
             foreach (Enemy enemy in enemies)
             {
                 foreach(StatusEffect effect in enemy.statusEffectList)
                 {
-
+                    effect.DecreaseTurn();
+                    if (effect.remainingTurn == 0) enemy.statusEffectList.Remove(effect);
                 }
             }
             state = BattleState.PLAYER_TURN;
+            StartTurn(characterTurn);
 
             yield return null;
         }
@@ -223,7 +256,7 @@ public class Encounter : MonoBehaviour
 
     public void RandomizeEnemyAction()
     {
-        List<CombatUnit> targets = friendlies.Where<CombatUnit>(f => !f.IsDead()).ToList();
+        List<CombatUnit> targets = friendlies.ToList<CombatUnit>();
         foreach (Enemy enemy in enemies)
         {
             actions.Add(new Action(enemy, targets));
@@ -232,6 +265,8 @@ public class Encounter : MonoBehaviour
 
     public void StartTurn(int turn)
     {
+        if (characterTurn > 2)
+            return;
         if (friendlies[turn].IsDead())
         {
             characterTurn++;
@@ -264,7 +299,7 @@ public class Encounter : MonoBehaviour
             float[] position = enemyPositions[i];
             Vector3 spawnVect = new Vector3(position[0], 0, position[1]);
             GameObject enemy = Instantiate(enemyPrefabs[i], spawnVect, Quaternion.Euler(0, 180, 0));
-            enemies[i] = enemy.GetComponent<Enemy>();
+            enemies[i] = enemy.GetComponent<Enemy>().InitializeStats();
         }
     }
     
@@ -287,8 +322,8 @@ public class Encounter : MonoBehaviour
             int index = i;
             Skill skill = skills[index];
             int difficulty = skill.difficulty;
-            x = count[difficulty-1] % 2 * 150;
-            y = count[difficulty-1] / 2 * 400;
+            x = count[difficulty-1] % 2 * 250;
+            y = count[difficulty-1] / 2 * -100;
             count[difficulty-1]++;
             Vector2 position = new Vector2(x, y);
             RectTransform rtf = skillChoice.GetComponent<RectTransform>();
@@ -299,9 +334,15 @@ public class Encounter : MonoBehaviour
             script.skill = skill;
             script.InitializeText();
             Button button = obj.GetComponent<Button>();
-            button.onClick.AddListener(delegate { ChooseTarget(skill); });
+            button.onClick.AddListener(delegate { if (friendly.MP >= skill.mpCost) ChooseTarget(skill); });
         }
 
+    }
+
+    void UpdateHPMPBar(int index)
+    {
+        hpBar[index].value = friendlies[index].HP;
+        mpBar[index].value = friendlies[index].MP;
     }
 
     void ChooseTarget(Skill skill)
@@ -322,10 +363,8 @@ public class Encounter : MonoBehaviour
                 InitializeFriendlyListener(skill, true, false);
                 break;
             case Skill.Target.ALL_ENEMY:
-                target = enemies.ToList<CombatUnit>();
                 OpenEnemySelect();
                 InitializeEnemyListener(skill, true);
-                OpenQuestionPanel(skill, target);
                 break;
             case Skill.Target.SELF:
                 OpenFriendlySelect();
@@ -344,10 +383,10 @@ public class Encounter : MonoBehaviour
             friendlyButton[index].onClick.RemoveAllListeners();
             if (single)
             {
-                enemyButton[index].onClick.AddListener(delegate
+                friendlyButton[index].onClick.AddListener(delegate
                 {
-                    ResetEnemyChoice();
-                    enemyTarget[index].SetActive(true);
+                    ResetFriendlyChoice();
+                    friendlyTarget[index].SetActive(true);
                 });
             }
         }
@@ -375,7 +414,7 @@ public class Encounter : MonoBehaviour
         List<CombatUnit> target = new List<CombatUnit>();
         for (int i = 0; i < 3; i++)
         {
-            if (friendlyButton[i].gameObject.activeSelf) target.Add(friendlies[i]);
+            if (friendlyTarget[i].gameObject.activeSelf) target.Add(friendlies[i]);
         }
         return target;
     }
@@ -384,7 +423,7 @@ public class Encounter : MonoBehaviour
         List<CombatUnit> target = new List<CombatUnit>();
         for(int i = 0; i < 5; i++)
         {
-            if (enemyButton[i].gameObject.activeSelf) target.Add(enemies[i]);
+            if (enemyTarget[i].gameObject.activeSelf) target.Add(enemies[i]);
         }
         return target;
     }
@@ -405,13 +444,16 @@ public class Encounter : MonoBehaviour
         }
         if (all)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < enemies.Length; j++)
             {
-                enemyTarget[j].SetActive(true);
+                Debug.Log(j);
+                Debug.Log(enemies[j]);
+                if (!enemies[j].IsDead())
+                    enemyTarget[j].SetActive(true);
             }
         }
         enemyConfirm.onClick.RemoveAllListeners();
-        enemyConfirm.onClick.AddListener(delegate { OpenQuestionPanel(skill, GetSelectedEnemy()); });
+        enemyConfirm.onClick.AddListener(delegate { Debug.Log(GetSelectedEnemy().Count()); if (GetSelectedEnemy().Count() != 0) OpenQuestionPanel(skill, GetSelectedEnemy()); });
     }
     void ResetEnemyChoice()
     {

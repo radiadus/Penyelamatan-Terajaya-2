@@ -925,7 +925,9 @@ MonoBehaviour:
   defense: 0
   speed: 0
   animator: {fileID: 95528395651247964}
+  targetable: 0
   id: 0
+  name: Cangkang Kura-kura
 --- !u!1 &1914324128724412
 GameObject:
   m_ObjectHideFlags: 0
