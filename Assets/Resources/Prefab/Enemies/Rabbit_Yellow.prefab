@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 4000013669607808}
   - component: {fileID: 95000010169133924}
   - component: {fileID: -2473409221296551673}
+  - component: {fileID: 3903251418404771907}
   m_Layer: 0
   m_Name: Rabbit_Yellow
   m_TagString: Untagged
@@ -326,6 +327,31 @@ CapsuleCollider:
   m_Height: 0.03
   m_Direction: 1
   m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &3903251418404771907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011046516534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0862a15521dcb164fb710e1ad02a8a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  maxHP: 0
+  MP: 0
+  maxMP: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  animator: {fileID: 0}
+  targetable: 0
+  name: Kelinci Kuning
+  id: 0
+  attackType: 0
+  attackTarget: 0
 --- !u!1 &1000011275169694
 GameObject:
   m_ObjectHideFlags: 0

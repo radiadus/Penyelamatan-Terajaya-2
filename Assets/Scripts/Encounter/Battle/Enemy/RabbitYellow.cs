@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BatGreen : Enemy
+public class RabbitYellow : Enemy
 {
+
+    protected override void Start()
+    {
+        base.Start();
+    }
     public override int Attack(CombatUnit user, List<CombatUnit> targets)
     {
         targets.ForEach(target =>
@@ -38,5 +43,5 @@ public class BatGreen : Enemy
         this.speed = 5;
         return this;
     }
-
 }
+

@@ -316,8 +316,8 @@ MonoBehaviour:
   speed: 0
   animator: {fileID: 0}
   targetable: 0
-  id: 0
   name: Kelinci Hijau
+  id: 0
   attackType: 0
   attackTarget: 0
 --- !u!1 &3227158480981165508

@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 4000013931392504}
   - component: {fileID: 95000010452426964}
   - component: {fileID: 83211159733905028}
+  - component: {fileID: -4079703070175764560}
   m_Layer: 0
   m_Name: Ghost_Violet
   m_TagString: Untagged
@@ -165,6 +166,31 @@ CapsuleCollider:
   m_Height: 0.03
   m_Direction: 1
   m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &-4079703070175764560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011296433714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 201703906a897a64da13574c0638850d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  maxHP: 0
+  MP: 0
+  maxMP: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  animator: {fileID: 0}
+  targetable: 0
+  name: Hantu Ungu
+  id: 0
+  attackType: 0
+  attackTarget: 0
 --- !u!1 &1000011724214278
 GameObject:
   m_ObjectHideFlags: 0
