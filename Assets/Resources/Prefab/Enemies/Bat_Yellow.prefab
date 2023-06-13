@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 3546336279379098430}
   - component: {fileID: 3488224767807201860}
   - component: {fileID: 3242732675115283092}
+  - component: {fileID: 7472452094551138831}
   m_Layer: 0
   m_Name: Bat_Yellow
   m_TagString: Untagged
@@ -100,6 +101,31 @@ CapsuleCollider:
   m_Height: 0.06
   m_Direction: 1
   m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &7472452094551138831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3547330665132017034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b5f7babeb6dec749a81b8a1ea089adb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  maxHP: 0
+  MP: 0
+  maxMP: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  animator: {fileID: 0}
+  targetable: 0
+  name: Kelelawar
+  id: 0
+  attackType: 0
+  attackTarget: 0
 --- !u!1 &3547330665402571470
 GameObject:
   m_ObjectHideFlags: 0

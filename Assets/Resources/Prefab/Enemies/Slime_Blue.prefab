@@ -519,6 +519,7 @@ GameObject:
   - component: {fileID: 7869400270584736548}
   - component: {fileID: 7812072063774366934}
   - component: {fileID: 2945249324803322888}
+  - component: {fileID: 7272051729417448752}
   m_Layer: 0
   m_Name: Slime_Blue
   m_TagString: Untagged
@@ -553,7 +554,7 @@ Animator:
   m_GameObject: {fileID: 7870042165127664846}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e607f74860c67814e93c914b710142d5, type: 3}
-  m_Controller: {fileID: 9100000, guid: fb53b4d3a4f06844c90da7297e9082de, type: 2}
+  m_Controller: {fileID: 9100000, guid: 206b077d99358f84b95835d27764734a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -577,6 +578,31 @@ CapsuleCollider:
   m_Height: 0.02
   m_Direction: 1
   m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &7272051729417448752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7870042165127664846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3120b4f2fb9c92c428b7b321942b35e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  maxHP: 0
+  MP: 0
+  maxMP: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  animator: {fileID: 0}
+  targetable: 0
+  name: Slime Biru
+  id: 0
+  attackType: 0
+  attackTarget: 0
 --- !u!1 &7870042165253584468
 GameObject:
   m_ObjectHideFlags: 0

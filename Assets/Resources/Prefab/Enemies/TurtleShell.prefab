@@ -926,8 +926,10 @@ MonoBehaviour:
   speed: 0
   animator: {fileID: 95528395651247964}
   targetable: 0
+  name: 'Kura-kura '
   id: 0
-  name: Cangkang Kura-kura
+  attackType: 0
+  attackTarget: 0
 --- !u!1 &1914324128724412
 GameObject:
   m_ObjectHideFlags: 0

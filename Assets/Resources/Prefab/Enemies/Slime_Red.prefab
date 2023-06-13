@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 4000011550217864}
   - component: {fileID: 95000010450722992}
   - component: {fileID: -2993224546886961131}
+  - component: {fileID: 55549664453795872}
   m_Layer: 0
   m_Name: Slime_Red
   m_TagString: Untagged
@@ -422,7 +423,7 @@ Animator:
   m_GameObject: {fileID: 1000013297890758}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e607f74860c67814e93c914b710142d5, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 206b077d99358f84b95835d27764734a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -446,6 +447,31 @@ CapsuleCollider:
   m_Height: 0.02
   m_Direction: 1
   m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &55549664453795872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013297890758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cbd88e1b6c1a3349b96d9a7a4a6e782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  maxHP: 0
+  MP: 0
+  maxMP: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  animator: {fileID: 0}
+  targetable: 0
+  name: Slime Merah
+  id: 0
+  attackType: 0
+  attackTarget: 0
 --- !u!1 &1000013341563594
 GameObject:
   m_ObjectHideFlags: 0
