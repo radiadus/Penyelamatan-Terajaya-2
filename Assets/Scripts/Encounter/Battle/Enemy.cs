@@ -28,8 +28,7 @@ public abstract class Enemy : CombatUnit
 
     IEnumerator RemoveBody()
     {
-        Debug.Log(animator.GetCurrentAnimatorStateInfo(0).length + animator.GetNextAnimatorStateInfo(0).length);
-        yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length + animator.GetNextAnimatorStateInfo(0).length);
+        yield return new WaitForSecondsRealtime(3);
         gameObject.SetActive(false);
     }
 
