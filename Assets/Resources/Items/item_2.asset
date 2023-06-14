@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   itemName: Jamu Energi
-  itemDescription: Memulihkan 50 SP.
+  itemDescription: Memulihkan 50 MP.
   itemIcon: {fileID: 21300000, guid: 47295bf77ff55ce40b0615bd6a5ed2a9, type: 3}
-  buyPrice: 80
+  buyPrice: 1500
   itemTarget: 0
