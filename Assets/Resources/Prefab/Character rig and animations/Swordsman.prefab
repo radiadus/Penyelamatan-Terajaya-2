@@ -2717,18 +2717,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc11e71bbb8accf45a35276a4c5f3c7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 0
-  maxHP: 0
-  MP: 0
-  maxMP: 0
-  attack: 0
-  defense: 0
-  speed: 0
+  HP: 150
+  maxHP: 150
+  MP: 30
+  maxMP: 30
+  attack: 10
+  defense: 25
+  speed: 7
   animator: {fileID: 4751778678950423160}
   targetable: 0
+  name: Petarung
   stats: {fileID: 11400000, guid: b129bce91e1096b4c81ca8fec557ad36, type: 2}
   equipment: {fileID: 11400000, guid: a36c148f8a984ef4da15e42e200ee0ea, type: 2}
-  name: Petarung
 --- !u!1 &4751778678973826851
 GameObject:
   m_ObjectHideFlags: 0

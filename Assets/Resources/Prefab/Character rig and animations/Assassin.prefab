@@ -2866,18 +2866,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bea01d9436ba14682c2dd0dbf8ccf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 0
-  maxHP: 0
-  MP: 0
-  maxMP: 0
-  attack: 0
-  defense: 0
-  speed: 0
+  HP: 100
+  maxHP: 100
+  MP: 35
+  maxMP: 35
+  attack: 18
+  defense: 10
+  speed: 15
   animator: {fileID: 8308596209413621868}
   targetable: 0
+  name: Pembunuh Bayaran
   stats: {fileID: 11400000, guid: 803771d241407974cb5614622538a96a, type: 2}
   equipment: {fileID: 11400000, guid: 7937c0b28641e1048b1af6e5a156eb58, type: 2}
-  name: Pembunuh Bayaran
 --- !u!1 &8308596209432286535
 GameObject:
   m_ObjectHideFlags: 0
