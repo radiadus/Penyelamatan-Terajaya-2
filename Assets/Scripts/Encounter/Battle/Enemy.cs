@@ -11,7 +11,9 @@ public abstract class Enemy : CombatUnit
         ALL
     }
     public AttackType attackType;
-    public int attackTarget;
+    public string attackTarget;
+    public int goldGain;
+    public int expGain;
     public override void PlayDeadAnimation()
     {
         if (animator!= null)
@@ -19,11 +21,24 @@ public abstract class Enemy : CombatUnit
             if (animator.runtimeAnimatorController!= null)
             {
                 animator.SetBool("isDead", true);
+                StartCoroutine(RemoveBody());
             }
         }
+    }
+
+    IEnumerator RemoveBody()
+    {
+        Debug.Log(animator.GetCurrentAnimatorStateInfo(0).length + animator.GetNextAnimatorStateInfo(0).length);
+        yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length + animator.GetNextAnimatorStateInfo(0).length);
+        gameObject.SetActive(false);
     }
 
     public abstract Enemy InitializeStats();
 
     public abstract int Attack(CombatUnit user, List<CombatUnit> targets);
+
+    public override void OnKill()
+    {
+        return;
+    }
 }

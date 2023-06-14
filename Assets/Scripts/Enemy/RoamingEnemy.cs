@@ -35,10 +35,12 @@ public class RoamingEnemy : MonoBehaviour
     private int enemySize;
     public GameObject[] enemyPrefabs;
     private GameObject[] enemyList;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         walkState = WalkState.FORWARD;
         idleState = IdleState.MOVING;
         chaseState = ChaseState.DEFAULT;
@@ -103,12 +105,21 @@ public class RoamingEnemy : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, step);
             yield return null;
         }
+        transform.rotation = rotation;
         idleState = IdleState.MOVING;
     }
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < 4f) chaseState = ChaseState.CHASING;
+        if (Distance2D(transform.position, player.transform.position) < 4f && transform.position.y - player.transform.position.y < 0.3f)
+        {
+            if (Physics.Raycast(transform.position, player.transform.position - transform.position, out RaycastHit hit))
+            {
+                if (hit.transform.CompareTag("Player"))
+                    chaseState = ChaseState.CHASING;
+            }
+            else chaseState = ChaseState.DEFAULT;
+        }
         else chaseState = ChaseState.DEFAULT;
         if (chaseTimer >= 4f) chaseState = ChaseState.DEFAULT;
         if (chaseState == ChaseState.CHASING)
@@ -116,6 +127,7 @@ public class RoamingEnemy : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, walkSpeed * Time.deltaTime);
             transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
             chaseTimer += Time.deltaTime;
+            animator.SetBool("isMoving", true);
             return;
         }
         if (Vector3.Distance(transform.position, currentTargetLocation) < 0.001f)
@@ -127,6 +139,7 @@ public class RoamingEnemy : MonoBehaviour
             return;
         }
         if (idleState == IdleState.IDLE) return;
+        animator.SetBool("isMoving", true);
         float step = walkSpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, currentTargetLocation, step);
         transform.rotation = Quaternion.LookRotation(currentTargetLocation - transform.position, Vector3.up);
@@ -134,6 +147,7 @@ public class RoamingEnemy : MonoBehaviour
 
     IEnumerator Idle()
     {
+        animator.SetBool("isMoving", false);
         int frames = 0;
         while (frames < 30)
         {
@@ -149,5 +163,10 @@ public class RoamingEnemy : MonoBehaviour
         {
             EncounterManager.Instance.StartEncounter(encounterSceneIndex, id, enemyList);
         }
+    }
+
+    private double Distance2D(Vector3 from, Vector3 to)
+    {
+        return Math.Sqrt(Math.Pow((from.x - to.x), 2) + Math.Pow((from.z - to.z), 2));
     }
 }

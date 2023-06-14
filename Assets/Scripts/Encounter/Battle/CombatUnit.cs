@@ -25,15 +25,15 @@ public abstract class CombatUnit : MonoBehaviour
         return false;
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(CombatUnit attacker, int damage)
     {
         animator.SetTrigger("hit");
         this.HP -= damage;
-        Debug.Log(HP);
         if (this.IsDead())
         {
             this.HP = 0;
             this.PlayDeadAnimation();
+            attacker.OnKill();
         }
     }
 
@@ -49,4 +49,6 @@ public abstract class CombatUnit : MonoBehaviour
     {
         return attack;
     }
+
+    public abstract void OnKill();
 }

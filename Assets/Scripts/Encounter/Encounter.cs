@@ -128,6 +128,7 @@ public class Encounter : MonoBehaviour
         state = BattleState.PLAYER_TURN;
         characterTurn = 0;
         enemyRemaining = enemies.Count();
+        friendlyRemaining = friendlies.ToList().FindAll(f => !f.IsDead()).Count();
 
         attack.onClick.AddListener(delegate { OpenAttackPanel(); });
         item.onClick.AddListener(delegate { OpenItemPanel(); });
@@ -139,7 +140,7 @@ public class Encounter : MonoBehaviour
         for(int i = 0; i < 3; i++)
         {
             int index = i;
-            attackDifficulty[index].onClick.AddListener(delegate { Debug.Log(index); SwitchAttackPanel(index); });
+            attackDifficulty[index].onClick.AddListener(delegate { SwitchAttackPanel(index); });
         }
 
         for(int i = enemyRemaining; i < 5; i++)
@@ -170,11 +171,12 @@ public class Encounter : MonoBehaviour
         StartCoroutine(PlayerTurn());
         StartCoroutine(AttackPhase());
         StartCoroutine(StatusCheck());
+        StartCoroutine(BattleStatus());
     }
 
     IEnumerator PlayerTurn()
     {
-        while(enemyRemaining > 0)
+        while(enemyRemaining > 0 && friendlyRemaining > 0)
         {
             while (state != BattleState.PLAYER_TURN) yield return null;
             while (characterTurn < 3) yield return null;
@@ -186,13 +188,11 @@ public class Encounter : MonoBehaviour
 
     IEnumerator AttackPhase()
     {
-        while(enemyRemaining > 0)
+        while(enemyRemaining > 0 && friendlyRemaining > 0)
         {
             while (state != BattleState.ATTACK_PHASE) yield return null;
-            Debug.Log(actions.Count);
             RandomizeEnemyAction();
             actions.Sort(sorter);
-            Debug.Log(actions.Count);
             foreach (Action action in actions)
             {
                 Debug.Log(action.user.name);
@@ -204,7 +204,7 @@ public class Encounter : MonoBehaviour
                     if (action.type == ActionType.ENEMY)
                     {
                         text += " menyerang ";
-                        if (((Enemy)(action.user)).attackType == Enemy.AttackType.SINGLE) text += friendlies[((Enemy)action.user).attackTarget].name + "!";
+                        if (((Enemy)(action.user)).attackType == Enemy.AttackType.SINGLE) text += ((Enemy)action.user).attackTarget + "!";
                         else text += "semua karakter!";
                     }
                     else
@@ -216,6 +216,8 @@ public class Encounter : MonoBehaviour
                     UpdateHPMPBar(0);
                     UpdateHPMPBar(1);
                     UpdateHPMPBar(2);
+                    UpdateRemainingUnits();
+                    if (enemyRemaining == 0 || friendlyRemaining == 0) yield break;
                     yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length);
                 }
             }
@@ -228,7 +230,7 @@ public class Encounter : MonoBehaviour
 
     IEnumerator StatusCheck()
     {
-        while (enemyRemaining > 0)
+        while (enemyRemaining > 0 && friendlyRemaining > 0)
         {
             while (state != BattleState.STATUS_CHECK) yield return null;
             foreach (Friendly friendly in friendlies)
@@ -252,6 +254,78 @@ public class Encounter : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    IEnumerator BattleStatus()
+    {
+        while (true)
+        {
+            if (enemyRemaining == 0)
+            {
+                int gold = 0;
+                int exp = 0;
+                enemies.ToList().ForEach(e => { gold += e.goldGain; exp += e.expGain; });
+                textBox.SetActive(true);
+                string text = "+ Rp " + gold;
+                textBoxText.text = text;
+                while (Input.touchCount <= 0 || Input.GetTouch(0).phase != TouchPhase.Began)
+                {
+                    yield return null;
+                }
+                yield return null;
+                List<Friendly> alive = friendlies.ToList().FindAll(f => !f.IsDead());
+                List<Friendly> dead = friendlies.ToList().FindAll(f => f.IsDead());
+                foreach (Friendly friendly in alive)
+                {
+                    friendly.GainExp(exp);
+                    text = friendly.name + " mendapatkan " + exp + " poin pengalaman!";
+                    textBoxText.text = text;
+                    while (Input.touchCount <= 0 || Input.GetTouch(0).phase != TouchPhase.Began)
+                    {
+                        yield return null;
+                    }
+                    yield return null;
+                    if (friendly.stats.exp < exp)
+                    {
+                        text = friendly.name + " naik level!";
+                        textBoxText.text = text;
+                        while (Input.touchCount <= 0 || Input.GetTouch(0).phase != TouchPhase.Began)
+                        {
+                            yield return null;
+                        }
+                        yield return null;
+                    }
+                }
+                foreach(Friendly friendly in dead)
+                {
+                    friendly.HP = 1;
+                    friendly.SetStats();
+                }
+                GameManager.Instance.inventory.money += gold;
+                foreach (Friendly friendly in friendlies)
+                {
+                    friendly.SetStats();
+                }
+                EncounterManager.Instance.WinEncounter();
+                yield break;
+            }
+            if (friendlyRemaining == 0)
+            {
+                foreach (Friendly friendly in friendlies)
+                {
+                    friendly.HP = (int)(0.25f * friendly.maxHP);
+                    friendly.SetStats();
+                }
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+    public void UpdateRemainingUnits()
+    {
+        enemyRemaining = enemies.ToList().FindAll(e => !e.IsDead()).Count();
+        friendlyRemaining = friendlies.ToList().FindAll(f => !f.IsDead()).Count();
     }
 
     public void RandomizeEnemyAction()
@@ -441,19 +515,18 @@ public class Encounter : MonoBehaviour
                     enemyTarget[index].SetActive(true);
                 });
             }
+            enemyButton[index].gameObject.SetActive(!enemies[index].IsDead());
         }
         if (all)
         {
             for (int j = 0; j < enemies.Length; j++)
             {
-                Debug.Log(j);
-                Debug.Log(enemies[j]);
                 if (!enemies[j].IsDead())
                     enemyTarget[j].SetActive(true);
             }
         }
         enemyConfirm.onClick.RemoveAllListeners();
-        enemyConfirm.onClick.AddListener(delegate { Debug.Log(GetSelectedEnemy().Count()); if (GetSelectedEnemy().Count() != 0) OpenQuestionPanel(skill, GetSelectedEnemy()); });
+        enemyConfirm.onClick.AddListener(delegate { if (GetSelectedEnemy().Count() != 0) OpenQuestionPanel(skill, GetSelectedEnemy()); });
     }
     void ResetEnemyChoice()
     {
@@ -504,9 +577,21 @@ public class Encounter : MonoBehaviour
         {
             actions.Add(new Action(friendlies[characterTurn], skill, target));
         }
+        else
+        {
+            textBox.SetActive(true);
+            textBoxText.text = friendlies[characterTurn].name + " gagal melakukan " + skill.skillName;
+            StartCoroutine(WaitToCloseTextBox(3));
+        }
         questionCanvas.SetActive(false);
         characterTurn++;
         StartTurn(characterTurn);
+    }
+
+    IEnumerator WaitToCloseTextBox(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        textBox.SetActive(false);
     }
     void OpenFriendlySelect()
     {

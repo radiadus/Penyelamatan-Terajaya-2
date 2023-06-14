@@ -27,7 +27,6 @@ public class EncounterManager : MonoBehaviour
         load.completed += (asyncOperation) =>
         {
             GameManager.Instance.gameState = GameManager.State.ENCOUNTER;
-            //SceneManager.SetActiveScene(SceneManager.GetSceneByName("Forest Encounter"));
             Encounter encounter = GameObject.FindObjectOfType<Encounter>();
             encounter.enemyPrefabs = enemies;
         };
@@ -53,6 +52,17 @@ public class EncounterManager : MonoBehaviour
                     enemy.SetActive(false);
                 }
             }
+        };
+    }
+
+    public void LoseEncounter()
+    {
+        AsyncOperation load = SceneManager.LoadSceneAsync(lastSceneId);
+        load.completed += (asyncOperation) =>
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = GameManager.Instance.sceneGameOverSpawn[SceneManager.GetActiveScene().name];
+            defeatedEnemyIds.Clear();
         };
     }
 }

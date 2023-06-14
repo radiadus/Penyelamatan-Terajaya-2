@@ -8,7 +8,7 @@ public class Tusuk : Skill
     {
         this.skillName = "Tusuk";
         this.mpCost = 5;
-        this.baseDamage = 20;
+        this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 1;
     }
@@ -17,7 +17,7 @@ public class Tusuk : Skill
     {
         int damage = (int)(caster.GetAttack() * (baseDamage / 100) * Random.Range(0.95f, 1.05f));
         CombatUnit target = targets[0];
-        target.TakeDamage(damage);
+        target.TakeDamage(caster, damage);
         caster.animator.SetTrigger("stab1");
         return damage;
     }

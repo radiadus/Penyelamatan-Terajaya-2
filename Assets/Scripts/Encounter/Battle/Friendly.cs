@@ -23,6 +23,17 @@ public class Friendly : CombatUnit
         speed = stats.speed;
     }
 
+    public void SetStats()
+    {
+        stats.HP = HP;
+        stats.maxHP = maxHP;
+        stats.MP = MP;
+        stats.maxMP = maxMP;
+        stats.attack = attack;
+        stats.defense = defense;
+        stats.speed = speed;
+    }
+
     public override void PlayDeadAnimation()
     {
         animator.SetBool("isDead", true);
@@ -31,20 +42,18 @@ public class Friendly : CombatUnit
     public virtual void LevelUp()
     {
         stats.level++;
-        stats.exp = 0;
         stats.requiredExp = (int)(stats.requiredExp * 1.5f);
     }
 
     public virtual void GainExp(int exp)
     {
-        if (stats.exp + exp > stats.requiredExp)
-        {
-            stats.exp = exp - stats.requiredExp + stats.exp;
-            this.LevelUp();
-            stats.exp = exp;
-            return;
-        }
         stats.exp += exp;
+        if (stats.exp > stats.requiredExp)
+        {
+            stats.exp -= stats.requiredExp;
+            this.LevelUp();
+        }
+        return;
     }
 
     public override int GetAttack()
@@ -52,4 +61,8 @@ public class Friendly : CombatUnit
         return attack + equipment.attackStat;
     }
 
+    public override void OnKill()
+    {
+        return;
+    }
 }
