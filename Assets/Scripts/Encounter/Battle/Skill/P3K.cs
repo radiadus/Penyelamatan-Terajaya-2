@@ -8,13 +8,18 @@ public class P3K : Skill
     {
         this.skillName = "P3K";
         this.mpCost = 5;
-        this.baseDamage = 20;
+        this.baseDamage = 40;
         this.target = Target.SELF;
         this.difficulty = 1;
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        int heal = caster.maxHP - caster.HP;
+        heal = heal < 40 ? heal : 40;
+        caster.HP += heal;
+        caster.animator.SetTrigger("cast");
+        return heal;
     }
 }

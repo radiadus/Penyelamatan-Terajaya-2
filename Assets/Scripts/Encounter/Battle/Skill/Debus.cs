@@ -8,13 +8,16 @@ public class Debus : Skill
     {
         this.skillName = "Debus";
         this.mpCost = 5;
-        this.baseDamage = 20;
+        this.baseDamage = 0;
         this.target = Target.SELF;
         this.difficulty = 1;
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("heal");
+        new Untargetable(1, caster);
         return 0;
     }
 }

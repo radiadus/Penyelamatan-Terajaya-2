@@ -8,6 +8,7 @@ public class Skill
     public int mpCost;
     public int baseDamage;
     public int difficulty;
+    public int priority;
     public enum Target
     {
         ALLY,

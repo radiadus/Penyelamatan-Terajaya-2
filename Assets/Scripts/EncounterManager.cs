@@ -65,4 +65,26 @@ public class EncounterManager : MonoBehaviour
             defeatedEnemyIds.Clear();
         };
     }
+
+    public void FleeEncounter()
+    {
+        AsyncOperation load = SceneManager.LoadSceneAsync(lastSceneId);
+        load.completed += (asyncOperation) =>
+        {
+            GameManager.Instance.gameState = GameManager.State.DEFAULT;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = lastPosition;
+            GameManager.Instance.SaveGame(player);
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject enemy in enemies)
+            {
+                RoamingEnemy roamingEnemy = enemy.GetComponent<RoamingEnemy>();
+                if (defeatedEnemyIds.Contains(roamingEnemy.id) || roamingEnemy.id == currentEnemyId)
+                {
+                    enemy.SetActive(false);
+                }
+            }
+            currentEnemyId = 0;
+        };
+    }
 }

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Sturdy : StatusEffect
 {
-    public Sturdy()
+    public Sturdy(CombatUnit unit)
     {
         statusPrefab = Resources.Load<GameObject>(path + "Sturdy");
+        remainingTurn = int.MaxValue;
+        this.TakeEffect(unit);
     }
 }

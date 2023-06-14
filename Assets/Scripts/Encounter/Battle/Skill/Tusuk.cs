@@ -15,10 +15,15 @@ public class Tusuk : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        int damage = (int)(caster.GetAttack() * (baseDamage / 100) * Random.Range(0.95f, 1.05f));
         CombatUnit target = targets[0];
-        target.TakeDamage(caster, damage);
-        caster.animator.SetTrigger("stab1");
-        return damage;
+        if (!target.IsDead())
+        {
+            caster.MP -= this.mpCost;
+            caster.animator.SetTrigger("stab1");
+            int damage = (int)(caster.GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
+            target.TakeDamage(caster, damage);
+            return damage;
+        }
+        return -2;
     }
 }
