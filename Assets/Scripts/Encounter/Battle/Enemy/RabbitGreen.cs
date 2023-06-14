@@ -6,21 +6,16 @@ public class RabbitGreen : Enemy
 {
     public override int Attack(CombatUnit user, List<CombatUnit> targets)
     {
-        targets.ForEach(target =>
+        List<CombatUnit> availableTargets = targets.FindAll(t => !t.IsDead() && t.targetable);
+        if (availableTargets.Count > 0)
         {
-            if (target.IsDead() || !target.targetable)
-            {
-                targets.Remove(target);
-            }
-        });
-        if (targets.Count > 0)
-        {
-            int target = Random.Range(0, targets.Count);
-            CombatUnit targetUnit = targets[target];
+            int target = Random.Range(0, availableTargets.Count);
+            CombatUnit targetUnit = availableTargets[target];
+            this.attackTarget = targetUnit.name;
             int baseDamage = 100;
             int damage = (int)(GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
             animator.SetTrigger("attack");
-            targetUnit.TakeDamage(damage);
+            targetUnit.TakeDamage(this, damage);
             return damage;
         }
         return -2;

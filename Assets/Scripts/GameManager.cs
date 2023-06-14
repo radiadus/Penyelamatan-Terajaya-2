@@ -20,9 +20,6 @@ public class GameManager : MonoBehaviour
 
     public State gameState;
     public Inventory inventory;
-    //public Mage mage;
-    //public Swordsman swordsman;
-    //public Assassin assassin;
     public Stats mage, warrior, assassin;
     public Equipment pedang, keris, tongkat;
     public QuestionReader reader;
@@ -30,12 +27,20 @@ public class GameManager : MonoBehaviour
     public GameObject loadingCanvas;
     public Image loadingBackground;
     public TextMeshProUGUI loadingText;
+    public Dictionary<string, Vector3> sceneGameOverSpawn = new Dictionary<string, Vector3>();
 
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(loadingCanvas);
+    }
+
+    private void Start()
+    {
+        sceneGameOverSpawn.Add("Forest Overworld", new Vector3());
+        sceneGameOverSpawn.Add("Mountain Overworld", new Vector3());
+        sceneGameOverSpawn.Add("Terajaya Destroyed", new Vector3());
     }
 
     public void SetVolume(float master, float sfx, float music)

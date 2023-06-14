@@ -8,7 +8,7 @@ public class Potong : Skill
     {
         this.skillName = "Potong";
         this.mpCost = 5;
-        this.baseDamage = 20;
+        this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 1;
     }
@@ -19,7 +19,7 @@ public class Potong : Skill
         int damage = (int)(caster.GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
         Debug.Log(damage);
         CombatUnit target = targets[0];
-        target.TakeDamage(damage);
+        target.TakeDamage(caster, damage);
         return damage;
     }
 }
