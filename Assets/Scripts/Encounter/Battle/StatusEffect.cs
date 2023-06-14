@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class StatusEffect
 {
-    public Sprite sprite;
+    public GameObject statusPrefab;
     public int remainingTurn;
     public CombatUnit unit;
+    public string path = "Prefab/UI/Encounter/Debuffs and Buffs/";
     public virtual void TakeEffect(CombatUnit unit)
     {
         unit.statusEffectList.Add(this);

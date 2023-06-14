@@ -12,7 +12,7 @@ public class Friendly : CombatUnit
         base.Start();
     }
 
-    public void InitializeStats()
+    public virtual void InitializeStats()
     {
         HP = stats.HP;
         maxHP = stats.maxHP;

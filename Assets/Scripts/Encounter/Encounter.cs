@@ -24,14 +24,14 @@ public class Encounter : MonoBehaviour
         new float[] {1f, 7f}
     };
 
-    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm;
+    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm, winButton;
     public Button[] attackDifficulty, answerButton, enemyButton, friendlyButton;
     public Slider[] hpBar, mpBar;
-    public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, enemySelect;
+    public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, correctImage, incorrectImage, enemySelect, winPanel;
     public GameObject[] attackPanel;
     public GameObject[] friendlyTarget, enemyTarget;
-    public TextMeshProUGUI textBoxText, questionText;
-    public TextMeshProUGUI[] answerText;
+    public TextMeshProUGUI textBoxText, questionText, goldText;
+    public TextMeshProUGUI[] answerText, levelText, expText;
     public GameObject[] friendlyPrefabs;
     public GameObject[] enemyPrefabs;
     private Friendly[] friendlies;
@@ -171,7 +171,6 @@ public class Encounter : MonoBehaviour
         StartCoroutine(PlayerTurn());
         StartCoroutine(AttackPhase());
         StartCoroutine(StatusCheck());
-        StartCoroutine(BattleStatus());
     }
 
     IEnumerator PlayerTurn()
@@ -195,30 +194,38 @@ public class Encounter : MonoBehaviour
             actions.Sort(sorter);
             foreach (Action action in actions)
             {
-                Debug.Log(action.user.name);
-                int number = action.func(action.user, action.targets);
-                if (number != -2)
+                if (!action.user.IsDead())
                 {
-                    textBox.SetActive(true);
-                    string text = action.user.name;
-                    if (action.type == ActionType.ENEMY)
+                    Debug.Log(action.user.name);
+                    int number = action.func(action.user, action.targets);
+                    if (number != -2)
                     {
-                        text += " menyerang ";
-                        if (((Enemy)(action.user)).attackType == Enemy.AttackType.SINGLE) text += ((Enemy)action.user).attackTarget + "!";
-                        else text += "semua karakter!";
+                        textBox.SetActive(true);
+                        string text = action.user.name;
+                        if (action.type == ActionType.ENEMY)
+                        {
+                            text += " menyerang ";
+                            if (((Enemy)(action.user)).attackType == Enemy.AttackType.SINGLE) text += ((Enemy)action.user).attackTarget + "!";
+                            else text += "semua karakter!";
+                        }
+                        else
+                        {
+                            text += " menggunakan " + action.actionName + "!";
+                        }
+                        if (number != -1) text += " (" + number + " total kerusakan)";
+                        textBoxText.text = text;
+                        UpdateHPMPBar(0);
+                        UpdateHPMPBar(1);
+                        UpdateHPMPBar(2);
+                        UpdateRemainingUnits();
+                        yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length);
+                        if (enemyRemaining == 0 || friendlyRemaining == 0)
+                        {
+                            BattleStatus();
+                            textBox.SetActive(false);
+                            yield break;
+                        }
                     }
-                    else
-                    {
-                        text += " menggunakan " + action.actionName + "!";
-                    }
-                    if (number != -1) text += " (" + number + " total kerusakan)";
-                    textBoxText.text = text;
-                    UpdateHPMPBar(0);
-                    UpdateHPMPBar(1);
-                    UpdateHPMPBar(2);
-                    UpdateRemainingUnits();
-                    if (enemyRemaining == 0 || friendlyRemaining == 0) yield break;
-                    yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length);
                 }
             }
             textBox.SetActive(false);
@@ -235,10 +242,20 @@ public class Encounter : MonoBehaviour
             while (state != BattleState.STATUS_CHECK) yield return null;
             foreach (Friendly friendly in friendlies)
             {
-                foreach(StatusEffect effect in friendly.statusEffectList)
+                foreach (StatusEffect effect in friendly.statusEffectList)
                 {
                     effect.DecreaseTurn();
                     if (effect.remainingTurn == 0) friendly.statusEffectList.Remove(effect);
+                    UpdateHPMPBar(0);
+                    UpdateHPMPBar(1);
+                    UpdateHPMPBar(2);
+                    UpdateRemainingUnits();
+                    if (enemyRemaining == 0 || friendlyRemaining == 0)
+                    {
+                        BattleStatus();
+                        textBox.SetActive(false);
+                        yield break;
+                    }
                 }
             }
             foreach (Enemy enemy in enemies)
@@ -247,6 +264,12 @@ public class Encounter : MonoBehaviour
                 {
                     effect.DecreaseTurn();
                     if (effect.remainingTurn == 0) enemy.statusEffectList.Remove(effect);
+                    UpdateRemainingUnits();
+                    if (enemyRemaining == 0 || friendlyRemaining == 0)
+                    {
+                        BattleStatus();
+                        yield break;
+                    }
                 }
             }
             state = BattleState.PLAYER_TURN;
@@ -256,69 +279,51 @@ public class Encounter : MonoBehaviour
         }
     }
 
-    IEnumerator BattleStatus()
+    void BattleStatus()
     {
-        while (true)
+        if (enemyRemaining == 0)
         {
-            if (enemyRemaining == 0)
+            int gold = 0;
+            int exp = 0;
+            enemies.ToList().ForEach(e => { gold += e.goldGain; exp += e.expGain; });
+            List<Friendly> alive = friendlies.ToList().FindAll(f => !f.IsDead());
+            List<Friendly> dead = friendlies.ToList().FindAll(f => f.IsDead());
+            foreach (Friendly friendly in alive)
             {
-                int gold = 0;
-                int exp = 0;
-                enemies.ToList().ForEach(e => { gold += e.goldGain; exp += e.expGain; });
-                textBox.SetActive(true);
-                string text = "+ Rp " + gold;
-                textBoxText.text = text;
-                while (Input.touchCount <= 0 || Input.GetTouch(0).phase != TouchPhase.Began)
-                {
-                    yield return null;
-                }
-                yield return null;
-                List<Friendly> alive = friendlies.ToList().FindAll(f => !f.IsDead());
-                List<Friendly> dead = friendlies.ToList().FindAll(f => f.IsDead());
-                foreach (Friendly friendly in alive)
-                {
-                    friendly.GainExp(exp);
-                    text = friendly.name + " mendapatkan " + exp + " poin pengalaman!";
-                    textBoxText.text = text;
-                    while (Input.touchCount <= 0 || Input.GetTouch(0).phase != TouchPhase.Began)
-                    {
-                        yield return null;
-                    }
-                    yield return null;
-                    if (friendly.stats.exp < exp)
-                    {
-                        text = friendly.name + " naik level!";
-                        textBoxText.text = text;
-                        while (Input.touchCount <= 0 || Input.GetTouch(0).phase != TouchPhase.Began)
-                        {
-                            yield return null;
-                        }
-                        yield return null;
-                    }
-                }
-                foreach(Friendly friendly in dead)
-                {
-                    friendly.HP = 1;
-                    friendly.SetStats();
-                }
-                GameManager.Instance.inventory.money += gold;
-                foreach (Friendly friendly in friendlies)
-                {
-                    friendly.SetStats();
-                }
-                EncounterManager.Instance.WinEncounter();
-                yield break;
+                friendly.GainExp(exp);
             }
-            if (friendlyRemaining == 0)
+            winPanel.SetActive(true);
+            winButton.onClick.AddListener(delegate { EncounterManager.Instance.WinEncounter(); });
+            for (int i = 0; i < 3; i++)
             {
-                foreach (Friendly friendly in friendlies)
+                levelText[i].text = friendlies[i].stats.level.ToString();
+                string text = "Poin pengalaman + ";
+                if (friendlies[i].IsDead()) text += "0 Poin";
+                else
                 {
-                    friendly.HP = (int)(0.25f * friendly.maxHP);
-                    friendly.SetStats();
+                    text += exp + " Poin" + (friendlies[i].stats.exp < exp ? "\nNaik level!" : "");
                 }
-                yield break;
+                expText[i].text = text;
             }
-            yield return null;
+            goldText.text = "Rp " + gold;
+            GameManager.Instance.inventory.money += gold;
+            foreach(Friendly friendly in dead)
+            {
+                friendly.HP = 1;
+            }
+            foreach (Friendly friendly in friendlies)
+            {
+                friendly.SetStats();
+            }
+        }
+        if (friendlyRemaining == 0)
+        {
+            foreach (Friendly friendly in friendlies)
+            {
+                friendly.HP = (int)(0.25f * friendly.maxHP);
+                friendly.SetStats();
+            }
+            EncounterManager.Instance.LoseEncounter();
         }
     }
 
@@ -388,16 +393,16 @@ public class Encounter : MonoBehaviour
             }
         }
         List<Skill> skills = friendly.stats.skillList;
-        int x = 0;
-        int y = 0;
+        float x = 0;
+        float y = 0;
         int[] count = new int[] { 0, 0, 0};
         for (int i = 0; i < skills.Count; i++)
         {
             int index = i;
             Skill skill = skills[index];
             int difficulty = skill.difficulty;
-            x = count[difficulty-1] % 2 * 250;
-            y = count[difficulty-1] / 2 * -100;
+            x = count[difficulty-1] % 2 * 485.8f + 273.2f;
+            y = count[difficulty-1] / 2 * -115 - 325;
             count[difficulty-1]++;
             Vector2 position = new Vector2(x, y);
             RectTransform rtf = skillChoice.GetComponent<RectTransform>();
@@ -572,17 +577,25 @@ public class Encounter : MonoBehaviour
     }
     void AnswerQuestion(Skill skill, List<CombatUnit> target, Question question, int answer)
     {
+
         bool correct = answer == question.key - 'A';
         if (correct)
         {
             actions.Add(new Action(friendlies[characterTurn], skill, target));
         }
-        else
+        StartCoroutine(ShowResult(correct));
+    }
+
+    IEnumerator ShowResult(bool correct)
+    {
+        if (correct) correctImage.SetActive(true);
+        else incorrectImage.SetActive(true);
+        for (int i = 0; i < 60; i++)
         {
-            textBox.SetActive(true);
-            textBoxText.text = friendlies[characterTurn].name + " gagal melakukan " + skill.skillName;
-            StartCoroutine(WaitToCloseTextBox(3));
+            yield return null;
         }
+        correctImage.SetActive(false);
+        incorrectImage.SetActive(false);
         questionCanvas.SetActive(false);
         characterTurn++;
         StartTurn(characterTurn);

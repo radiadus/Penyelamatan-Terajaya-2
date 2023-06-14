@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         sceneGameOverSpawn.Add("Forest Overworld", new Vector3());
         sceneGameOverSpawn.Add("Mountain Overworld", new Vector3());
         sceneGameOverSpawn.Add("Terajaya Destroyed", new Vector3());
+        SceneManager.LoadScene("Main Menu");
     }
 
     public void SetVolume(float master, float sfx, float music)
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
     {
         ResetProgress();
         SceneManager.LoadScene("Forest Overworld");
+        Time.timeScale = 1f;
     }
     private void ResetProgress()
     {
@@ -136,6 +138,7 @@ public class GameManager : MonoBehaviour
         mage.InitializeSkills();
         warrior.InitializeSkills();
         assassin.InitializeSkills();
+        Time.timeScale = 1f;
         AsyncOperation load = SceneManager.LoadSceneAsync(PlayerPrefs.GetInt("sceneId"));
         load.completed += (asyncOperation) =>
         {
