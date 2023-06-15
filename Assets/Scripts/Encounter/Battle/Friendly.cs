@@ -21,6 +21,7 @@ public class Friendly : CombatUnit
         attack = stats.attack;
         defense = stats.defense;
         speed = stats.speed;
+        statusEffectList = new List<StatusEffect>();
     }
 
     public void SetStats()
@@ -56,13 +57,4 @@ public class Friendly : CombatUnit
         return;
     }
 
-    public override int GetAttack()
-    {
-        return attack + equipment.attackStat;
-    }
-
-    public override void OnKill()
-    {
-        return;
-    }
 }

@@ -30,6 +30,7 @@ public class RabbitGreen : Enemy
         this.attack = 10;
         this.defense = 5;
         this.speed = 5;
+        this.baseStats = new BaseStats(this.attack, this.defense, this.speed);
         return this;
     }
 

@@ -10,6 +10,7 @@ public abstract class StatusEffect
     public string path = "Prefab/UI/Encounter/Debuffs and Buffs/";
     public virtual void TakeEffect(CombatUnit unit)
     {
+        this.unit = unit;
         unit.statusEffectList.Add(this);
     }
     public virtual void DecreaseTurn()

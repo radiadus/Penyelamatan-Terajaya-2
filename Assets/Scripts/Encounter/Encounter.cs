@@ -60,7 +60,7 @@ public class Encounter : MonoBehaviour
         public CombatUnit user;
         public List<CombatUnit> targets;
         public string actionName;
-        public int fleeRoll;
+        public int fleeRoll, priority;
         public bool FleeSuccesful()
         {
             if (fleeRoll > 191) return true;
@@ -74,6 +74,7 @@ public class Encounter : MonoBehaviour
             this.actionName = skill.skillName;
             this.user = caster;
             this.targets = targets;
+            this.priority = skill.priority;
         }
 
         public Action(CombatUnit user, Consumable consumable, List<CombatUnit> targets)
@@ -83,6 +84,7 @@ public class Encounter : MonoBehaviour
             this.actionName = consumable.itemName;
             this.user = user;
             this.targets = targets;
+            this.priority = 0;
         }
 
         public Action(Enemy enemy, List<CombatUnit> targets)
@@ -91,13 +93,21 @@ public class Encounter : MonoBehaviour
             this.func = enemy.Attack;
             this.user = enemy;
             this.targets = targets;
+            this.priority = 0;
         }
 
         public Action(Friendly friendly)
         {
             this.type = ActionType.FLEE;
             this.user = friendly;
+            this.targets = new List<CombatUnit>();
             this.fleeRoll = Random.Range(0, 256);
+            this.priority = 0;
+            this.func = delegate (CombatUnit unit, List<CombatUnit> targets)
+            {
+                if (this.fleeRoll > 191) return 1;
+                return 0;
+            };
         }
 
     }
@@ -106,9 +116,14 @@ public class Encounter : MonoBehaviour
     {
         public int Compare(Action x, Action y)
         {
-            int speedX = x.user.speed;
-            int speedY = y.user.speed;
-            return speedY.CompareTo(speedX);
+            int priority = y.priority.CompareTo(x.priority);
+            if (priority == 0)
+            {
+                int speedX = x.user.speed;
+                int speedY = y.user.speed;
+                return speedY.CompareTo(speedX);
+            }
+            return priority;
         }
     }
 
@@ -198,7 +213,24 @@ public class Encounter : MonoBehaviour
                 {
                     Debug.Log(action.user.name);
                     int number = action.func(action.user, action.targets);
-                    if (number != -2)
+                    if (action.type == ActionType.FLEE)
+                    {
+                        textBox.SetActive(true);
+                        textBoxText.text = action.user.name + " mencoba untuk kabur!";
+                        yield return new WaitForSecondsRealtime(2);
+                        if (number == 1)
+                        {
+                            textBoxText.text = "Percobaan kabur berhasil!";
+                            EncounterManager.Instance.FleeEncounter();
+                            yield break;
+                        }
+                        else
+                        {
+                            textBoxText.text = "Percobaan kabur gagal!";
+                            yield return new WaitForSecondsRealtime(2);
+                        }
+                    }
+                    else if (number != -2)
                     {
                         textBox.SetActive(true);
                         string text = action.user.name;
@@ -415,7 +447,26 @@ public class Encounter : MonoBehaviour
             Button button = obj.GetComponent<Button>();
             button.onClick.AddListener(delegate { if (friendly.MP >= skill.mpCost) ChooseTarget(skill); });
         }
+        for (int i = 0; i < 3; i++)
+        {
+            if (!friendlies[i].IsDead())
+            {
+                for(int j = 0; j < friendlies[i].statusEffectList.Count; j++)
+                {
 
+                }
+            }
+        }
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (!enemies[i].IsDead())
+            {
+                for (int j = 0; j < enemies[i].statusEffectList.Count; j++)
+                {
+
+                }
+            }
+        }
     }
 
     void UpdateHPMPBar(int index)
@@ -577,7 +628,10 @@ public class Encounter : MonoBehaviour
     }
     void AnswerQuestion(Skill skill, List<CombatUnit> target, Question question, int answer)
     {
-
+        foreach(Button button in answerButton)
+        {
+            button.onClick.RemoveAllListeners();
+        }
         bool correct = answer == question.key - 'A';
         if (correct)
         {
@@ -676,5 +730,8 @@ public class Encounter : MonoBehaviour
     private void Flee()
     {
         actions.Add(new Action(friendlies[characterTurn]));
+        battleOptions.SetActive(false);
+        characterTurn++;
+        StartTurn(characterTurn);
     }
 }
