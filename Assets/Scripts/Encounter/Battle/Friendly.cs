@@ -21,6 +21,8 @@ public class Friendly : CombatUnit
         attack = stats.attack;
         defense = stats.defense;
         speed = stats.speed;
+        accuracy = 100;
+        evasion = 0;
         statusEffectList = new List<StatusEffect>();
     }
 
@@ -56,5 +58,7 @@ public class Friendly : CombatUnit
         }
         return;
     }
+
+    
 
 }

@@ -9,12 +9,12 @@ public abstract class CombatUnit : MonoBehaviour
     public Animator animator;
     public bool targetable;
     public new string name;
+    public int accuracy, evasion;
 
     protected virtual void Start()
     {
         gameObject.SetActive(true);
         animator = gameObject.GetComponent<Animator>();
-        statusEffectList = new List<StatusEffect>();
         targetable = true;
     }
 
@@ -56,5 +56,23 @@ public abstract class CombatUnit : MonoBehaviour
     public virtual void OnTakingDamage(int damage)
     {
         return;
+    }
+
+    public static int CalculateDamage(CombatUnit attacker, CombatUnit target, int baseDamage)
+    {
+        bool accCheck = Random.Range(0, 100) < attacker.accuracy;
+        bool evadeCheck = Random.Range(0, 100) >= target.evasion;
+        if (accCheck && evadeCheck)
+        {
+            int damage = (int)(attacker.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f));
+            int index = target.statusEffectList.FindIndex(e => e.GetType() == typeof(Sturdy));
+            if (index >= 0)
+            {
+                damage = 0;
+                target.statusEffectList.RemoveAt(index);
+            }
+            return damage;
+        }
+        return -1;
     }
 }

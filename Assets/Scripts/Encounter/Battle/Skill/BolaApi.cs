@@ -20,7 +20,8 @@ public class BolaApi : Skill
         {
             caster.MP -= this.mpCost;
             caster.animator.SetTrigger("1hand");
-            int damage = (int)(caster.GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
+            int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
+            if (damage == -1) return -3;
             target.TakeDamage(caster, damage);
             return damage;
         }
