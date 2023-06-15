@@ -150,17 +150,19 @@ MonoBehaviour:
   maxHP: 100
   MP: 0
   maxMP: 0
-  attack: 20
+  attack: 50
   defense: 10
   speed: 15
   animator: {fileID: 0}
   targetable: 0
   name: Hantu Coklat
+  accuracy: 0
+  evasion: 0
   id: 0
   attackType: 0
   attackTarget: 0
-  goldGain: 0
-  expGain: 0
+  goldGain: 600
+  expGain: 150
 --- !u!1 &1000011199946392
 GameObject:
   m_ObjectHideFlags: 0

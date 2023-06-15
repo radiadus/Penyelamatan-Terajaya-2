@@ -422,6 +422,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013023002470}
   - component: {fileID: 95000012605312458}
+  - component: {fileID: 897479220101896842}
+  - component: {fileID: 6352791238460459489}
   m_Layer: 0
   m_Name: Bat_Violet
   m_TagString: Untagged
@@ -438,7 +440,7 @@ Transform:
   m_GameObject: {fileID: 1000012081666484}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 45, y: 45, z: 45}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4000011593962288}
@@ -466,6 +468,49 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &897479220101896842
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012081666484}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.03
+  m_Height: 0.06
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.01, z: 0}
+--- !u!114 &6352791238460459489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012081666484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3cc2e39704a7a74093302304dae3430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 55
+  maxHP: 55
+  MP: 0
+  maxMP: 0
+  attack: 35
+  defense: 20
+  speed: 30
+  animator: {fileID: 0}
+  targetable: 0
+  name: Kelelawar Maut
+  accuracy: 0
+  evasion: 0
+  id: 0
+  attackType: 0
+  attackTarget: 
+  goldGain: 500
+  expGain: 100
 --- !u!1 &1000012161483196
 GameObject:
   m_ObjectHideFlags: 0
