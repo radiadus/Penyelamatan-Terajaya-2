@@ -917,21 +917,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2654e398c1f7249408f77bda082b8692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 30
-  maxHP: 30
+  HP: 40
+  maxHP: 40
   MP: 0
   maxMP: 0
   attack: 2
-  defense: 45
+  defense: 65
   speed: 5
   animator: {fileID: 95528395651247964}
   targetable: 0
   name: 'Kura-kura '
+  accuracy: 0
+  evasion: 0
   id: 0
   attackType: 0
   attackTarget: 0
-  goldGain: 0
-  expGain: 0
+  goldGain: 200
+  expGain: 30
 --- !u!1 &1914324128724412
 GameObject:
   m_ObjectHideFlags: 0

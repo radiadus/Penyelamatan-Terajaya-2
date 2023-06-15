@@ -339,21 +339,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0862a15521dcb164fb710e1ad02a8a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 45
-  maxHP: 45
+  HP: 25
+  maxHP: 25
   MP: 0
   maxMP: 0
   attack: 3
-  defense: 5
+  defense: 10
   speed: 10
   animator: {fileID: 0}
   targetable: 0
   name: Kelinci Kuning
+  accuracy: 0
+  evasion: 0
   id: 0
   attackType: 1
   attackTarget: 0
-  goldGain: 0
-  expGain: 0
+  goldGain: 150
+  expGain: 20
 --- !u!1 &1000011275169694
 GameObject:
   m_ObjectHideFlags: 0

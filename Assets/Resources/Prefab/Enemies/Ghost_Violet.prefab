@@ -178,21 +178,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201703906a897a64da13574c0638850d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 500
-  maxHP: 500
+  HP: 750
+  maxHP: 750
   MP: 0
   maxMP: 0
-  attack: 50
-  defense: 50
-  speed: 5
+  attack: 40
+  defense: 40
+  speed: 15
   animator: {fileID: 0}
   targetable: 0
   name: Hantu Ungu
+  accuracy: 0
+  evasion: 0
   id: 0
   attackType: 1
   attackTarget: 0
-  goldGain: 100000
-  expGain: 800
+  goldGain: 4500
+  expGain: 1000
 --- !u!1 &1000011724214278
 GameObject:
   m_ObjectHideFlags: 0

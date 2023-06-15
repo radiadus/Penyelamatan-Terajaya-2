@@ -500,14 +500,16 @@ MonoBehaviour:
   maxHP: 25
   MP: 0
   maxMP: 0
-  attack: 3
+  attack: 5
   defense: 0
-  speed: 7
+  speed: 10
   animator: {fileID: 0}
   targetable: 0
   name: Slime Kecil
+  accuracy: 0
+  evasion: 0
   id: 0
   attackType: 0
   attackTarget: 0
-  goldGain: 500
-  expGain: 0
+  goldGain: 50
+  expGain: 10
