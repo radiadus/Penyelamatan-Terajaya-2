@@ -10,4 +10,12 @@ public class Swordsman : Friendly
         new Sturdy(this);
     }
 
+    public override void OnTakingDamage(int damage)
+    {
+        int counterIndex = this.statusEffectList.FindIndex(e => e.GetType() == typeof(Counter));
+        if (counterIndex >= 0)
+        {
+            ((Counter)this.statusEffectList[counterIndex]).potency += 25;
+        }
+    }
 }

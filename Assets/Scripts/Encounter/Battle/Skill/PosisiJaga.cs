@@ -7,7 +7,7 @@ public class PosisiJaga : Skill
     public PosisiJaga()
     {
         this.skillName = "Posisi Jaga";
-        this.mpCost = 5;
+        this.mpCost = 10;
         this.baseDamage = 20;
         this.target = Target.SELF;
         this.difficulty = 2;
@@ -15,6 +15,9 @@ public class PosisiJaga : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("cast");
+        new DefenseUp(3, 50, caster);
+        return -1;
     }
 }

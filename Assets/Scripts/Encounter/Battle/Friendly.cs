@@ -23,6 +23,7 @@ public class Friendly : CombatUnit
         speed = stats.speed;
         accuracy = 100;
         evasion = 0;
+        baseStats = new BaseStats(attack, defense, speed, accuracy, evasion);
         statusEffectList = new List<StatusEffect>();
     }
 

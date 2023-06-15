@@ -7,7 +7,7 @@ public class BolaApi : Skill
     public BolaApi()
     {
         this.skillName = "Bola Api";
-        this.mpCost = 5;
+        this.mpCost = 0;
         this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 1;

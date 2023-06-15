@@ -15,6 +15,10 @@ public class AmukanPahlawan : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("cast");
+        new AttackUp(3, 100, caster);
+        new DefenseDown(3, 50, caster);
+        return -1;
     }
 }

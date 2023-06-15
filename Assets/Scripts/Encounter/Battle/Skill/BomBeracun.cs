@@ -7,7 +7,7 @@ public class BomBeracun : Skill
     public BomBeracun()
     {
         this.skillName = "Bom Beracun";
-        this.mpCost = 5;
+        this.mpCost = 15;
         this.baseDamage = 20;
         this.target = Target.ALL_ENEMY;
         this.difficulty = 2;
@@ -15,6 +15,16 @@ public class BomBeracun : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("throw");
+        foreach(CombatUnit target in targets)
+        {
+            bool success = Random.Range(0, 100) < 80;
+            if (success)
+            {
+                new Poison(3, 15, target);
+            }
+        }
+        return -1;
     }
 }

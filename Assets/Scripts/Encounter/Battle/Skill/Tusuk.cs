@@ -7,7 +7,7 @@ public class Tusuk : Skill
     public Tusuk()
     {
         this.skillName = "Tusuk";
-        this.mpCost = 5;
+        this.mpCost = 0;
         this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 1;
