@@ -7,7 +7,7 @@ public class Penyembuhan : Skill
     public Penyembuhan()
     {
         this.skillName = "Penyembuhan";
-        this.mpCost = 5;
+        this.mpCost = 10;
         this.baseDamage = 100;
         this.target = Target.ALLY;
         this.difficulty = 1;
@@ -20,7 +20,7 @@ public class Penyembuhan : Skill
         {
             caster.MP -= mpCost;
             caster.animator.SetTrigger("heal");
-            int heal = (int)(caster.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f));
+            int heal = (int)((caster.GetAttack() * 0.5f + target.maxHP * 0.3f) * Random.Range(0.95f, 1.05f));
             int max = target.maxHP - target.HP;
             heal = heal > max ? max : heal;
             target.HP += heal;

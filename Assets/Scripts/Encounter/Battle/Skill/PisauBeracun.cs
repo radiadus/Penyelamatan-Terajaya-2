@@ -7,14 +7,27 @@ public class PisauBeracun : Skill
     public PisauBeracun()
     {
         this.skillName = "Pisau Beracun";
-        this.mpCost = 5;
-        this.baseDamage = 20;
+        this.mpCost = 0;
+        this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 2;
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        CombatUnit target = targets[0];
+        if (!target.IsDead() && target.targetable)
+        {
+            int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
+            if (damage == -1) return -3;
+            target.TakeDamage(caster, damage);
+            bool success = Random.Range(0, 100) < 50;
+            if (success)
+            {
+                new Poison(3, 15, target);
+            }
+            return damage;
+        }
+        return -2;
     }
 }

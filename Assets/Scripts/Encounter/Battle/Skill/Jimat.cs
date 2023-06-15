@@ -7,7 +7,7 @@ public class Jimat : Skill
     public Jimat()
     {
         this.skillName = "Jimat";
-        this.mpCost = 5;
+        this.mpCost = 8;
         this.baseDamage = 20;
         this.target = Target.ALLY;
         this.difficulty = 2;
@@ -15,6 +15,13 @@ public class Jimat : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        CombatUnit target = targets[0];
+        if (!target.IsDead())
+        {
+            caster.MP -= mpCost;
+            caster.animator.SetTrigger("heal");
+            new AttackUp(3, 25, target);
+        }
+        return -1;
     }
 }

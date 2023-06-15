@@ -8,5 +8,6 @@ public class Assassin : Friendly
     {
         base.InitializeStats();
         evasion = 20;
+        baseStats.evasion = evasion;
     }
 }

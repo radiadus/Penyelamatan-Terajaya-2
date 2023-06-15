@@ -7,7 +7,7 @@ public class SeranganBalik : Skill
     public SeranganBalik()
     {
         this.skillName = "Serangan Balik";
-        this.mpCost = 5;
+        this.mpCost = 10;
         this.baseDamage = 20;
         this.target = Target.SELF;
         this.difficulty = 3;
@@ -15,6 +15,9 @@ public class SeranganBalik : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("cast");
+        new Counter(1, caster);
+        return -1;
     }
 }

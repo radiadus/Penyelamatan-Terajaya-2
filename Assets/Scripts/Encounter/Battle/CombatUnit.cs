@@ -10,6 +10,19 @@ public abstract class CombatUnit : MonoBehaviour
     public bool targetable;
     public new string name;
     public int accuracy, evasion;
+    public class BaseStats
+    {
+        public int attack, defense, speed, accuracy, evasion;
+        public BaseStats(int attack, int defense, int speed, int accuracy, int evasion)
+        {
+            this.attack = attack;
+            this.defense = defense;
+            this.speed = speed;
+            this.accuracy = accuracy;
+            this.evasion = evasion;
+        }
+    }
+    public BaseStats baseStats;
 
     protected virtual void Start()
     {
@@ -31,8 +44,9 @@ public abstract class CombatUnit : MonoBehaviour
         if (this.IsDead())
         {
             this.HP = 0;
+            this.statusEffectList.Clear();
             this.PlayDeadAnimation();
-            attacker.OnKill();
+            if (attacker) attacker.OnKill();
         }
     }
 
@@ -64,12 +78,12 @@ public abstract class CombatUnit : MonoBehaviour
         bool evadeCheck = Random.Range(0, 100) >= target.evasion;
         if (accCheck && evadeCheck)
         {
-            int damage = (int)(attacker.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f));
+            int damage = (int)(attacker.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f) * (100 - target.defense) / 100);
             int index = target.statusEffectList.FindIndex(e => e.GetType() == typeof(Sturdy));
             if (index >= 0)
             {
                 damage = 0;
-                target.statusEffectList.RemoveAt(index);
+                target.statusEffectList[index].RemoveEffect();
             }
             return damage;
         }

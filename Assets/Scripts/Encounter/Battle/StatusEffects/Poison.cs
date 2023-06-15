@@ -13,10 +13,12 @@ public class Poison : StatusEffect
         base.DecreaseTurn();
     }
 
-    public Poison(int dot, CombatUnit unit)
+    public Poison(int turns, int dot, CombatUnit unit)
     {
+        this.remainingTurn = turns;
         this.dot = dot;
         this.unit = unit;
+        this.statusPrefab = Resources.Load<GameObject>(path + "Poison");
         this.TakeEffect(unit);
     }
 }

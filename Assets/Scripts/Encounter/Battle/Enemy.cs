@@ -14,19 +14,7 @@ public abstract class Enemy : CombatUnit
     public string attackTarget;
     public int goldGain;
     public int expGain;
-    public class BaseStats
-    {
-        public int attack, defense, speed, accuracy, evasion;
-        public BaseStats(int attack, int defense, int speed, int accuracy, int evasion)
-        {
-            this.attack = attack;
-            this.defense = defense;
-            this.speed = speed;
-            this.accuracy = accuracy;
-            this.evasion = evasion;
-        }
-    }
-    public BaseStats baseStats;
+    
     public override void PlayDeadAnimation()
     {
         if (animator!= null)
