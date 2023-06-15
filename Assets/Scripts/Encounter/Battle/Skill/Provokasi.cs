@@ -9,6 +9,7 @@ public class Provokasi : Skill
         this.skillName = "Provokasi";
         this.mpCost = 5;
         this.baseDamage = 0;
+        this.priority = 1;
         this.target = Target.SELF;
         this.difficulty = 1;
     }
@@ -17,6 +18,6 @@ public class Provokasi : Skill
     {
         new Provoke(caster);
         caster.animator.SetTrigger("cast");
-        return 0;
+        return -1;
     }
 }

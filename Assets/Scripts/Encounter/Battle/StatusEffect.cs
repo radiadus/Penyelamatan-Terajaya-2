@@ -10,6 +10,11 @@ public abstract class StatusEffect
     public string path = "Prefab/UI/Encounter/Debuffs and Buffs/";
     public virtual void TakeEffect(CombatUnit unit)
     {
+        int index = unit.statusEffectList.FindIndex(e => e.GetType() == this.GetType());
+        if (index >= 0)
+        {
+            unit.statusEffectList[index].RemoveEffect();
+        }
         this.unit = unit;
         unit.statusEffectList.Add(this);
     }

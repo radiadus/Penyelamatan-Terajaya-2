@@ -15,6 +15,17 @@ public class BomAsap : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("throw");
+        foreach(CombatUnit target in targets)
+        {
+            bool success = Random.Range(0, 100) < 50;
+            if (success)
+            {
+                new AccuracyDown(3, 20, target);
+                target.animator.SetTrigger("hit");
+            }
+        }
+        return -1;
     }
 }

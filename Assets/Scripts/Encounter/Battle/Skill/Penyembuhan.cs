@@ -21,6 +21,8 @@ public class Penyembuhan : Skill
             caster.MP -= mpCost;
             caster.animator.SetTrigger("heal");
             int heal = (int)(caster.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f));
+            int max = target.maxHP - target.HP;
+            heal = heal > max ? max : heal;
             target.HP += heal;
             return heal;
         }

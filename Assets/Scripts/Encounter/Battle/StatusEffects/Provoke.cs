@@ -8,6 +8,7 @@ public class Provoke : StatusEffect
     {
         this.statusPrefab = Resources.Load<GameObject>(path + "Provoke");
         this.unit = unit;
+        this.remainingTurn = 2;
         this.TakeEffect(unit);
     }
 }

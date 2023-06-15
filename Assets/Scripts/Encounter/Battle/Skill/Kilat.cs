@@ -15,6 +15,17 @@ public class Kilat : Skill
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
     {
-        return 0;
+        caster.MP -= mpCost;
+        caster.animator.SetTrigger("1hand");
+        foreach(CombatUnit target in targets)
+        {
+            bool success = Random.Range(0, 100) < 50;
+            if (success)
+            {
+                new AccuracyDown(1, 40, target);
+                target.animator.SetTrigger("hit");
+            }
+        }
+        return -1;
     }
 }

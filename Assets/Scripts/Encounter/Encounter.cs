@@ -34,6 +34,7 @@ public class Encounter : MonoBehaviour
     public TextMeshProUGUI[] answerText, levelText, expText;
     public GameObject[] friendlyPrefabs;
     public GameObject[] enemyPrefabs;
+    private List<GameObject> instantiatedEffects = new List<GameObject>();
     private Friendly[] friendlies;
     private Enemy[] enemies;
 
@@ -163,6 +164,7 @@ public class Encounter : MonoBehaviour
             enemyButton[i].gameObject.SetActive(false);
         }
         StartCoroutine(StartEncounter());
+        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
     }
 
     public void FetchFriendlies()
@@ -177,11 +179,14 @@ public class Encounter : MonoBehaviour
 
     IEnumerator StartEncounter()
     {
+        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         yield return new WaitForSecondsRealtime(1);
+        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         foreach (Friendly friendly in friendlies)
         {
             if (friendly.IsDead()) friendly.PlayDeadAnimation();
         }
+        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         StartTurn(characterTurn);
         StartCoroutine(PlayerTurn());
         StartCoroutine(AttackPhase());
@@ -244,13 +249,14 @@ public class Encounter : MonoBehaviour
                         {
                             text += " menggunakan " + action.actionName + "!";
                         }
-                        if (number != -1) text += " (" + number + " total kerusakan)";
+                        if (number == -3) text += " Meleset!";
+                        else if (number != -1) text += " (" + number + " total kerusakan)";
                         textBoxText.text = text;
                         UpdateHPMPBar(0);
                         UpdateHPMPBar(1);
                         UpdateHPMPBar(2);
                         UpdateRemainingUnits();
-                        yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length);
+                        yield return new WaitForSecondsRealtime(action.user.animator.GetCurrentAnimatorStateInfo(0).length + 1);
                         if (enemyRemaining == 0 || friendlyRemaining == 0)
                         {
                             BattleStatus();
@@ -274,10 +280,10 @@ public class Encounter : MonoBehaviour
             while (state != BattleState.STATUS_CHECK) yield return null;
             foreach (Friendly friendly in friendlies)
             {
-                foreach (StatusEffect effect in friendly.statusEffectList)
+                for (int i = friendly.statusEffectList.Count-1; i > -1; i--)
                 {
+                    StatusEffect effect = friendly.statusEffectList[i];
                     effect.DecreaseTurn();
-                    if (effect.remainingTurn == 0) friendly.statusEffectList.Remove(effect);
                     UpdateHPMPBar(0);
                     UpdateHPMPBar(1);
                     UpdateHPMPBar(2);
@@ -292,14 +298,15 @@ public class Encounter : MonoBehaviour
             }
             foreach (Enemy enemy in enemies)
             {
-                foreach(StatusEffect effect in enemy.statusEffectList)
+                for(int i = enemy.statusEffectList.Count-1; i > -1; i--)
                 {
+                    StatusEffect effect = enemy.statusEffectList[i];
                     effect.DecreaseTurn();
-                    if (effect.remainingTurn == 0) enemy.statusEffectList.Remove(effect);
                     UpdateRemainingUnits();
                     if (enemyRemaining == 0 || friendlyRemaining == 0)
                     {
                         BattleStatus();
+                        textBox.SetActive(false);
                         yield break;
                     }
                 }
@@ -384,6 +391,7 @@ public class Encounter : MonoBehaviour
             StartTurn(characterTurn);
             return;
         }
+        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         InstantiatePanels(friendlies[turn]);
         OpenBattlePanel(friendlies[turn]);
     }
@@ -416,6 +424,11 @@ public class Encounter : MonoBehaviour
     
     private void InstantiatePanels(Friendly friendly)
     {
+        foreach(GameObject effect in instantiatedEffects)
+        {
+            Destroy(effect);
+        }
+        instantiatedEffects.Clear();
         foreach(GameObject panel in attackPanel)
         {
             AttackButton[] attacks = panel.GetComponentsInChildren<AttackButton>();
@@ -451,9 +464,15 @@ public class Encounter : MonoBehaviour
         {
             if (!friendlies[i].IsDead())
             {
-                for(int j = 0; j < friendlies[i].statusEffectList.Count; j++)
+                List<StatusEffect> effects = friendlies[i].statusEffectList;
+                for(int j = 0; j < effects.Count; j++)
                 {
-
+                    GameObject prefab = effects[j].statusPrefab;
+                    x = -70 + 35 * j;
+                    y = -25;
+                    prefab.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
+                    GameObject instantiatedEffect = Instantiate(prefab, friendlyButton[i].transform);
+                    instantiatedEffects.Add(instantiatedEffect);
                 }
             }
         }
@@ -461,9 +480,15 @@ public class Encounter : MonoBehaviour
         {
             if (!enemies[i].IsDead())
             {
-                for (int j = 0; j < enemies[i].statusEffectList.Count; j++)
+                List<StatusEffect> effects = enemies[i].statusEffectList;
+                for (int j = 0; j < effects.Count; j++)
                 {
-
+                    GameObject prefab = effects[j].statusPrefab;
+                    x = -70 + 35 * j;
+                    y = -25;
+                    prefab.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
+                    GameObject instantiatedEffect = Instantiate(prefab, enemyButton[i].transform);
+                    instantiatedEffects.Add(instantiatedEffect);
                 }
             }
         }
@@ -474,7 +499,6 @@ public class Encounter : MonoBehaviour
         hpBar[index].value = friendlies[index].HP;
         mpBar[index].value = friendlies[index].MP;
     }
-
     void ChooseTarget(Skill skill)
     {
         List<CombatUnit> target = new List<CombatUnit>();
@@ -503,6 +527,8 @@ public class Encounter : MonoBehaviour
             default:
                 break;
         }
+        textBox.SetActive(true);
+        textBoxText.text = skill.skillDescription;
     }
     void InitializeFriendlyListener(Skill skill, bool all, bool self)
     {
@@ -532,7 +558,7 @@ public class Encounter : MonoBehaviour
             friendlyTarget[characterTurn].SetActive(true);
         }
         friendlyConfirm.onClick.RemoveAllListeners();
-        friendlyConfirm.onClick.AddListener(delegate { OpenQuestionPanel(skill, GetSelectedFriendly()); });
+        friendlyConfirm.onClick.AddListener(delegate { OpenQuestionPanel(skill, GetSelectedFriendly()); textBox.SetActive(false); });
     }
     void InitializeFriendlyListener(Item item)
     {
@@ -582,7 +608,7 @@ public class Encounter : MonoBehaviour
             }
         }
         enemyConfirm.onClick.RemoveAllListeners();
-        enemyConfirm.onClick.AddListener(delegate { if (GetSelectedEnemy().Count() != 0) OpenQuestionPanel(skill, GetSelectedEnemy()); });
+        enemyConfirm.onClick.AddListener(delegate { if (GetSelectedEnemy().Count() != 0) OpenQuestionPanel(skill, GetSelectedEnemy()); textBox.SetActive(false); });
     }
     void ResetEnemyChoice()
     {
@@ -639,7 +665,6 @@ public class Encounter : MonoBehaviour
         }
         StartCoroutine(ShowResult(correct));
     }
-
     IEnumerator ShowResult(bool correct)
     {
         if (correct) correctImage.SetActive(true);
@@ -653,12 +678,6 @@ public class Encounter : MonoBehaviour
         questionCanvas.SetActive(false);
         characterTurn++;
         StartTurn(characterTurn);
-    }
-
-    IEnumerator WaitToCloseTextBox(float seconds)
-    {
-        yield return new WaitForSecondsRealtime(seconds);
-        textBox.SetActive(false);
     }
     void OpenFriendlySelect()
     {
@@ -681,10 +700,6 @@ public class Encounter : MonoBehaviour
     {
         friendlySelect.SetActive(false);
         battleOptions.SetActive(true);
-    }
-    void UseSkill(Skill skill, List<CombatUnit> target)
-    {
-        actions.Add(new Action(friendlies[characterTurn], skill, target));
     }
     private void OpenBattlePanel(Friendly character)
     {

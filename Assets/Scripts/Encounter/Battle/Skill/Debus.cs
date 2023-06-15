@@ -10,6 +10,7 @@ public class Debus : Skill
         this.mpCost = 5;
         this.baseDamage = 0;
         this.target = Target.SELF;
+        this.priority = 1;
         this.difficulty = 1;
     }
 
@@ -18,6 +19,6 @@ public class Debus : Skill
         caster.MP -= mpCost;
         caster.animator.SetTrigger("heal");
         new Untargetable(1, caster);
-        return 0;
+        return -1;
     }
 }

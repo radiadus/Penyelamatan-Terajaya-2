@@ -16,12 +16,14 @@ public abstract class Enemy : CombatUnit
     public int expGain;
     public class BaseStats
     {
-        public int attack, defense, speed;
-        public BaseStats(int attack, int defense, int speed)
+        public int attack, defense, speed, accuracy, evasion;
+        public BaseStats(int attack, int defense, int speed, int accuracy, int evasion)
         {
             this.attack = attack;
             this.defense = defense;
             this.speed = speed;
+            this.accuracy = accuracy;
+            this.evasion = evasion;
         }
     }
     public BaseStats baseStats;
@@ -45,7 +47,9 @@ public abstract class Enemy : CombatUnit
 
     public virtual Enemy InitializeStats()
     {
-        this.baseStats = new BaseStats(this.attack, this.defense, this.speed);
+        this.accuracy = 100;
+        this.evasion = 0;
+        this.baseStats = new BaseStats(this.attack, this.defense, this.speed, this.accuracy, this.evasion);
         this.statusEffectList = new List<StatusEffect>();
         return this;
     }
@@ -68,7 +72,8 @@ public abstract class Enemy : CombatUnit
             }
             this.attackTarget = targetUnit.name;
             int baseDamage = 100;
-            int damage = (int)(GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
+            int damage = CombatUnit.CalculateDamage(user, targetUnit, baseDamage);
+            if (damage == -1) return -3;
             animator.SetTrigger("attack");
             targetUnit.TakeDamage(this, damage);
             return damage;
