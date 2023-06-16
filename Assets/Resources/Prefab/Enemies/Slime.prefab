@@ -511,5 +511,5 @@ MonoBehaviour:
   id: 0
   attackType: 0
   attackTarget: 0
-  goldGain: 50
-  expGain: 10
+  goldGain: 60
+  expGain: 12
