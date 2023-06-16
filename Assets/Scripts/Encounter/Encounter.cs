@@ -301,6 +301,7 @@ public class Encounter : MonoBehaviour
                 for(int i = enemy.statusEffectList.Count-1; i > -1; i--)
                 {
                     StatusEffect effect = enemy.statusEffectList[i];
+                    Debug.Log(effect.GetType().Name);
                     effect.DecreaseTurn();
                     UpdateRemainingUnits();
                     if (enemyRemaining == 0 || friendlyRemaining == 0)

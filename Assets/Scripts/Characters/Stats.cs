@@ -11,6 +11,8 @@ public class Stats : ScriptableObject
     public int defense;
     public int speed;
     public int level, exp, requiredExp;
+    public int hpGrowth, mpGrowth, attackGrowth, defenseGrowth, speedGrowth;
+    public int attackBonusLevel, defenseBonusLevel, speedBonusLevel;
     public List<Skill> skillList;
     public bool isDead;
 

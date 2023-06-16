@@ -45,14 +45,22 @@ public class Friendly : CombatUnit
 
     public virtual void LevelUp()
     {
+        stats.maxHP += stats.hpGrowth;
+        stats.maxMP += stats.mpGrowth;
+        stats.attack += stats.attackGrowth;
+        stats.defense += stats.defenseGrowth;
+        stats.speed += stats.speedGrowth;
         stats.level++;
-        stats.requiredExp = (int)(stats.requiredExp * 1.5f);
+        if (stats.level % stats.attackBonusLevel == 0) stats.attack++;
+        if (stats.level % stats.defenseBonusLevel == 0) stats.defense++;
+        if (stats.level % stats.speedBonusLevel == 0) stats.speed++;
+        stats.requiredExp = (int)(stats.requiredExp * 1.25f);
     }
 
     public virtual void GainExp(int exp)
     {
         stats.exp += exp;
-        if (stats.exp > stats.requiredExp)
+        while (stats.exp >= stats.requiredExp)
         {
             stats.exp -= stats.requiredExp;
             this.LevelUp();

@@ -25,17 +25,12 @@ public class Statue : Interactible
     protected override int CheckUsedText()
     {
         solved = PlayerPrefs.GetInt(statueCode, 0) == 1;
-        return solved ? 1 : 0;
+        return solved ? 2 : 1;
     }
 
     public override void Interact()
     {
         base.Interact();
-        if (!solved)
-        {
-            GameManager.Instance.gameState = GameManager.State.INTERACT;
-            this.Solve();
-        }
     }
 
     private void Solve()
@@ -64,6 +59,14 @@ public class Statue : Interactible
             return;
         }
         StartCoroutine(ShowResult(false));
+    }
+    protected override IEnumerator ShowText()
+    {
+        yield return base.ShowText();
+        if (!solved)
+        {
+            Solve();
+        }
 
     }
 
