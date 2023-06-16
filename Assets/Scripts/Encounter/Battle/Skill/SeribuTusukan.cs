@@ -11,6 +11,7 @@ public class SeribuTusukan : Skill
         this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 2;
+        this.skillDescription = "Menusuk musuh berkali-kali";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

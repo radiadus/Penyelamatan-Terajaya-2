@@ -11,6 +11,7 @@ public class BomMolotov : Skill
         this.baseDamage = 50;
         this.target = Target.ALL_ENEMY;
         this.difficulty = 3;
+        this.skillDescription = "Menyerang semua musuh dan memiliki kemungkinan membuat sebagian atau seluruh musuh terbakar";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

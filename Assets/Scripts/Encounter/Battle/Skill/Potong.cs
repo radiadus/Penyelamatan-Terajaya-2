@@ -11,6 +11,7 @@ public class Potong : Skill
         this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 1;
+        this.skillDescription = "Memotong lawan";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

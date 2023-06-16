@@ -11,6 +11,7 @@ public class BadaiApi : Skill
         this.baseDamage = 20;
         this.target = Target.ALL_ENEMY;
         this.difficulty = 3;
+        this.skillDescription = "Menyerang semua musuh dan memberikan efek terbakar selama beberapa giliran";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

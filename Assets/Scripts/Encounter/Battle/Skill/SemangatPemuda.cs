@@ -11,6 +11,7 @@ public class SemangatPemuda : Skill
         this.baseDamage = 20;
         this.target = Target.ALL_ALLY;
         this.difficulty = 2;
+        this.skillDescription = "Meningkatkan pertahanan seluruh karakter";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

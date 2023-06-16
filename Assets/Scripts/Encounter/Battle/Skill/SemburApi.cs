@@ -11,6 +11,7 @@ public class SemburApi : Skill
         this.baseDamage = 120;
         this.target = Target.ENEMY;
         this.difficulty = 2;
+        this.skillDescription = "Menyerang lawan dan memiliki kemungkinan membuat lawan terbakar selama beberapa giliran";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

@@ -11,6 +11,7 @@ public class SeranganBalik : Skill
         this.baseDamage = 20;
         this.target = Target.SELF;
         this.difficulty = 3;
+        this.skillDescription = "Serangan petarung akan meningkat untuk giliran selanjutnya setiap kali diserang";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

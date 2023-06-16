@@ -11,6 +11,7 @@ public class BomAsap : Skill
         this.baseDamage = 20;
         this.target = Target.ALL_ENEMY;
         this.difficulty = 1;
+        this.skillDescription = "Menurunkan akurasi serangan semua musuh";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

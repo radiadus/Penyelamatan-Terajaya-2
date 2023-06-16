@@ -11,6 +11,7 @@ public class BolaApi : Skill
         this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 1;
+        this.skillDescription = "Menyerang lawan dengan bola api";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
