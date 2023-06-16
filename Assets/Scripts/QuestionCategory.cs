@@ -10,5 +10,6 @@ public enum QuestionCategory
     CAPITAL,
     PUNCTUATION,
     SPELLING,
-    WORD_STRUCTURE
+    WORD_STRUCTURE,
+    STATUE
 }

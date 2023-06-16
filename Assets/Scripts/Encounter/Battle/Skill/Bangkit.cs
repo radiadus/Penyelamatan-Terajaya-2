@@ -18,6 +18,8 @@ public class Bangkit : Skill
         CombatUnit target = targets[0];
         if (target.IsDead())
         {
+            caster.MP -= mpCost;
+            caster.animator.SetTrigger("heal");
             target.HP = (int)(target.maxHP * 0.25f);
             target.animator.SetBool("isDead", false);
             return -1;

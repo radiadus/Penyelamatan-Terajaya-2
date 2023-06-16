@@ -628,6 +628,7 @@ GameObject:
   - component: {fileID: 2001642664}
   - component: {fileID: 2001642663}
   - component: {fileID: 2001642662}
+  - component: {fileID: 2001642668}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -684,7 +685,6 @@ MonoBehaviour:
   pedang: {fileID: 11400000, guid: a36c148f8a984ef4da15e42e200ee0ea, type: 2}
   keris: {fileID: 11400000, guid: 7937c0b28641e1048b1af6e5a156eb58, type: 2}
   tongkat: {fileID: 11400000, guid: 3dcc2f2ce7471d840bdfbeaf1290d555, type: 2}
-  reader: {fileID: 2001642662}
   mixer: {fileID: 24100000, guid: 5ebd6792588fdee4486be26e1e757f66, type: 2}
   loadingCanvas: {fileID: 1798607321}
   loadingBackground: {fileID: 272010469}
@@ -738,3 +738,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2001642668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001642661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b85ca727c6af60e4aa0d7b48f90c5dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBank: {fileID: 11400000, guid: 9a5d0e5abdc75ba40b4b5810936318ba, type: 2}

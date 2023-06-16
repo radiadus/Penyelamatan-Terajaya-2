@@ -18,6 +18,7 @@ public class QuestionReader : MonoBehaviour
 
         if (questionBank.questions == null)
         {
+            questionBank.statueQuestions = new List<Question>();
             questionBank.questions = ReadQuestions();
         }
     }
@@ -80,10 +81,18 @@ public class QuestionReader : MonoBehaviour
                 case "Struktur Kalimat":
                     question.category = QuestionCategory.WORD_STRUCTURE;
                     break;
+                case "Paturng":
+                    question.category = QuestionCategory.STATUE;
+                    break;
                 default:
                     break;
             }
             question.solved = false;
+            if (question.category == QuestionCategory.STATUE)
+            {
+                questionBank.statueQuestions.Add(question);
+                continue;
+            }
             questions[question.difficulty].Add(question);
         }
         file.Close();
@@ -104,6 +113,11 @@ public class QuestionReader : MonoBehaviour
     private void ResetByDifficulty(int difficulty)
     {
         questionBank.questions[difficulty].ForEach(q => q.solved = false);
+    }
+
+    public Question GetStatueQuestion(int id)
+    {
+        return questionBank.statueQuestions[id];
     }
 
 }
