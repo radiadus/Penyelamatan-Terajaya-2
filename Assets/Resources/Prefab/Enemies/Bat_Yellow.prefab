@@ -113,12 +113,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5f7babeb6dec749a81b8a1ea089adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 40
-  maxHP: 40
+  HP: 45
+  maxHP: 45
   MP: 0
   maxMP: 0
-  attack: 25
-  defense: 10
+  attack: 20
+  defense: 15
   speed: 25
   animator: {fileID: 0}
   targetable: 0

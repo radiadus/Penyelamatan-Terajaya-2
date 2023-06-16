@@ -307,12 +307,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b47e563ebb86014b9a233a607d19299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 25
-  maxHP: 25
+  HP: 35
+  maxHP: 35
   MP: 0
   maxMP: 0
   attack: 5
-  defense: 10
+  defense: 0
   speed: 15
   animator: {fileID: 0}
   targetable: 0

@@ -128,7 +128,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000011148102054}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.01
   m_Height: 0.03
@@ -146,12 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d8f1ecdafd338e41ad13a2221be332b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
-  maxHP: 100
+  HP: 125
+  maxHP: 125
   MP: 0
   maxMP: 0
-  attack: 50
-  defense: 10
+  attack: 40
+  defense: 20
   speed: 15
   animator: {fileID: 0}
   targetable: 0

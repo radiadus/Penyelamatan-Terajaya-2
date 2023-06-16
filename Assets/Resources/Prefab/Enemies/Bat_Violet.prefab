@@ -499,7 +499,7 @@ MonoBehaviour:
   MP: 0
   maxMP: 0
   attack: 35
-  defense: 20
+  defense: 25
   speed: 30
   animator: {fileID: 0}
   targetable: 0
