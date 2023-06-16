@@ -12,6 +12,7 @@ public class Provokasi : Skill
         this.priority = 1;
         this.target = Target.SELF;
         this.difficulty = 1;
+        this.skillDescription = "Membuat seluruh musuh menyerang karakter ini";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

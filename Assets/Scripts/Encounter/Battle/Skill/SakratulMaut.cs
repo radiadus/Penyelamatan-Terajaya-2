@@ -11,6 +11,7 @@ public class SakratulMaut : Skill
         this.baseDamage = 20;
         this.target = Target.ENEMY;
         this.difficulty = 3;
+        this.skillDescription = "Bila berhasil, musuh akan mati dalam 3 giliran";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

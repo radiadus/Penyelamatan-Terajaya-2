@@ -11,6 +11,7 @@ public class Petir : Skill
         this.baseDamage = 150;
         this.target = Target.ENEMY;
         this.difficulty = 2;
+        this.skillDescription = "Menyerang dan memiliki kemungkinan untuk mengurangi serangan musuh";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

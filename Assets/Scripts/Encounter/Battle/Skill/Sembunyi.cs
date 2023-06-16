@@ -12,6 +12,7 @@ public class Sembunyi : Skill
         this.priority = 1;
         this.target = Target.SELF;
         this.difficulty = 1;
+        this.skillDescription = "Pembunuh tidak dapat diserang selama 1 giliran";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

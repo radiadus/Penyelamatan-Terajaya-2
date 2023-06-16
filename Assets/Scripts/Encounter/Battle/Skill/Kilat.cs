@@ -11,6 +11,7 @@ public class Kilat : Skill
         this.baseDamage = 20;
         this.target = Target.ALL_ENEMY;
         this.difficulty = 1;
+        this.skillDescription = "Mengurangi akurasi musuh menyerang";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

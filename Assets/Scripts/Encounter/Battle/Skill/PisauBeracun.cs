@@ -11,6 +11,7 @@ public class PisauBeracun : Skill
         this.baseDamage = 100;
         this.target = Target.ENEMY;
         this.difficulty = 2;
+        this.skillDescription = "Menyerang musuh dengan pisau beracun, memiliki kemungkinan membuat musuh terkena racun";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

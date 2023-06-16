@@ -11,6 +11,7 @@ public class TusukanMematikan : Skill
         this.baseDamage = 250;
         this.target = Target.ENEMY;
         this.difficulty = 3;
+        this.skillDescription = "Memiliki kemungkinan membuat kerusakan sangat besar pada musuh";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

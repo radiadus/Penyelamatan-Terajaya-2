@@ -11,6 +11,7 @@ public class Bangkit : Skill
         this.baseDamage = 20;
         this.target = Target.ALLY;
         this.difficulty = 3;
+        this.skillDescription = "Membangkitkan karakter lain yang telah mati";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

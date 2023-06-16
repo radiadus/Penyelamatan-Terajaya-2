@@ -12,6 +12,7 @@ public class Debus : Skill
         this.target = Target.SELF;
         this.priority = 1;
         this.difficulty = 1;
+        this.skillDescription = "Dukun tidak dapat diserang selama 1 giliran";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

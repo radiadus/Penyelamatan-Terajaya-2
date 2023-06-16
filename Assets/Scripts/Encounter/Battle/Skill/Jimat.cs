@@ -11,6 +11,7 @@ public class Jimat : Skill
         this.baseDamage = 20;
         this.target = Target.ALLY;
         this.difficulty = 2;
+        this.skillDescription = "Meningkatkan serangan karakter yang diberikan jimat";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

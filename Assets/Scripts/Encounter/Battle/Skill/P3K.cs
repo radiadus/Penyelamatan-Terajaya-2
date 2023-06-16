@@ -11,6 +11,7 @@ public class P3K : Skill
         this.baseDamage = 40;
         this.target = Target.SELF;
         this.difficulty = 1;
+        this.skillDescription = "Menyembuhkan diri sendiri";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

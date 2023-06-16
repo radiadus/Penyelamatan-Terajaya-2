@@ -11,6 +11,7 @@ public class Penyembuhan : Skill
         this.baseDamage = 100;
         this.target = Target.ALLY;
         this.difficulty = 1;
+        this.skillDescription = "Menyembuhkan diri sendiri atau karakter lain";
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
