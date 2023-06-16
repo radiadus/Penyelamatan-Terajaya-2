@@ -30,7 +30,7 @@ public class DetectInteractible : MonoBehaviour
                 closestInteractible = interactible;
             }
         }
-        if (closestDist < 3)
+        if (closestDist < 1.5f)
         {
             if (interactButton != null)
             {

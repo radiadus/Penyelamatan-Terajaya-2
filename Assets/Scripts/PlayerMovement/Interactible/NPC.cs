@@ -14,4 +14,10 @@ public class NPC : Interactible
     {
         base.Interact();
     }
+
+    public override void ClosePanel()
+    {
+        base.ClosePanel();
+        GameManager.Instance.gameState = GameManager.State.DEFAULT;
+    }
 }

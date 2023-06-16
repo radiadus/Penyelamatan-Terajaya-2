@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Interactible : MonoBehaviour
+public abstract class Interactible : MonoBehaviour
 {
     public List<string> text;
     public new string name;
@@ -48,13 +48,13 @@ public class Interactible : MonoBehaviour
         currentPage++;
     }
 
-    public void ClosePanel()
+    public virtual void ClosePanel()
     {
-        GameManager.Instance.gameState = GameManager.State.DEFAULT;
         textBox.SetActive(false);
+        GameManager.Instance.gameState = GameManager.State.DEFAULT;
     }
 
-    IEnumerator ShowText()
+    protected virtual IEnumerator ShowText()
     {
         int maxPage = text.Count;
         ShowPage(maxPage);
@@ -66,9 +66,5 @@ public class Interactible : MonoBehaviour
         }
         textBoxButton.onClick.RemoveAllListeners();
         textBoxButton.onClick.AddListener(delegate { ClosePanel(); });
-        while (GameManager.Instance.gameState == GameManager.State.INTERACT)
-        {
-            yield return null;
-        }
     }
 }

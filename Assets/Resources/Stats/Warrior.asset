@@ -12,14 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa013cd436a1c8346b7ca6ef9295dfac, type: 3}
   m_Name: Warrior
   m_EditorClassIdentifier: 
-  HP: 120
-  maxHP: 120
-  MP: 20
-  maxMP: 20
+  HP: 135
+  maxHP: 135
+  MP: 15
+  maxMP: 15
   attack: 10
-  defense: 20
-  speed: 10
+  defense: 25
+  speed: 7
   level: 1
   exp: 0
   requiredExp: 100
+  hpGrowth: 5
+  mpGrowth: 1
+  attackGrowth: 1
+  defenseGrowth: 1
+  speedGrowth: 0
+  attackBonusLevel: 0
+  defenseBonusLevel: 2
+  speedBonusLevel: 2
   isDead: 0
