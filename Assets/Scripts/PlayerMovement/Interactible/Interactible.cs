@@ -6,15 +6,9 @@ using TMPro;
 
 public class Interactible : MonoBehaviour
 {
-    public string[][] text = new string[][]
-    {
-        new string[]
-        {
-            "test dlu",
-            "test jg"
-        }
-    };
+    public List<string> text;
     public new string name;
+    public string dialogueCode;
     public GameObject textBox;
     public TextMeshProUGUI textPanel;
     public TextMeshProUGUI namePanel;
@@ -26,12 +20,13 @@ public class Interactible : MonoBehaviour
     {
         this.usedText = CheckUsedText();
         this.textBoxButton = textBox.GetComponent<Button>();
+        this.text = DialogueReader.Instance.GetDialoguesByCodeAndId(dialogueCode, usedText);
         
     }
 
     protected virtual int CheckUsedText()
     {
-        return 0;
+        return 1;
     }
 
     public virtual void Interact()
@@ -39,7 +34,6 @@ public class Interactible : MonoBehaviour
         textBox.SetActive(true);
         namePanel.text = name;
         currentPage = 0;
-        Debug.Log(""+usedText+" "+text[usedText].ToString());
         StartCoroutine(ShowText());
         return;
     }
@@ -50,7 +44,7 @@ public class Interactible : MonoBehaviour
         {
             return;
         }
-        textPanel.text = text[usedText][currentPage];
+        textPanel.text = text[currentPage];
         currentPage++;
     }
 
@@ -62,11 +56,11 @@ public class Interactible : MonoBehaviour
 
     IEnumerator ShowText()
     {
-        int maxPage = text[usedText].Length;
+        int maxPage = text.Count;
         ShowPage(maxPage);
-        textBoxButton.onClick.RemoveAllListeners();
         while(currentPage < maxPage)
         {
+            textBoxButton.onClick.RemoveAllListeners();
             textBoxButton.onClick.AddListener(delegate { ShowPage(maxPage); });
             yield return null;
         }

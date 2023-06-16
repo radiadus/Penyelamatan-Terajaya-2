@@ -11,10 +11,10 @@ public class MageStats : Stats
         base.Reset();
         maxHP = 80;
         HP = maxHP;
-        maxMP = 50;
+        maxMP = 30;
         MP = maxMP;
-        attack = 20;
-        defense = 10;
+        attack = 25;
+        defense = 5;
         speed = 10;
         skillList = new List<Skill>
         {
@@ -22,16 +22,24 @@ public class MageStats : Stats
             new Debus(),
             new Kilat(),
             new Penyembuhan(),
+            new SemburApi(),
+            new Jimat(),
+            new Petir(),
+            new BadaiApi(),
+            new SakratulMaut(),
+            new Bangkit()
         };
     }
 
     public override void InitializeSkills()
     {
-        skillList = new List<Skill>();
-        skillList.Add(new BolaApi());
-        skillList.Add(new Debus());
-        skillList.Add(new Kilat());
-        skillList.Add(new Penyembuhan());
+        skillList = new List<Skill>
+        {
+            new BolaApi(),
+            new Debus(),
+            new Kilat(),
+            new Penyembuhan()
+        };
 
         if (PlayerPrefs.GetInt("mage2", 0) == 1)
         {

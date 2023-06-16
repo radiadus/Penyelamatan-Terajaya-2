@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     public Inventory inventory;
     public Stats mage, warrior, assassin;
     public Equipment pedang, keris, tongkat;
-    public QuestionReader reader;
     public AudioMixer mixer;
     public GameObject loadingCanvas;
     public Image loadingBackground;
@@ -149,6 +148,13 @@ public class GameManager : MonoBehaviour
             player.transform.position = position;
             player.GetComponent<CharacterController>().enabled = true;
         };
+    }
+
+    public void UpdateSkills()
+    {
+        mage.InitializeSkills();
+        assassin.InitializeSkills();
+        warrior.InitializeSkills();
     }
 
     public void ExitToMainMenu()

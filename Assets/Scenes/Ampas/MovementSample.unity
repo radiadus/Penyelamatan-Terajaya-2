@@ -833,7 +833,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b33517ab80e9b4690cba013e08b41f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: []
   name: NPC1
+  dialogueCode: Jendral
   textBox: {fileID: 2019772867}
   textPanel: {fileID: 1513195016}
   namePanel: {fileID: 1239163084}
@@ -2933,6 +2935,7 @@ GameObject:
   - component: {fileID: 424406126}
   - component: {fileID: 424406129}
   - component: {fileID: 424406130}
+  - component: {fileID: 424406131}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -3004,13 +3007,15 @@ MonoBehaviour:
   gameState: 0
   inventory: {fileID: 11400000, guid: aa1689ef5cc515043bf38bd372a31fe7, type: 2}
   mage: {fileID: 11400000, guid: 0e020d87d611b6d4eb4e0518cf932bad, type: 2}
-  swordsman: {fileID: 11400000, guid: 80ea19bfa5db0834994cd5443631270c, type: 2}
+  warrior: {fileID: 0}
   assassin: {fileID: 11400000, guid: 803771d241407974cb5614622538a96a, type: 2}
   pedang: {fileID: 11400000, guid: a36c148f8a984ef4da15e42e200ee0ea, type: 2}
   keris: {fileID: 11400000, guid: 7937c0b28641e1048b1af6e5a156eb58, type: 2}
   tongkat: {fileID: 11400000, guid: 3dcc2f2ce7471d840bdfbeaf1290d555, type: 2}
-  reader: {fileID: 424406130}
   mixer: {fileID: 0}
+  loadingCanvas: {fileID: 0}
+  loadingBackground: {fileID: 0}
+  loadingText: {fileID: 0}
 --- !u!114 &424406130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3024,6 +3029,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questionBank: {fileID: 11400000, guid: 1b4a387685533ac4b94edc2a9446d27f, type: 2}
+--- !u!114 &424406131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424406125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b85ca727c6af60e4aa0d7b48f90c5dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBank: {fileID: 11400000, guid: 9a5d0e5abdc75ba40b4b5810936318ba, type: 2}
 --- !u!1 &424537463
 GameObject:
   m_ObjectHideFlags: 0
@@ -9316,6 +9334,13 @@ MonoBehaviour:
   backdrop: {fileID: 979817208}
   inventoryPanel: {fileID: 323782103}
   settingsPanel: {fileID: 629630154}
+  characterStats: {fileID: 0}
+  stats: []
+  level: []
+  HP: []
+  MP: []
+  attack: []
+  defense: []
 --- !u!1 &1676885389
 GameObject:
   m_ObjectHideFlags: 0
@@ -10444,7 +10469,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1609ac6365b667a45b977f075c69a14a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: []
   name: Tukang Jualan
+  dialogueCode: 
   textBox: {fileID: 2019772867}
   textPanel: {fileID: 1513195016}
   namePanel: {fileID: 1239163084}
