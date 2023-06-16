@@ -41,7 +41,9 @@ public class EncounterManager : MonoBehaviour
         {
             GameManager.Instance.gameState = GameManager.State.DEFAULT;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = lastPosition;
+            player.GetComponent<CharacterController>().enabled = true;
             GameManager.Instance.SaveGame(player);
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject enemy in enemies)

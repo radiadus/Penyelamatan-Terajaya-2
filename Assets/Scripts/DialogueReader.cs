@@ -31,7 +31,7 @@ public class DialogueReader : MonoBehaviour
             }
             List<string> pages = new List<string>();
             int index = 2;
-            while (index < data.Length)
+            while (index < data.Length && data[index] != "")
             {
                 pages.Add(data[index]);
                 index++;

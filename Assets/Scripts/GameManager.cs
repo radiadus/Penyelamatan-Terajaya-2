@@ -133,7 +133,6 @@ public class GameManager : MonoBehaviour
     public void Continue()
     {
         if (!PlayerPrefs.HasKey("posX")) return;
-        PlayerPrefs.SetInt("warrior2", 1);
         mage.InitializeSkills();
         warrior.InitializeSkills();
         assassin.InitializeSkills();
