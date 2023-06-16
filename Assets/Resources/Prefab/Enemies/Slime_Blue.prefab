@@ -590,12 +590,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3120b4f2fb9c92c428b7b321942b35e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 60
-  maxHP: 60
+  HP: 70
+  maxHP: 70
   MP: 0
   maxMP: 0
-  attack: 30
-  defense: 25
+  attack: 20
+  defense: 35
   speed: 13
   animator: {fileID: 0}
   targetable: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   attackType: 0
   attackTarget: 0
   goldGain: 300
-  expGain: 40
+  expGain: 50
 --- !u!1 &7870042165253584468
 GameObject:
   m_ObjectHideFlags: 0
