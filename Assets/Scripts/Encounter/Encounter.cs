@@ -310,6 +310,10 @@ public class Encounter : MonoBehaviour
                         textBox.SetActive(false);
                         yield break;
                     }
+                    if (enemy.IsDead())
+                    {
+                        break;
+                    }
                 }
             }
             state = BattleState.PLAYER_TURN;

@@ -26,16 +26,5 @@ public class GhostBrown : Enemy
         return -2;
     }
 
-    public override Enemy InitializeStats()
-    {
-        this.maxHP = 100;
-        this.HP = 100;
-        this.maxMP = 100;
-        this.MP = 100;
-        this.attack = 10;
-        this.defense = 5;
-        this.speed = 5;
-        return this;
-    }
 }
 

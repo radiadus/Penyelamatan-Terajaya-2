@@ -51,6 +51,7 @@ public abstract class Interactible : MonoBehaviour
     public virtual void ClosePanel()
     {
         textBox.SetActive(false);
+        GameManager.Instance.gameState = GameManager.State.DEFAULT;
     }
 
     protected virtual IEnumerator ShowText()
@@ -65,9 +66,5 @@ public abstract class Interactible : MonoBehaviour
         }
         textBoxButton.onClick.RemoveAllListeners();
         textBoxButton.onClick.AddListener(delegate { ClosePanel(); });
-        while (GameManager.Instance.gameState == GameManager.State.INTERACT)
-        {
-            yield return null;
-        }
     }
 }

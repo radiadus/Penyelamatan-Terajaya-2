@@ -14,12 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   maxHP: 100
-  MP: 40
-  maxMP: 40
-  attack: 15
+  MP: 20
+  maxMP: 20
+  attack: 20
   defense: 10
   speed: 15
   level: 1
   exp: 0
   requiredExp: 100
+  hpGrowth: 5
+  mpGrowth: 2
+  attackGrowth: 2
+  defenseGrowth: 1
+  speedGrowth: 1
+  attackBonusLevel: 0
+  defenseBonusLevel: 0
+  speedBonusLevel: 0
   isDead: 0

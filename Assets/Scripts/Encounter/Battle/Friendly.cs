@@ -51,9 +51,9 @@ public class Friendly : CombatUnit
         stats.defense += stats.defenseGrowth;
         stats.speed += stats.speedGrowth;
         stats.level++;
-        if (stats.level % stats.attackBonusLevel == 0) stats.attack++;
-        if (stats.level % stats.defenseBonusLevel == 0) stats.defense++;
-        if (stats.level % stats.speedBonusLevel == 0) stats.speed++;
+        if (stats.attackBonusLevel > 0 && stats.level % stats.attackBonusLevel == 0) stats.attack++;
+        if (stats.defenseBonusLevel > 0 && stats.level % stats.defenseBonusLevel == 0) stats.defense++;
+        if (stats.speedBonusLevel > 0 && stats.level % stats.speedBonusLevel == 0) stats.speed++;
         stats.requiredExp = (int)(stats.requiredExp * 1.25f);
     }
 
