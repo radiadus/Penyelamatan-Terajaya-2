@@ -62,9 +62,13 @@ public class EncounterManager : MonoBehaviour
         AsyncOperation load = SceneManager.LoadSceneAsync(lastSceneId);
         load.completed += (asyncOperation) =>
         {
+            GameManager.Instance.gameState = GameManager.State.DEFAULT;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = GameManager.Instance.sceneGameOverSpawn[SceneManager.GetActiveScene().name];
+            player.GetComponent<CharacterController>().enabled = true;
             defeatedEnemyIds.Clear();
+            GameManager.Instance.SaveGame(player);
         };
     }
 

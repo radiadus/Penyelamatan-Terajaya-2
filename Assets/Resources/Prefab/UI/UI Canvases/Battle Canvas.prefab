@@ -20331,7 +20331,7 @@ MonoBehaviour:
   flee: {fileID: 3377486018163720156}
   undoFriendly: {fileID: 1132053462385634303}
   undoEnemy: {fileID: 1132053463237923065}
-  friendlyConfirm: {fileID: 1479624095188914407}
+  friendlyConfirm: {fileID: 570361996345212746}
   enemyConfirm: {fileID: 1479624095188914407}
   winButton: {fileID: 3879722019569876348}
   attackDifficulty:

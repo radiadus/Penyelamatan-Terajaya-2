@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
         DEFAULT,
         INTERACT,
         SHOPPING,
-        ENCOUNTER
+        ENCOUNTER,
+        MAIN_MENU
     }
 
     public State gameState;
@@ -24,9 +25,11 @@ public class GameManager : MonoBehaviour
     public Equipment pedang, keris, tongkat;
     public AudioMixer mixer;
     public GameObject loadingCanvas;
+    public GameObject player;
     public Image loadingBackground;
     public TextMeshProUGUI loadingText;
     public Dictionary<string, Vector3> sceneGameOverSpawn = new Dictionary<string, Vector3>();
+    public float autoSaveTimer;
 
     private void Awake()
     {
@@ -40,7 +43,10 @@ public class GameManager : MonoBehaviour
         sceneGameOverSpawn.Add("Forest Overworld", new Vector3());
         sceneGameOverSpawn.Add("Mountain Overworld", new Vector3());
         sceneGameOverSpawn.Add("Terajaya Destroyed", new Vector3());
+        autoSaveTimer = 0;
+        gameState = State.MAIN_MENU;
         SceneManager.LoadScene("Main Menu");
+        StartCoroutine(AutoSave());
     }
 
     public void SetVolume(float master, float sfx, float music)
@@ -87,7 +93,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(buildIndex);
         StartCoroutine(ChangeScene(sceneName, done =>
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = spawnPosition;
             player.GetComponent<CharacterController>().enabled = true;
@@ -103,14 +109,18 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetFloat("posX", player.transform.position.x);
         PlayerPrefs.SetFloat("posY", player.transform.position.y);
         PlayerPrefs.SetFloat("posZ", player.transform.position.z);
-        Debug.Log(PlayerPrefs.GetFloat("posX") + " " + PlayerPrefs.GetFloat("posY") + " " + PlayerPrefs.GetFloat("posZ"));
     }
 
     public void NewGame()
     {
         ResetProgress();
-        SceneManager.LoadScene("Forest Overworld");
         Time.timeScale = 1f;
+        AsyncOperation load = SceneManager.LoadSceneAsync("Forest Overworld");
+        load.completed += (asyncOperation) =>
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            gameState = State.DEFAULT;
+        };
     }
     private void ResetProgress()
     {
@@ -140,12 +150,12 @@ public class GameManager : MonoBehaviour
         AsyncOperation load = SceneManager.LoadSceneAsync(PlayerPrefs.GetInt("sceneId"));
         load.completed += (asyncOperation) =>
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("Player");
             Vector3 position = new Vector3(PlayerPrefs.GetFloat("posX"), PlayerPrefs.GetFloat("posY"), PlayerPrefs.GetFloat("posZ"));
-            Debug.Log(PlayerPrefs.GetFloat("posX") + " " + PlayerPrefs.GetFloat("posY") + " " + PlayerPrefs.GetFloat("posZ"));
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = position;
             player.GetComponent<CharacterController>().enabled = true;
+            gameState = State.DEFAULT;
         };
     }
 
@@ -158,6 +168,7 @@ public class GameManager : MonoBehaviour
 
     public void ExitToMainMenu()
     {
+        gameState = State.MAIN_MENU;
         StartCoroutine(ChangeScene("Main Menu", done =>
         {
 
@@ -222,5 +233,21 @@ public class GameManager : MonoBehaviour
         colorText.a = 0;
         loadingBackground.color = colorBG;
         loadingText.color = colorText;
+    }
+
+    IEnumerator AutoSave()
+    {
+        while (true)
+        {
+            while (GameManager.Instance.gameState != GameManager.State.DEFAULT) yield return null;
+            autoSaveTimer += Time.deltaTime;
+            if (autoSaveTimer > 5)
+            {
+                Debug.Log("saved game");
+                SaveGame(player);
+                autoSaveTimer = 0;
+            }
+            yield return null;
+        }
     }
 }
