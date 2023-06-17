@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,11 @@ public class Inventory : ScriptableObject
         newItem.item = item;
         newItem.quantity = quantity;
         items.Add(newItem);
+    }
+
+    public ItemInstance FindItemInstance(Type itemType)
+    {
+        return this.items.Find(i => i.GetType() == itemType);
     }
 
     public bool removeItem(ItemInstance item, int quantity)

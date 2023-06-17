@@ -18,13 +18,14 @@ public abstract class StatusEffect
         this.unit = unit;
         unit.statusEffectList.Add(this);
     }
-    public virtual void DecreaseTurn()
+    public virtual int DecreaseTurn()
     {
         this.remainingTurn--;
         if (this.remainingTurn == 0)
         {
             RemoveEffect();
         }
+        return -1;
     }
     public virtual void RemoveEffect()
     {

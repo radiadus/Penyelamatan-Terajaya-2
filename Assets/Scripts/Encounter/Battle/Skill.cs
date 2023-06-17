@@ -9,6 +9,7 @@ public class Skill
     public int baseDamage;
     public int difficulty;
     public int priority = 0;
+    public AudioClip clip;
     public string skillDescription;
     public enum Target
     {

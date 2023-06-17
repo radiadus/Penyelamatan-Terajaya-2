@@ -16,4 +16,15 @@ public class Doom : StatusEffect
     {
         unit.TakeDamage(null, unit.HP);
     }
+
+    public override int DecreaseTurn()
+    {
+        this.remainingTurn--;
+        if (this.remainingTurn == 0)
+        {
+            RemoveEffect();
+            return -2;
+        }
+        return -1;
+    }
 }
