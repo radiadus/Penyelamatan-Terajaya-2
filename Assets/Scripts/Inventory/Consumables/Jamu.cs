@@ -14,6 +14,7 @@ public class Jamu : Consumable
         int heal = target.maxHP - target.HP;
         heal = heal < 100 ? heal : 100;
         target.HP += heal;
+        ((Friendly)target).SetStats();
         inventory.removeItem(instance, 1);
         return heal;
     }

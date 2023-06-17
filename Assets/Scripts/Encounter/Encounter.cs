@@ -41,7 +41,7 @@ public class Encounter : MonoBehaviour
     private List<GameObject> instantiatedEffects = new List<GameObject>();
     private Friendly[] friendlies;
     private Enemy[] enemies;
-
+    private Inventory inventory;
 
     private enum BattleState
     {
@@ -164,11 +164,14 @@ public class Encounter : MonoBehaviour
         hpPotions = GameManager.Instance.inventory.FindItemInstance(typeof(Jamu));
         mpPotions = GameManager.Instance.inventory.FindItemInstance(typeof(JamuEnergi));
 
-        hpPotionRemaining = hpPotions != null ? hpPotions.quantity : 0;
-        mpPotionRemaining = mpPotions != null ? mpPotions.quantity : 0;
+        UpdatePotionsCount();
+
+        Debug.Log("hp potions: " + hpPotionRemaining);
+        Debug.Log("mp potions: " + mpPotionRemaining);
 
         hpPotion.onClick.AddListener(delegate 
         {
+            Debug.Log("hp potions: " + hpPotionRemaining);
             if (hpPotionRemaining > 0)
             {
                 OpenFriendlySelect();
@@ -177,6 +180,7 @@ public class Encounter : MonoBehaviour
         });
         mpPotion.onClick.AddListener(delegate
         {
+            Debug.Log("mp potions: " + mpPotionRemaining);
             if (mpPotionRemaining > 0)
             {
                 OpenFriendlySelect();
@@ -212,6 +216,11 @@ public class Encounter : MonoBehaviour
         };
     }
 
+    void UpdatePotionsCount()
+    {
+        hpPotionRemaining = hpPotions != null ? hpPotions.quantity : 0;
+        mpPotionRemaining = mpPotions != null ? mpPotions.quantity : 0;
+    }
     IEnumerator StartEncounter()
     {
         Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
@@ -300,6 +309,10 @@ public class Encounter : MonoBehaviour
                         }
                     }
                 }
+            }
+            foreach (Friendly friendly in friendlies)
+            {
+                friendly.SetStats();
             }
             textBox.SetActive(false);
             actions.Clear();
@@ -464,6 +477,8 @@ public class Encounter : MonoBehaviour
 
     public void StartTurn(int turn)
     {
+        friendlySelect.SetActive(false);
+        enemySelect.SetActive(false);
         if (characterTurn > 2)
             return;
         if (friendlies[turn].IsDead())
@@ -472,6 +487,7 @@ public class Encounter : MonoBehaviour
             StartTurn(characterTurn);
             return;
         }
+        UpdatePotionsCount();
         Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         InstantiatePanels(friendlies[turn]);
         OpenBattlePanel(friendlies[turn]);
@@ -573,6 +589,8 @@ public class Encounter : MonoBehaviour
                 }
             }
         }
+        hpPotionRemainingText.text = "x" + hpPotionRemaining;
+        mpPotionRemainingText.text = "x" + mpPotionRemaining;
     }
 
     void UpdateHPMPBar(int index)
@@ -655,9 +673,12 @@ public class Encounter : MonoBehaviour
         friendlyConfirm.onClick.RemoveAllListeners();
         friendlyConfirm.onClick.AddListener(delegate
         {
-            actions.Add(new Action(friendlies[characterTurn], item, GetSelectedFriendly()));
-            characterTurn++;
-            StartTurn(characterTurn);
+            if (GetSelectedFriendly().Count > 0)
+            {
+                actions.Add(new Action(friendlies[characterTurn], item, GetSelectedFriendly()));
+                characterTurn++;
+                StartTurn(characterTurn);
+            }
         });
     }
 

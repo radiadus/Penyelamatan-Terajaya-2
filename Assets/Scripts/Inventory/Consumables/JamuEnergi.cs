@@ -6,12 +6,16 @@ public class JamuEnergi : Consumable
 {
     public override int Use(CombatUnit user, List<CombatUnit> targets)
     {
+        Inventory inventory = GameManager.Instance.inventory;
+        ItemInstance instance = inventory.FindItemInstance(this.GetType());
+        if (instance == null || instance.quantity == 0) return -2; 
         CombatUnit target = targets[0];
+        if (target.IsDead()) return -2;
         int heal = target.maxMP - target.MP;
         heal = heal < 50 ? heal : 50;
         target.MP += heal;
-        Inventory inventory = GameManager.Instance.inventory;
-        inventory.removeItem(inventory.items.Find(instance => instance.item == this), 1);
+        ((Friendly)target).SetStats();
+        inventory.removeItem(instance, 1);
         return heal;
     }
 }

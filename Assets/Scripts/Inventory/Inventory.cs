@@ -48,7 +48,7 @@ public class Inventory : ScriptableObject
 
     public ItemInstance FindItemInstance(Type itemType)
     {
-        return this.items.Find(i => i.GetType() == itemType);
+        return this.items.Find(i => i.item.GetType() == itemType);
     }
 
     public bool removeItem(ItemInstance item, int quantity)
