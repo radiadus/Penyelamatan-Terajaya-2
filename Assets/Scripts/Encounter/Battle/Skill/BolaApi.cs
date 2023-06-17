@@ -24,6 +24,8 @@ public class BolaApi : Skill
             int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
             if (damage == -1) return -3;
             target.TakeDamage(caster, damage);
+            AudioSource source = GameManager.Instance.gameObject.GetComponent<AudioSource>();
+            source.clip = this.clip;
             return damage;
         }
         return -2;

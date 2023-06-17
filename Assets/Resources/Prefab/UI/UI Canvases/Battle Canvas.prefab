@@ -20413,6 +20413,8 @@ MonoBehaviour:
   friendlyConfirm: {fileID: 570361996345212746}
   enemyConfirm: {fileID: 1479624095188914407}
   winButton: {fileID: 3879722019569876348}
+  hpPotion: {fileID: 5548475060808976514}
+  mpPotion: {fileID: 1071799705140281228}
   attackDifficulty:
   - {fileID: 1132053461609829316}
   - {fileID: 1132053461768424472}
@@ -20462,6 +20464,8 @@ MonoBehaviour:
   textBoxText: {fileID: 1132053462429968620}
   questionText: {fileID: 1132053462824592399}
   goldText: {fileID: 7125811806254804778}
+  hpPotionRemainingText: {fileID: 7278642313338953043}
+  mpPotionRemainingText: {fileID: 6339877134318836816}
   answerText:
   - {fileID: 1132053461586121706}
   - {fileID: 1132053461919410820}
