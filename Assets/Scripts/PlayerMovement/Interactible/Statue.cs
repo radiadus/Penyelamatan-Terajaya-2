@@ -9,7 +9,7 @@ public class Statue : Interactible
     public int id;
     public string statueCode;
     private bool solved;
-    private bool showCanvas;
+    private bool textBoxDone;
     private Question question;
     public GameObject questionCanvas, correctImage, incorrectImage;
     public Button[] answerButton;
@@ -21,7 +21,7 @@ public class Statue : Interactible
     {
         base.Start();
         question = QuestionReader.Instance.GetStatueQuestion(id);
-        showCanvas = false;
+        textBoxDone = false;
     }
 
     protected override int CheckUsedText()
@@ -57,6 +57,7 @@ public class Statue : Interactible
         {
             PlayerPrefs.SetInt(statueCode, 1);
             solved = true;
+            usedText = 2;
             StartCoroutine(ShowResult(true));
             GameManager.Instance.UpdateSkills();
             return;
@@ -66,17 +67,23 @@ public class Statue : Interactible
     public override void ClosePanel()
     {
         textBox.SetActive(false);
-        showCanvas = true;
+        textBoxDone = true;
     }
 
     protected override IEnumerator ShowText()
     {
         yield return base.ShowText();
+        while (!textBoxDone) yield return null;
         if (!solved)
         {
-            while (!showCanvas) yield return null;
             Solve();
         }
+        else
+        {
+            GameManager.Instance.gameState = GameManager.State.DEFAULT;
+            Time.timeScale = 1f;
+        }
+        textBoxDone = false;
 
     }
 
@@ -85,7 +92,10 @@ public class Statue : Interactible
         if (correct) correctImage.SetActive(true);
         else incorrectImage.SetActive(true);
         yield return new WaitForSecondsRealtime(1);
+        correctImage.SetActive(false);
+        incorrectImage.SetActive(false);
         questionCanvas.SetActive(false);
         GameManager.Instance.gameState = GameManager.State.DEFAULT;
+        Time.timeScale = 1f;
     }
 }

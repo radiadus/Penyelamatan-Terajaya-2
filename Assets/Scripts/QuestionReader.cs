@@ -44,9 +44,7 @@ public class QuestionReader : MonoBehaviour
             answers[3] = data[4];
             question.answer = answers;
             question.key = data[5][0];
-            Debug.Log(data[6]);
             question.difficulty = int.Parse(data[6]);
-            Debug.Log(question.difficulty);
             switch (data[7])
             {
                 case "PG2":

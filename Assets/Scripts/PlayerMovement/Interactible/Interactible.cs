@@ -20,17 +20,18 @@ public abstract class Interactible : MonoBehaviour
     {
         this.usedText = CheckUsedText();
         this.textBoxButton = textBox.GetComponent<Button>();
-        this.text = DialogueReader.Instance.GetDialoguesByCodeAndId(dialogueCode, usedText);
-        
     }
 
     protected virtual int CheckUsedText()
     {
-        return 1;
+        return PlayerPrefs.GetInt("batuPusaka", 0) == 1 ? 2 : 1;
     }
 
     public virtual void Interact()
     {
+        Time.timeScale = 0f;
+        this.usedText = CheckUsedText();
+        this.text = DialogueReader.Instance.GetDialoguesByCodeAndId(dialogueCode, usedText);
         textBox.SetActive(true);
         namePanel.text = name;
         currentPage = 0;
@@ -52,10 +53,12 @@ public abstract class Interactible : MonoBehaviour
     {
         textBox.SetActive(false);
         GameManager.Instance.gameState = GameManager.State.DEFAULT;
+        Time.timeScale = 1f;
     }
 
     protected virtual IEnumerator ShowText()
     {
+        Debug.Log("CurrentPage: "+currentPage);
         int maxPage = text.Count;
         ShowPage(maxPage);
         while(currentPage < maxPage)
