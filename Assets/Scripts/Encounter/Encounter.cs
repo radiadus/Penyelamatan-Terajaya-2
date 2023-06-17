@@ -1,12 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
+using Random = UnityEngine.Random;
 public class Encounter : MonoBehaviour
 {
     private float[][] characterPositions = new float[][]
@@ -24,20 +28,20 @@ public class Encounter : MonoBehaviour
         new float[] {1f, 7f}
     };
 
-    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm, winButton;
+    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm, winButton, hpPotion, mpPotion;
     public Button[] attackDifficulty, answerButton, enemyButton, friendlyButton;
     public Slider[] hpBar, mpBar;
     public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, correctImage, incorrectImage, enemySelect, winPanel;
     public GameObject[] attackPanel;
     public GameObject[] friendlyTarget, enemyTarget;
-    public TextMeshProUGUI textBoxText, questionText, goldText;
+    public TextMeshProUGUI textBoxText, questionText, goldText, hpPotionRemainingText, mpPotionRemainingText;
     public TextMeshProUGUI[] answerText, levelText, expText;
     public GameObject[] friendlyPrefabs;
     public GameObject[] enemyPrefabs;
     private List<GameObject> instantiatedEffects = new List<GameObject>();
     private Friendly[] friendlies;
     private Enemy[] enemies;
-
+    private Inventory inventory;
 
     private enum BattleState
     {
@@ -60,6 +64,8 @@ public class Encounter : MonoBehaviour
         public Function func;
         public CombatUnit user;
         public List<CombatUnit> targets;
+        public AudioClip clip;
+
         public string actionName;
         public int fleeRoll, priority;
         public bool FleeSuccesful()
@@ -76,6 +82,7 @@ public class Encounter : MonoBehaviour
             this.user = caster;
             this.targets = targets;
             this.priority = skill.priority;
+            this.clip = skill.clip;
         }
 
         public Action(CombatUnit user, Consumable consumable, List<CombatUnit> targets)
@@ -86,6 +93,7 @@ public class Encounter : MonoBehaviour
             this.user = user;
             this.targets = targets;
             this.priority = 0;
+            this.clip = consumable.clip;
         }
 
         public Action(Enemy enemy, List<CombatUnit> targets)
@@ -95,6 +103,7 @@ public class Encounter : MonoBehaviour
             this.user = enemy;
             this.targets = targets;
             this.priority = 0;
+            this.clip = Enemy.clip;
         }
 
         public Action(Friendly friendly)
@@ -106,7 +115,7 @@ public class Encounter : MonoBehaviour
             this.priority = 0;
             this.func = delegate (CombatUnit unit, List<CombatUnit> targets)
             {
-                if (this.fleeRoll > 191) return 1;
+                if (this.fleeRoll > 0) return 1;
                 return 0;
             };
         }
@@ -134,6 +143,8 @@ public class Encounter : MonoBehaviour
     private int characterTurn;
     private int enemyRemaining;
     private int friendlyRemaining;
+    private int hpPotionRemaining, mpPotionRemaining;
+    private ItemInstance hpPotions, mpPotions;
 
     // Start is called before the first frame update
     void Start()
@@ -150,8 +161,36 @@ public class Encounter : MonoBehaviour
         item.onClick.AddListener(delegate { OpenItemPanel(); });
         flee.onClick.AddListener(delegate { Flee(); });
 
-        undoFriendly.onClick.AddListener(delegate { UndoFriendlySelect(); });
-        undoEnemy.onClick.AddListener(delegate { UndoEnemySelect(); });
+        hpPotions = GameManager.Instance.inventory.FindItemInstance(typeof(Jamu));
+        mpPotions = GameManager.Instance.inventory.FindItemInstance(typeof(JamuEnergi));
+
+        UpdatePotionsCount();
+
+        Debug.Log("hp potions: " + hpPotionRemaining);
+        Debug.Log("mp potions: " + mpPotionRemaining);
+
+        hpPotion.onClick.AddListener(delegate 
+        {
+            Debug.Log("hp potions: " + hpPotionRemaining);
+            if (hpPotionRemaining > 0)
+            {
+                OpenFriendlySelect();
+                InitializeFriendlyListener((Consumable)hpPotions.item);
+            }
+        });
+        mpPotion.onClick.AddListener(delegate
+        {
+            Debug.Log("mp potions: " + mpPotionRemaining);
+            if (mpPotionRemaining > 0)
+            {
+                OpenFriendlySelect();
+                InitializeFriendlyListener((Consumable)mpPotions.item);
+            }
+        });
+
+
+        undoFriendly.onClick.AddListener(delegate { UndoFriendlySelect(); textBox.SetActive(false); });
+        undoEnemy.onClick.AddListener(delegate { UndoEnemySelect(); textBox.SetActive(false); });
 
         for(int i = 0; i < 3; i++)
         {
@@ -177,6 +216,11 @@ public class Encounter : MonoBehaviour
         };
     }
 
+    void UpdatePotionsCount()
+    {
+        hpPotionRemaining = hpPotions != null ? hpPotions.quantity : 0;
+        mpPotionRemaining = mpPotions != null ? mpPotions.quantity : 0;
+    }
     IEnumerator StartEncounter()
     {
         Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
@@ -250,7 +294,7 @@ public class Encounter : MonoBehaviour
                             text += " menggunakan " + action.actionName + "!";
                         }
                         if (number == -3) text += " Meleset!";
-                        else if (number != -1) text += " (" + number + " total kerusakan)";
+                        else if (number != -1) text += " (" + number + " total poin kesehatan)";
                         textBoxText.text = text;
                         UpdateHPMPBar(0);
                         UpdateHPMPBar(1);
@@ -265,6 +309,10 @@ public class Encounter : MonoBehaviour
                         }
                     }
                 }
+            }
+            foreach (Friendly friendly in friendlies)
+            {
+                friendly.SetStats();
             }
             textBox.SetActive(false);
             actions.Clear();
@@ -283,16 +331,38 @@ public class Encounter : MonoBehaviour
                 for (int i = friendly.statusEffectList.Count-1; i > -1; i--)
                 {
                     StatusEffect effect = friendly.statusEffectList[i];
-                    effect.DecreaseTurn();
+                    int number = effect.DecreaseTurn();
                     UpdateHPMPBar(0);
                     UpdateHPMPBar(1);
                     UpdateHPMPBar(2);
                     UpdateRemainingUnits();
+                    if (number != -1)
+                    {
+                        textBox.SetActive(true);
+                        string text = friendly.name;
+                        if(number == -2)
+                        {
+                            text += " ditaklukkan oleh efek sakratul maut!";
+                        }
+                        else
+                        {
+                            text += " tersakiti oleh ";
+                            if (effect.GetType() == typeof(Poison)) text += "racun!";
+                            else if (effect.GetType() == typeof(Burn)) text += "luka bakar!";
+                            text += " (" + number + " poin kesehatan)";
+                        }
+                        textBoxText.text = text;
+                        yield return new WaitForSecondsRealtime(2);
+                    }
                     if (enemyRemaining == 0 || friendlyRemaining == 0)
                     {
                         BattleStatus();
                         textBox.SetActive(false);
                         yield break;
+                    }
+                    if (friendly.IsDead())
+                    {
+                        break;
                     }
                 }
             }
@@ -302,8 +372,26 @@ public class Encounter : MonoBehaviour
                 {
                     StatusEffect effect = enemy.statusEffectList[i];
                     Debug.Log(effect.GetType().Name);
-                    effect.DecreaseTurn();
+                    int number = effect.DecreaseTurn();
                     UpdateRemainingUnits();
+                    if (number != -1)
+                    {
+                        textBox.SetActive(true);
+                        string text = enemy.name;
+                        if (number == -2)
+                        {
+                            text += " ditaklukkan oleh efek sakratul maut!";
+                        }
+                        else
+                        {
+                            text += " tersakiti oleh ";
+                            if (effect.GetType() == typeof(Poison)) text += "racun!";
+                            else if (effect.GetType() == typeof(Burn)) text += "luka bakar!";
+                            text += " (" + number + " poin kesehatan)";
+                        }
+                        textBoxText.text = text;
+                        yield return new WaitForSecondsRealtime(2);
+                    }
                     if (enemyRemaining == 0 || friendlyRemaining == 0)
                     {
                         BattleStatus();
@@ -317,6 +405,7 @@ public class Encounter : MonoBehaviour
                 }
             }
             state = BattleState.PLAYER_TURN;
+            textBox.SetActive(false);
             StartTurn(characterTurn);
 
             yield return null;
@@ -388,6 +477,8 @@ public class Encounter : MonoBehaviour
 
     public void StartTurn(int turn)
     {
+        friendlySelect.SetActive(false);
+        enemySelect.SetActive(false);
         if (characterTurn > 2)
             return;
         if (friendlies[turn].IsDead())
@@ -396,6 +487,7 @@ public class Encounter : MonoBehaviour
             StartTurn(characterTurn);
             return;
         }
+        UpdatePotionsCount();
         Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         InstantiatePanels(friendlies[turn]);
         OpenBattlePanel(friendlies[turn]);
@@ -445,7 +537,7 @@ public class Encounter : MonoBehaviour
         List<Skill> skills = friendly.stats.skillList;
         float x = 0;
         float y = 0;
-        int[] count = new int[] { 0, 0, 0};
+        int[] count = new int[] { 0, 0, 0 };
         for (int i = 0; i < skills.Count; i++)
         {
             int index = i;
@@ -497,6 +589,8 @@ public class Encounter : MonoBehaviour
                 }
             }
         }
+        hpPotionRemainingText.text = "x" + hpPotionRemaining;
+        mpPotionRemainingText.text = "x" + mpPotionRemaining;
     }
 
     void UpdateHPMPBar(int index)
@@ -506,7 +600,6 @@ public class Encounter : MonoBehaviour
     }
     void ChooseTarget(Skill skill)
     {
-        List<CombatUnit> target = new List<CombatUnit>();
         switch (skill.target)
         {
             case Skill.Target.ALLY:
@@ -565,9 +658,28 @@ public class Encounter : MonoBehaviour
         friendlyConfirm.onClick.RemoveAllListeners();
         friendlyConfirm.onClick.AddListener(delegate { OpenQuestionPanel(skill, GetSelectedFriendly()); textBox.SetActive(false); });
     }
-    void InitializeFriendlyListener(Item item)
+    void InitializeFriendlyListener(Consumable item)
     {
-
+        for (int i = 0; i < friendlies.Length; i++)
+        {
+            int index = i;
+            friendlyButton[index].onClick.RemoveAllListeners();
+            friendlyButton[index].onClick.AddListener(delegate
+            {
+                ResetFriendlyChoice();
+                friendlyTarget[index].SetActive(true);
+            });
+        }
+        friendlyConfirm.onClick.RemoveAllListeners();
+        friendlyConfirm.onClick.AddListener(delegate
+        {
+            if (GetSelectedFriendly().Count > 0)
+            {
+                actions.Add(new Action(friendlies[characterTurn], item, GetSelectedFriendly()));
+                characterTurn++;
+                StartTurn(characterTurn);
+            }
+        });
     }
 
     List<CombatUnit> GetSelectedFriendly()

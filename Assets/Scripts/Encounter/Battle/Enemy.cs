@@ -14,7 +14,13 @@ public abstract class Enemy : CombatUnit
     public string attackTarget;
     public int goldGain;
     public int expGain;
-    
+    public static AudioClip clip;
+
+    protected override void Start()
+    {
+        base.Start();
+        clip = Resources.Load<AudioClip>("");
+    }
     public override void PlayDeadAnimation()
     {
         if (animator!= null)

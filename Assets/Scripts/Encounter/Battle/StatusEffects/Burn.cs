@@ -14,9 +14,10 @@ public class Burn : StatusEffect
         this.TakeEffect(unit);
     }
 
-    public override void DecreaseTurn()
+    public override int DecreaseTurn()
     {
         unit.TakeDamage(null, potency);
         base.DecreaseTurn();
+        return potency;
     }
 }

@@ -11,7 +11,7 @@ public class Statue : Interactible
     private bool solved;
     private bool textBoxDone;
     private Question question;
-    public GameObject questionCanvas, correctImage, incorrectImage;
+    public GameObject questionCanvas, correctImage, incorrectImage, aura;
     public Button[] answerButton;
     public TextMeshProUGUI questionText;
     public TextMeshProUGUI[] answerText;
@@ -22,6 +22,8 @@ public class Statue : Interactible
         base.Start();
         question = QuestionReader.Instance.GetStatueQuestion(id);
         textBoxDone = false;
+        solved = PlayerPrefs.GetInt(statueCode, 0) == 1;
+        SetSolved();
     }
 
     protected override int CheckUsedText()
@@ -33,6 +35,14 @@ public class Statue : Interactible
     public override void Interact()
     {
         base.Interact();
+    }
+
+    private void SetSolved()
+    {
+        if (solved)
+        {
+            aura.SetActive(false);
+        }
     }
 
     private void Solve()
@@ -92,6 +102,7 @@ public class Statue : Interactible
         if (correct) correctImage.SetActive(true);
         else incorrectImage.SetActive(true);
         yield return new WaitForSecondsRealtime(1);
+        SetSolved();
         correctImage.SetActive(false);
         incorrectImage.SetActive(false);
         questionCanvas.SetActive(false);

@@ -12,6 +12,7 @@ public abstract class Consumable : Item
         ALL_ENEMIES
     }
     [SerializeField] private Target itemTarget;
+    public AudioClip clip;
 
     public abstract int Use(CombatUnit user, List<CombatUnit> target);
 }

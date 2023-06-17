@@ -41,6 +41,7 @@ public class EncounterManager : MonoBehaviour
         {
             GameManager.Instance.gameState = GameManager.State.DEFAULT;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameManager.Instance.player = player;
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = lastPosition;
             player.GetComponent<CharacterController>().enabled = true;
@@ -64,6 +65,7 @@ public class EncounterManager : MonoBehaviour
         {
             GameManager.Instance.gameState = GameManager.State.DEFAULT;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameManager.Instance.player = player;
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = GameManager.Instance.sceneGameOverSpawn[SceneManager.GetActiveScene().name];
             player.GetComponent<CharacterController>().enabled = true;
@@ -79,7 +81,10 @@ public class EncounterManager : MonoBehaviour
         {
             GameManager.Instance.gameState = GameManager.State.DEFAULT;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameManager.Instance.player = player;
+            player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = lastPosition;
+            player.GetComponent<CharacterController>().enabled = true;
             GameManager.Instance.SaveGame(player);
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject enemy in enemies)
