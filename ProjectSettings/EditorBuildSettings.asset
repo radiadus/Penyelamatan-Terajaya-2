@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ampas/MovementSample.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ampas/EncounterSample.unity
     guid: df8b574b8a40f9a4794f5d8b47d4f691
+  - enabled: 1
+    path: Assets/Scenes/Jason/Event System Loader.unity
+    guid: 770e60693553f2047baea1fe429038e8
+  - enabled: 1
+    path: Assets/Scenes/Katze UI/Main Menu.unity
+    guid: 0bc8b8189a097ba46a7973103de7b0b3
   - enabled: 1
     path: Assets/Scenes/Jason/Forest Overworld.unity
     guid: f979700d41caef44881a157a0290bb20
@@ -23,9 +29,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Jason/Terajaya Overworld.unity
     guid: 848cb091b33794440bc4fa66dfc960d5
-  - enabled: 1
-    path: Assets/Scenes/Katze UI/Main Menu.unity
-    guid: 0bc8b8189a097ba46a7973103de7b0b3
   - enabled: 1
     path: Assets/Scenes/Jason/Forest Encounter.unity
     guid: 2a152e1ff24a1d14fa26fceb24c1cbbd
