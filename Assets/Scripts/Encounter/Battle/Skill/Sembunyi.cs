@@ -13,6 +13,7 @@ public class Sembunyi : Skill
         this.target = Target.SELF;
         this.difficulty = 1;
         this.skillDescription = "Pembunuh tidak dapat diserang selama 1 giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Smoke");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

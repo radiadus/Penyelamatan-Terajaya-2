@@ -13,6 +13,7 @@ public class Provokasi : Skill
         this.target = Target.SELF;
         this.difficulty = 1;
         this.skillDescription = "Membuat seluruh musuh menyerang karakter ini";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior Buff");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

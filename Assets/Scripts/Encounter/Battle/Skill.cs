@@ -11,6 +11,7 @@ public class Skill
     public int priority = 0;
     public AudioClip clip;
     public string skillDescription;
+    public string path = "SFX/Fight Effects/";
     public enum Target
     {
         ALLY,

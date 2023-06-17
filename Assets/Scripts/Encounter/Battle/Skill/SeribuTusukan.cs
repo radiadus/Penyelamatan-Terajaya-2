@@ -12,6 +12,7 @@ public class SeribuTusukan : Skill
         this.target = Target.ENEMY;
         this.difficulty = 2;
         this.skillDescription = "Menusuk musuh berkali-kali";
+        this.clip = Resources.Load<AudioClip>(path + "Assassin 2");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

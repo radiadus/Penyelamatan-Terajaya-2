@@ -12,6 +12,7 @@ public class Kilat : Skill
         this.target = Target.ALL_ENEMY;
         this.difficulty = 1;
         this.skillDescription = "Mengurangi akurasi musuh menyerang";
+        this.clip = Resources.Load<AudioClip>(path + "Kilat");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

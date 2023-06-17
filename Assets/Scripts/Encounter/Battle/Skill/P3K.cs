@@ -12,6 +12,7 @@ public class P3K : Skill
         this.target = Target.SELF;
         this.difficulty = 1;
         this.skillDescription = "Menyembuhkan diri sendiri";
+        this.clip = Resources.Load<AudioClip>(path + "Mage Heal");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

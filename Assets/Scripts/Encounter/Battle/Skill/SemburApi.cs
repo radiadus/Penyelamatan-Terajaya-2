@@ -12,6 +12,7 @@ public class SemburApi : Skill
         this.target = Target.ENEMY;
         this.difficulty = 2;
         this.skillDescription = "Menyerang lawan dan memiliki kemungkinan membuat lawan terbakar selama beberapa giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Mage 2");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

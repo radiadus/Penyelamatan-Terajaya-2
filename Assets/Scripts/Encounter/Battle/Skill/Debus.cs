@@ -13,6 +13,7 @@ public class Debus : Skill
         this.priority = 1;
         this.difficulty = 1;
         this.skillDescription = "Dukun tidak dapat diserang selama 1 giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Smoke");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

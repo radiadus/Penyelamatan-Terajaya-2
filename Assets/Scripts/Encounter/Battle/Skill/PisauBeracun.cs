@@ -12,6 +12,7 @@ public class PisauBeracun : Skill
         this.target = Target.ENEMY;
         this.difficulty = 2;
         this.skillDescription = "Menyerang musuh dengan pisau beracun, memiliki kemungkinan membuat musuh terkena racun";
+        this.clip = Resources.Load<AudioClip>(path + "Assassin 2");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

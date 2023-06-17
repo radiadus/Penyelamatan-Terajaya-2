@@ -12,6 +12,7 @@ public class Potong : Skill
         this.target = Target.ENEMY;
         this.difficulty = 1;
         this.skillDescription = "Memotong lawan";
+        this.clip = Resources.Load<AudioClip>(path + "Assassin Slash");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

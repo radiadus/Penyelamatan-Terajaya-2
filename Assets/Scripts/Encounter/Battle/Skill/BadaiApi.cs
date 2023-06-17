@@ -12,6 +12,7 @@ public class BadaiApi : Skill
         this.target = Target.ALL_ENEMY;
         this.difficulty = 3;
         this.skillDescription = "Menyerang semua musuh dan memberikan efek terbakar selama beberapa giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Mage 2");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

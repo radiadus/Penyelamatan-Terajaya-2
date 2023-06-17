@@ -12,6 +12,7 @@ public class TebasanLebar : Skill
         this.target = Target.ALL_ENEMY;
         this.difficulty = 2;
         this.skillDescription = "Menyerang seluruh musuh";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior Slash");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

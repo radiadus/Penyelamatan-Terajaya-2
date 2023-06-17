@@ -12,6 +12,7 @@ public class SemangatPemuda : Skill
         this.target = Target.ALL_ALLY;
         this.difficulty = 2;
         this.skillDescription = "Meningkatkan pertahanan seluruh karakter";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior Buff");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

@@ -12,6 +12,7 @@ public class Bangkit : Skill
         this.target = Target.ALLY;
         this.difficulty = 3;
         this.skillDescription = "Membangkitkan karakter lain yang telah mati";
+        this.clip = Resources.Load<AudioClip>(path + "Mage Heal");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
