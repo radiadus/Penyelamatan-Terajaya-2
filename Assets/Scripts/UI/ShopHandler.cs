@@ -9,7 +9,7 @@ public class ShopHandler : MonoBehaviour
     private List<int> itemIds = new List<int>();
     [SerializeField] private Button shopButton, upgradeButton, exit;
     [SerializeField] private GameObject shop, upgrade, canvas;
-    private GameObject shopItem;
+    [SerializeField] private GameObject shopItem;
     private RectTransform shopBGRtf;
     
 
@@ -38,7 +38,6 @@ public class ShopHandler : MonoBehaviour
     private void CreateShopItem(int itemId, Vector2 position)
     {
         Debug.Log("" + itemId + " " + position.x + " " + position.y);
-        shopItem = Resources.Load("ShopItem") as GameObject;
         RectTransform shopItemRtf = shopItem.GetComponent<RectTransform>();
         shopItemRtf.position = new Vector2(0, 0);
         shopItemRtf.position = position;

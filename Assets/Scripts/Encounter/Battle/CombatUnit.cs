@@ -78,7 +78,7 @@ public abstract class CombatUnit : MonoBehaviour
         bool evadeCheck = Random.Range(0, 100) >= target.evasion;
         if (accCheck && evadeCheck)
         {
-            int damage = (int)(attacker.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f) * (100 - target.defense) / 100);
+            int damage = (int)(attacker.GetAttack() * (float)baseDamage / 100 * Random.Range(0.95f, 1.05f) * ((float)(100 - target.defense)) / 100);
             int index = target.statusEffectList.FindIndex(e => e.GetType() == typeof(Sturdy));
             if (index >= 0)
             {
