@@ -12,6 +12,7 @@ public class Tusuk : Skill
         this.target = Target.ENEMY;
         this.difficulty = 1;
         this.skillDescription = "Pembunuh menusuk lawan";
+        this.clip = Resources.Load<AudioClip>(path + "Assassin 2");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

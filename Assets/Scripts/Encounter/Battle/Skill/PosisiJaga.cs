@@ -12,6 +12,7 @@ public class PosisiJaga : Skill
         this.target = Target.SELF;
         this.difficulty = 2;
         this.skillDescription = "Pertahanan petarung meningkat selama 3 giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior Buff");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

@@ -12,6 +12,7 @@ public class Petir : Skill
         this.target = Target.ENEMY;
         this.difficulty = 2;
         this.skillDescription = "Menyerang dan memiliki kemungkinan untuk mengurangi serangan musuh";
+        this.clip = Resources.Load<AudioClip>(path + "Thunder");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

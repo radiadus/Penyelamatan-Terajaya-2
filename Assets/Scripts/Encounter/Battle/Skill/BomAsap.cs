@@ -12,6 +12,7 @@ public class BomAsap : Skill
         this.target = Target.ALL_ENEMY;
         this.difficulty = 1;
         this.skillDescription = "Menurunkan akurasi serangan semua musuh";
+        this.clip = Resources.Load<AudioClip>(path + "Smoke");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

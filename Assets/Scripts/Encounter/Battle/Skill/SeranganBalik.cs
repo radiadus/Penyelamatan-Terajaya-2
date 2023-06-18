@@ -12,6 +12,7 @@ public class SeranganBalik : Skill
         this.target = Target.SELF;
         this.difficulty = 3;
         this.skillDescription = "Serangan petarung akan meningkat untuk giliran selanjutnya setiap kali diserang";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior 2");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

@@ -12,6 +12,7 @@ public class BomBeracun : Skill
         this.target = Target.ALL_ENEMY;
         this.difficulty = 2;
         this.skillDescription = "Memiliki kemungkinan membuat sebagian atau seluruh musuh terkena racun";
+        this.clip = Resources.Load<AudioClip>(path + "Smoke");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

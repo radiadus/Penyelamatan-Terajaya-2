@@ -12,6 +12,7 @@ public class Jimat : Skill
         this.target = Target.ALLY;
         this.difficulty = 2;
         this.skillDescription = "Meningkatkan serangan karakter yang diberikan jimat";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior Buff");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

@@ -12,6 +12,7 @@ public class BolaApi : Skill
         this.target = Target.ENEMY;
         this.difficulty = 1;
         this.skillDescription = "Menyerang lawan dengan bola api";
+        this.clip = Resources.Load<AudioClip>(path + "Mage 1");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)
@@ -24,8 +25,6 @@ public class BolaApi : Skill
             int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
             if (damage == -1) return -3;
             target.TakeDamage(caster, damage);
-            AudioSource source = GameManager.Instance.gameObject.GetComponent<AudioSource>();
-            source.clip = this.clip;
             return damage;
         }
         return -2;

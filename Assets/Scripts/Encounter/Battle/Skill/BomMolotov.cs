@@ -12,6 +12,7 @@ public class BomMolotov : Skill
         this.target = Target.ALL_ENEMY;
         this.difficulty = 3;
         this.skillDescription = "Menyerang semua musuh dan memiliki kemungkinan membuat sebagian atau seluruh musuh terbakar";
+        this.clip = Resources.Load<AudioClip>(path + "Molly");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

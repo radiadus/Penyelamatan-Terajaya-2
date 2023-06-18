@@ -12,6 +12,7 @@ public class Penyembuhan : Skill
         this.target = Target.ALLY;
         this.difficulty = 1;
         this.skillDescription = "Menyembuhkan diri sendiri atau karakter lain";
+        this.clip = Resources.Load<AudioClip>(path + "Mage Heal");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

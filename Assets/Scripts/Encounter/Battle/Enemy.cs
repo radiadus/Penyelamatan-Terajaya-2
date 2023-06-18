@@ -19,7 +19,7 @@ public abstract class Enemy : CombatUnit
     protected override void Start()
     {
         base.Start();
-        clip = Resources.Load<AudioClip>("");
+        clip = Resources.Load<AudioClip>("SFX/Fight Effects/Enemy Damaged");
     }
     public override void PlayDeadAnimation()
     {

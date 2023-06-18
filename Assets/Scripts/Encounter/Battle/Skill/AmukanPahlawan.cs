@@ -12,6 +12,7 @@ public class AmukanPahlawan : Skill
         this.target = Target.SELF;
         this.difficulty = 3;
         this.skillDescription = "Petarung menurunkan pertahanan sendiri namun meningkatkan serangan selama 3 giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Warrior Shout");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

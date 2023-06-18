@@ -12,6 +12,7 @@ public class SakratulMaut : Skill
         this.target = Target.ENEMY;
         this.difficulty = 3;
         this.skillDescription = "Bila berhasil, musuh akan mati dalam 3 giliran";
+        this.clip = Resources.Load<AudioClip>(path + "Doom");
     }
 
     public override int Cast(CombatUnit caster, List<CombatUnit> targets)

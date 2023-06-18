@@ -5,10 +5,8 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 using Random = UnityEngine.Random;
 public class Encounter : MonoBehaviour
@@ -41,7 +39,7 @@ public class Encounter : MonoBehaviour
     private List<GameObject> instantiatedEffects = new List<GameObject>();
     private Friendly[] friendlies;
     private Enemy[] enemies;
-    private Inventory inventory;
+    public AudioSource audioSource;
 
     private enum BattleState
     {
@@ -149,6 +147,7 @@ public class Encounter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GameManager.Instance.gameObject.GetComponent<AudioSource>();
         FetchFriendlies();
         SpawnPositionsAndInstantiateClasses();
 
@@ -296,6 +295,9 @@ public class Encounter : MonoBehaviour
                         if (number == -3) text += " Meleset!";
                         else if (number != -1) text += " (" + number + " total poin kesehatan)";
                         textBoxText.text = text;
+                        Debug.Log(action.clip.name);
+                        audioSource.clip = action.clip;
+                        audioSource.Play();
                         UpdateHPMPBar(0);
                         UpdateHPMPBar(1);
                         UpdateHPMPBar(2);
