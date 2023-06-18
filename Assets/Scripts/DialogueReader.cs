@@ -20,7 +20,7 @@ public class DialogueReader : MonoBehaviour
     private Dictionary<string, Dictionary<int, List<string>>> FetchDialogues()
     {
         Dictionary<string, Dictionary<int, List<string>>> dialogues = new Dictionary<string, Dictionary<int, List<string>>>();
-        StreamReader file = File.OpenText("Assets/Resources/NPC Dialogues 2.csv");
+        StreamReader file = File.OpenText("Assets/Resources/NPC_Dialogues_2.csv");
         string line = "";
         while ((line = file.ReadLine()) != null)
         {
