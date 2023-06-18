@@ -4315,6 +4315,7 @@ MonoBehaviour:
   shop: {fileID: 4810217159682321974}
   upgrade: {fileID: 4810217160043386260}
   canvas: {fileID: 4810217159883448593}
+  shopItem: {fileID: 2923168854470767191, guid: e2552f15add941d42971b08ed6e2f7c2, type: 3}
 --- !u!1 &4810217159948416966
 GameObject:
   m_ObjectHideFlags: 0
