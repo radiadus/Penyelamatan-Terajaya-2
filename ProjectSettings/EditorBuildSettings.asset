@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Jason/Cutscene Awal.unity
     guid: 697e16760b2544e469a4fe23287a7cf0
+  - enabled: 1
+    path: Assets/Scenes/Jason/Cutscene Ending.unity
+    guid: ff62c147b1856cc4cb423b7f0f152f31
   m_configObjects: {}

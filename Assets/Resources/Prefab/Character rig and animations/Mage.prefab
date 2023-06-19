@@ -3853,7 +3853,7 @@ Transform:
   m_GameObject: {fileID: 8202437720320454177}
   m_LocalRotation: {x: -0, y: 0.9997195, z: -0, w: 0.023685949}
   m_LocalPosition: {x: -12.22, y: -0.021, z: 36.55}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8202437720306088555}
@@ -3909,6 +3909,8 @@ MonoBehaviour:
   animator: {fileID: 8202437720320454176}
   targetable: 0
   name: Dukun
+  accuracy: 0
+  evasion: 0
   stats: {fileID: 11400000, guid: 0e020d87d611b6d4eb4e0518cf932bad, type: 2}
   equipment: {fileID: 11400000, guid: 3dcc2f2ce7471d840bdfbeaf1290d555, type: 2}
 --- !u!1 &8202437720345129781
