@@ -11,6 +11,12 @@ public abstract class Enemy : CombatUnit
         ALL
     }
     public AttackType attackType;
+    public enum EnemyType
+    {
+        REGULAR,
+        BOSS
+    }
+    public EnemyType enemyType;
     public string attackTarget;
     public int goldGain;
     public int expGain;
