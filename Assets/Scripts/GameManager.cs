@@ -40,9 +40,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        sceneGameOverSpawn.Add("Forest Overworld", new Vector3());
-        sceneGameOverSpawn.Add("Mountain Overworld", new Vector3());
-        sceneGameOverSpawn.Add("Terajaya Destroyed", new Vector3());
+        sceneGameOverSpawn.Add("Forest Overworld", new Vector3(7.255f, 0.1f, -14.47f));
+        sceneGameOverSpawn.Add("Mountain Overworld", new Vector3(-26.33f, 0.1f, -11.46f));
+        sceneGameOverSpawn.Add("Terajaya Destroyed", new Vector3(-1.05f, 0.1f, -17.04f));
         autoSaveTimer = 0;
         gameState = State.MAIN_MENU;
         SceneManager.LoadScene("Main Menu");
@@ -115,12 +115,13 @@ public class GameManager : MonoBehaviour
     {
         ResetProgress();
         Time.timeScale = 1f;
-        AsyncOperation load = SceneManager.LoadSceneAsync("Forest Overworld");
-        load.completed += (asyncOperation) =>
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-            gameState = State.DEFAULT;
-        };
+        SceneManager.LoadScene("Cutscene Awal");
+        //AsyncOperation load = SceneManager.LoadSceneAsync("Forest Overworld");
+        //load.completed += (asyncOperation) =>
+        //{
+        //    player = GameObject.FindGameObjectWithTag("Player");
+        //    gameState = State.DEFAULT;
+        //};
     }
     private void ResetProgress()
     {
@@ -142,7 +143,8 @@ public class GameManager : MonoBehaviour
 
     public void Continue()
     {
-        if (!PlayerPrefs.HasKey("posX")) return;
+        Debug.Log(PlayerPrefs.HasKey("sceneId"));
+        if (!PlayerPrefs.HasKey("sceneId")) return;
         mage.InitializeSkills();
         warrior.InitializeSkills();
         assassin.InitializeSkills();
@@ -155,8 +157,21 @@ public class GameManager : MonoBehaviour
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = position;
             player.GetComponent<CharacterController>().enabled = true;
+            if (Physics.Raycast(player.transform.position+new Vector3(0,1.8f,0), Vector3.up, out RaycastHit hit, 3, 1 << 6))
+            {
+                GameObject[] roofObjects = GameObject.FindGameObjectsWithTag("Roof");
+                foreach (GameObject roofObject in roofObjects)
+                {
+                    roofObject.SetActive(false);
+                }
+            }
             gameState = State.DEFAULT;
         };
+    }
+
+    public void GetPlayer()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void UpdateSkills()

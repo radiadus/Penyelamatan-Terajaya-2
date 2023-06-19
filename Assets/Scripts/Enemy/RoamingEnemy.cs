@@ -16,7 +16,7 @@ public class RoamingEnemy : MonoBehaviour
         FORWARD,
         BACKWARD
     }
-    private WalkState walkState;
+    protected WalkState walkState;
     public enum IdleState
     {
         MOVING,
@@ -29,13 +29,13 @@ public class RoamingEnemy : MonoBehaviour
         DEFAULT
     }
     public ChaseState chaseState;
-    private GameObject player;
-    private float chaseTimer;
+    protected GameObject player;
+    protected float chaseTimer;
 
-    private int enemySize;
+    protected int enemySize;
     public GameObject[] enemyPrefabs;
-    private GameObject[] enemyList;
-    private Animator animator;
+    protected GameObject[] enemyList;
+    protected Animator animator;
 
     // Start is called before the first frame update
     void Start()
