@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
     {
         ResetProgress();
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Cutscene Awal");
+        SceneManager.LoadScene("Cutscene Ending");
         //AsyncOperation load = SceneManager.LoadSceneAsync("Forest Overworld");
         //load.completed += (asyncOperation) =>
         //{
