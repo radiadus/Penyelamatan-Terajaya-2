@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   equipmentName: Tongkat
-  attackStat: 7
+  baseAttack: 0
+  attackStat: 0
   enhanceLevel: 0
+  enhancePrice: 500

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnhanceItem : MonoBehaviour
 {
-    [SerializeField] private Text itemName;
+    public Text itemName;
+    public TextMeshProUGUI itemPrice;
     [SerializeField] private Button enhanceButton;
     [SerializeField] private GameObject enhanceAlertPanel;
     [SerializeField] private GameObject canvas;
@@ -16,13 +18,21 @@ public class EnhanceItem : MonoBehaviour
     void Start()
     {
         canvasRtf = canvas.GetComponent<RectTransform>();
-        itemName.text = equipment.equipmentName.ToUpper();
+        itemName.text = equipment.equipmentName + " +" + equipment.enhanceLevel;
+        itemPrice.text = "Rp " + (equipment.enhanceLevel == 5 ? "-" : equipment.enhancePrice.ToString());
         enhanceButton.onClick.AddListener(delegate { OpenEnhancePanel(); });
     }
 
     void OpenEnhancePanel()
     {
-        enhanceAlertPanel.GetComponent<EnhanceAlertHandler>().Instantiate(equipment);
+        if (equipment.enhanceLevel == 5) return;
+        enhanceAlertPanel.GetComponent<EnhanceAlertHandler>().Instantiate(equipment, this);
         GameObject.Instantiate(enhanceAlertPanel, canvas.transform.position, Quaternion.identity, canvas.transform);
+    }
+
+    public void Reinitialize()
+    {
+        itemName.text = equipment.equipmentName + " +" + equipment.enhanceLevel;
+        itemPrice.text = equipment.enhanceLevel == 5 ? "-" : equipment.enhancePrice.ToString();
     }
 }

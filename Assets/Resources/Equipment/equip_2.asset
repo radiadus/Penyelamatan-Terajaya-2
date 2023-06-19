@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   equipmentName: Keris
-  attackStat: 15
-  enhanceLevel: 0
+  baseAttack: 0
+  attackStat: 2
+  enhanceLevel: 1
+  enhancePrice: 1500

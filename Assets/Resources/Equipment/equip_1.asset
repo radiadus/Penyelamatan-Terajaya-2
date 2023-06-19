@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   equipmentName: Pedang
-  attackStat: 25
-  enhanceLevel: 1
+  baseAttack: 0
+  attackStat: 4
+  enhanceLevel: 2
+  enhancePrice: 2500

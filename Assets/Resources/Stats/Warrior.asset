@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa013cd436a1c8346b7ca6ef9295dfac, type: 3}
   m_Name: Warrior
   m_EditorClassIdentifier: 
-  HP: 33
+  HP: 135
   maxHP: 135
   MP: 15
   maxMP: 15
@@ -31,3 +31,5 @@ MonoBehaviour:
   defenseBonusLevel: 2
   speedBonusLevel: 2
   isDead: 0
+  friendly: {fileID: -450880861456191934, guid: d6b2b9d09d445ee44824d15432511673, type: 3}
+  equipment: {fileID: 11400000, guid: a36c148f8a984ef4da15e42e200ee0ea, type: 2}

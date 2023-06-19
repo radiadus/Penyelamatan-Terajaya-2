@@ -292,6 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: {fileID: 3619189117663922946}
+  itemPrice: {fileID: 4629998007594793607}
   enhanceButton: {fileID: 5172166541157482611}
   enhanceAlertPanel: {fileID: 7525775927922035437, guid: 657718657cd0a844cbb6439b0c3443cb, type: 3}
   canvas: {fileID: 0}

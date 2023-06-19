@@ -12,9 +12,21 @@ public class JamuEnergi : Consumable
         CombatUnit target = targets[0];
         if (target.IsDead()) return -2;
         int heal = target.maxMP - target.MP;
-        heal = heal < 50 ? heal : 50;
+        heal = heal < 25 ? heal : 25;
         target.MP += heal;
         ((Friendly)target).SetStats();
+        inventory.removeItem(instance, 1);
+        return heal;
+    }
+
+    public override int UseInventory(Stats user)
+    {
+        Inventory inventory = GameManager.Instance.inventory;
+        ItemInstance instance = inventory.FindItemInstance(this.GetType());
+        if (instance == null || instance.quantity == 0) return -2;
+        int heal = user.maxMP - user.MP;
+        heal = heal < 25 ? heal : 25;
+        user.MP += heal;
         inventory.removeItem(instance, 1);
         return heal;
     }

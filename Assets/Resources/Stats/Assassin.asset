@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16af85227c7e7a4ba7fb6b783d97400, type: 3}
   m_Name: Assassin
   m_EditorClassIdentifier: 
-  HP: 25
+  HP: 100
   maxHP: 100
   MP: 20
   maxMP: 20
@@ -31,3 +31,5 @@ MonoBehaviour:
   defenseBonusLevel: 0
   speedBonusLevel: 0
   isDead: 0
+  friendly: {fileID: -6684942638604590823, guid: 4253810b524900547bba1cc3fae1296e, type: 3}
+  equipment: {fileID: 11400000, guid: 7937c0b28641e1048b1af6e5a156eb58, type: 2}

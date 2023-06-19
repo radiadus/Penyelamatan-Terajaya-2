@@ -15,12 +15,20 @@ public class Stats : ScriptableObject
     public int attackBonusLevel, defenseBonusLevel, speedBonusLevel;
     public List<Skill> skillList;
     public bool isDead;
+    public Friendly friendly;
+    public Equipment equipment;
 
     public virtual void Reset()
     {
         level = 1;
         exp = 0;
         requiredExp = 100;
+    }
+
+    public virtual void FullHeal()
+    {
+        HP = maxHP;
+        MP = maxMP;
     }
 
     public virtual void InitializeSkills()
