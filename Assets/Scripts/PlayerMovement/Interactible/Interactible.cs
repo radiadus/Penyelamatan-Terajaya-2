@@ -24,7 +24,7 @@ public abstract class Interactible : MonoBehaviour
 
     protected virtual int CheckUsedText()
     {
-        return PlayerPrefs.GetInt("batuPusaka", 0) == 1 ? 2 : 1;
+        return 1;
     }
 
     public virtual void Interact()

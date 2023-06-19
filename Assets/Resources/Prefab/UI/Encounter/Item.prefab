@@ -508,8 +508,9 @@ MonoBehaviour:
   item: {fileID: 0}
   itemButton: {fileID: 4358248740749749525}
   itemName: {fileID: 2923168854359643226}
+  itemPrice: {fileID: 4617397817147222858}
   inventory: {fileID: 11400000, guid: aa1689ef5cc515043bf38bd372a31fe7, type: 2}
-  amountPanel: {fileID: 0}
+  amountPanel: {fileID: 7456130206596004884, guid: c9ec6632704291e4c848e40bef9b90fd, type: 3}
 --- !u!1 &9102958204747472633
 GameObject:
   m_ObjectHideFlags: 0

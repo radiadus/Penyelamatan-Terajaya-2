@@ -786,6 +786,7 @@ public class Encounter : MonoBehaviour
         if (correct)
         {
             actions.Add(new Action(friendlies[characterTurn], skill, target));
+            question.solved = true;
         }
         StartCoroutine(ShowResult(correct));
     }

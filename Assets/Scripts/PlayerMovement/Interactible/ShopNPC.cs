@@ -6,6 +6,7 @@ public class ShopNPC : Interactible
 {
     public int[] itemIds;
     public GameObject shopCanvas;
+    public GameObject inGameCanvas;
 
     protected override void Start()
     {
@@ -15,6 +16,9 @@ public class ShopNPC : Interactible
     public override void Interact()
     {
         base.Interact();
+        GameManager.Instance.mage.FullHeal();
+        GameManager.Instance.assassin.FullHeal();
+        GameManager.Instance.warrior.FullHeal();
         StartCoroutine(Shopping());
     }
 
@@ -26,9 +30,12 @@ public class ShopNPC : Interactible
         }
         shopCanvas.SetActive(true);
         GameManager.Instance.gameState = GameManager.State.SHOPPING;
+        inGameCanvas.SetActive(false);
         while (shopCanvas.activeSelf)
         {
             yield return null;
         }
+        GameManager.Instance.gameState = GameManager.State.DEFAULT;
+        inGameCanvas.SetActive(true);
     }
 }

@@ -15,4 +15,5 @@ public abstract class Consumable : Item
     public AudioClip clip;
 
     public abstract int Use(CombatUnit user, List<CombatUnit> target);
+    public abstract int UseInventory(Stats user);
 }

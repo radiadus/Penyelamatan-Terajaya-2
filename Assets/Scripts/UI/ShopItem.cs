@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopItem : MonoBehaviour
 {
-    [SerializeField] private Item item;
-    [SerializeField] private Button itemButton;
-    [SerializeField] private Text itemName;
-    [SerializeField] private Inventory inventory;
-    [SerializeField] private GameObject amountPanel;
+    public Item item;
+    public Button itemButton;
+    public Text itemName;
+    public TextMeshProUGUI itemPrice;
+    public Inventory inventory;
+    public GameObject amountPanel;
     private GameObject canvas;
     private int amount, ownedAmount;
 
@@ -25,15 +27,17 @@ public class ShopItem : MonoBehaviour
     {
         this.item = item;
         itemName.text = item.itemName.ToUpper();
+        itemPrice.text = "Rp " + item.buyPrice.ToString();
     }
 
     void OpenAmountPanel()
     {
         ownedAmount = 0;
-        ItemInstance instance = inventory.items.Find(item => item.id == this.item.id);
+        ItemInstance instance = inventory.FindItemInstance(item.GetType());
         if (instance != null)
             ownedAmount = instance.quantity;
-        Debug.Log(item.ToString());
+        if (ownedAmount == 99) return;
+        Debug.Log(ownedAmount);
         amountPanel.GetComponent<ShopAlertHandler>().Instantiate(item, ownedAmount);
         GameObject.Instantiate(amountPanel, canvas.transform);
     }
