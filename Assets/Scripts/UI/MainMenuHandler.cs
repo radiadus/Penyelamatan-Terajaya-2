@@ -7,8 +7,8 @@ using System;
 
 public class MainMenuHandler : MonoBehaviour
 {
-    public Button newGame, continueGame, settingsButton, exitButton, alertYes, alertNo, settingsExit;
-    public GameObject exitAlert, settingsPanel;
+    public Button newGame, continueGame, settingsButton, exitButton, alertYes, alertNo, settingsExit, confirmationNo, confirmationYes;
+    public GameObject exitAlert, settingsPanel, newGameConfirmation;
     public Toggle muteToggle;
     public Slider master, effects, music;
 
@@ -22,6 +22,8 @@ public class MainMenuHandler : MonoBehaviour
         muteToggle.isOn = mute;
 
         newGame.onClick.AddListener(delegate { NewGame(); });
+        confirmationNo.onClick.AddListener(delegate { newGameConfirmation.SetActive(false); });
+        confirmationYes.onClick.AddListener(delegate { GameManager.Instance.NewGame(); });
         continueGame.onClick.AddListener(delegate { Continue(); });
 
         settingsButton.onClick.AddListener(delegate { OpenSettings(); });
@@ -84,6 +86,12 @@ public class MainMenuHandler : MonoBehaviour
 
     void NewGame()
     {
+        Debug.Log(PlayerPrefs.HasKey("sceneId"));
+        if (PlayerPrefs.GetInt("sceneId", 0) != 0)
+        {
+            newGameConfirmation.SetActive(true);
+            return;
+        }
         GameManager.Instance.NewGame();
     }
 

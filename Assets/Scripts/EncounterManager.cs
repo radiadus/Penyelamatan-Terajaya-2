@@ -55,6 +55,7 @@ public class EncounterManager : MonoBehaviour
                     enemy.SetActive(false);
                 }
             }
+            CheckRoof(player);
         };
     }
 
@@ -95,7 +96,21 @@ public class EncounterManager : MonoBehaviour
                     enemy.SetActive(false);
                 }
             }
+            CheckRoof(player);
             currentEnemyId = 0;
         };
+    }
+
+    private void CheckRoof(GameObject player)
+    {
+        Debug.Log("1");
+        if (Physics.Raycast(player.transform.position, Vector3.up, out RaycastHit hit, 3, 1 << 6))
+        {
+            GameObject[] roofObjects = GameObject.FindGameObjectsWithTag("Roof");
+            foreach (GameObject roofObject in roofObjects)
+            {
+                roofObject.SetActive(false);
+            }
+        }
     }
 }

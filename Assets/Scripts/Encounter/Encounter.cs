@@ -13,23 +13,23 @@ public class Encounter : MonoBehaviour
 {
     private float[][] characterPositions = new float[][]
     {
-        new float[] {0f, 0f},
-        new float[] {3f, 0f},
-        new float[] {-3f, 0f}
+        new float[] {-6.83f, -16.48f},
+        new float[] {-5.48f, -16.48f},
+        new float[] {-4.26f, -16.48f},
     };
     private float[][] enemyPositions = new float[][]
     {
-        new float[] {-3f, 5f},
-        new float[] {0f, 5f},
-        new float[] {3f, 5f},
-        new float[] {-1f, 7f},
-        new float[] {1f, 7f}
+        new float[] {-6.97f, -11.88f},
+        new float[] {-5.49f, -11.88f},
+        new float[] {-4.26f, -11.88f},
+        new float[] {-6.05f, -12.95f},
+        new float[] {-5.2f, -12.95f}
     };
 
-    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm, winButton, hpPotion, mpPotion;
+    public Button attack, item, flee, undoFriendly, undoEnemy, friendlyConfirm, enemyConfirm, winButton, hpPotion, mpPotion, fleeYes, fleeNo;
     public Button[] attackDifficulty, answerButton, enemyButton, friendlyButton;
     public Slider[] hpBar, mpBar;
-    public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, correctImage, incorrectImage, enemySelect, winPanel;
+    public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, correctImage, incorrectImage, enemySelect, fleeConfirmation, winPanel;
     public GameObject[] attackPanel;
     public GameObject[] friendlyTarget, enemyTarget;
     public TextMeshProUGUI textBoxText, questionText, goldText, hpPotionRemainingText, mpPotionRemainingText;
@@ -104,7 +104,7 @@ public class Encounter : MonoBehaviour
             this.clip = Enemy.clip;
         }
 
-        public Action(Friendly friendly)
+        public Action(Friendly friendly, List<CombatUnit> enemies)
         {
             this.type = ActionType.FLEE;
             this.user = friendly;
@@ -113,6 +113,7 @@ public class Encounter : MonoBehaviour
             this.priority = 0;
             this.func = delegate (CombatUnit unit, List<CombatUnit> targets)
             {
+                if (enemies.FindIndex(e => ((Enemy)e).enemyType == Enemy.EnemyType.BOSS) >= 0) return 0;
                 if (this.fleeRoll > 0) return 1;
                 return 0;
             };
@@ -269,6 +270,10 @@ public class Encounter : MonoBehaviour
                         if (number == 1)
                         {
                             textBoxText.text = "Percobaan kabur berhasil!";
+                            foreach (Friendly friendly in friendlies)
+                            {
+                                friendly.SetStats();
+                            }
                             EncounterManager.Instance.FleeEncounter();
                             yield break;
                         }
@@ -501,7 +506,7 @@ public class Encounter : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             float[] position = characterPositions[i];
-            Vector3 spawnVect = new Vector3(position[0], 0, position[1]);
+            Vector3 spawnVect = new Vector3(position[0], 0.5f, position[1]);
             GameObject friendly = Instantiate(friendlyPrefabs[i], spawnVect, Quaternion.identity);
             friendlies[i] = friendly.GetComponent<Friendly>();
             friendlies[i].InitializeStats();
@@ -515,7 +520,7 @@ public class Encounter : MonoBehaviour
         for (int i = 0; i < enemySize; i++)
         {
             float[] position = enemyPositions[i];
-            Vector3 spawnVect = new Vector3(position[0], 0, position[1]);
+            Vector3 spawnVect = new Vector3(position[0], 0.5f, position[1]);
             GameObject enemy = Instantiate(enemyPrefabs[i], spawnVect, Quaternion.Euler(0, 180, 0));
             enemies[i] = enemy.GetComponent<Enemy>().InitializeStats();
         }
@@ -863,9 +868,20 @@ public class Encounter : MonoBehaviour
     }
     private void Flee()
     {
-        actions.Add(new Action(friendlies[characterTurn]));
-        battleOptions.SetActive(false);
-        characterTurn++;
-        StartTurn(characterTurn);
+        fleeConfirmation.SetActive(true);
+        fleeYes.onClick.RemoveAllListeners();
+        fleeYes.onClick.AddListener(delegate
+        {
+            fleeConfirmation.SetActive(false);
+            actions.Add(new Action(friendlies[characterTurn], enemies.ToList<CombatUnit>()));
+            battleOptions.SetActive(false);
+            characterTurn++;
+            StartTurn(characterTurn);
+        });
+        fleeNo.onClick.RemoveAllListeners();
+        fleeNo.onClick.AddListener(delegate
+        {
+            fleeConfirmation.SetActive(false);
+        });
     }
 }

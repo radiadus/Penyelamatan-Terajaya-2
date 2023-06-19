@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa013cd436a1c8346b7ca6ef9295dfac, type: 3}
   m_Name: Warrior
   m_EditorClassIdentifier: 
-  HP: 135
+  HP: 33
   maxHP: 135
   MP: 15
   maxMP: 15

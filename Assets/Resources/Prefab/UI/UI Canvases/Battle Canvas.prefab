@@ -20568,6 +20568,8 @@ MonoBehaviour:
   winButton: {fileID: 3879722019569876348}
   hpPotion: {fileID: 5548475060808976514}
   mpPotion: {fileID: 1071799705140281228}
+  fleeYes: {fileID: 1264804827460781443}
+  fleeNo: {fileID: 6321224420313978154}
   attackDifficulty:
   - {fileID: 1132053461609829316}
   - {fileID: 1132053461768424472}
@@ -20599,6 +20601,7 @@ MonoBehaviour:
   correctImage: {fileID: 2574227419647447375}
   incorrectImage: {fileID: 3390567786021895520}
   enemySelect: {fileID: 1132053461476838510}
+  fleeConfirmation: {fileID: 3369718278336378251}
   winPanel: {fileID: 2215992716506905649}
   attackPanel:
   - {fileID: 1132053462570927604}
@@ -23896,7 +23899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8648316153465355069
 Transform:
   m_ObjectHideFlags: 0
