@@ -20,12 +20,7 @@ public class WarriorStats : Stats
         {
             new P3K(),
             new Potong(),
-            new Provokasi(),
-            new SemangatPemuda(),
-            new TebasanLebar(),
-            new PosisiJaga(),
-            new SeranganBalik(),
-            new AmukanPahlawan()
+            new Provokasi()
         };
     }
 
@@ -50,6 +45,21 @@ public class WarriorStats : Stats
             //initialize tier 3 warrior skills
             skillList.Add(new SeranganBalik());
             skillList.Add(new AmukanPahlawan());
+        }
+        int savedLevel = PlayerPrefs.GetInt("warrior", 1);
+        for (int i = 2; i <= savedLevel; i++)
+        {
+            friendly.LevelUp();
+        }
+        friendly.HP = PlayerPrefs.GetInt("warriorHP");
+        friendly.MP = PlayerPrefs.GetInt("warriorMP");
+        friendly.GainExp(PlayerPrefs.GetInt("warriorExp"));
+        int equipmentLevel = PlayerPrefs.GetInt("pedang");
+        equipment.enhanceLevel = equipmentLevel;
+        for (int i = 1; i <= equipmentLevel; i++)
+        {
+            equipment.attackStat += 2;
+            equipment.enhancePrice += 1000;
         }
     }
 }

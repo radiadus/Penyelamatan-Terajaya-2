@@ -15,4 +15,9 @@ public class Equipment : ScriptableObject
         this.enhancePrice = 500;
         this.attackStat = this.baseAttack;
     }
+
+    public virtual void Load()
+    {
+
+    }
 }

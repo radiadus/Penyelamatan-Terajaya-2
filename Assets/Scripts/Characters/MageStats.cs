@@ -21,13 +21,7 @@ public class MageStats : Stats
             new BolaApi(),
             new Debus(),
             new Kilat(),
-            new Penyembuhan(),
-            new SemburApi(),
-            new Jimat(),
-            new Petir(),
-            new BadaiApi(),
-            new SakratulMaut(),
-            new Bangkit()
+            new Penyembuhan()
         };
     }
 
@@ -40,20 +34,32 @@ public class MageStats : Stats
             new Kilat(),
             new Penyembuhan()
         };
-
         if (PlayerPrefs.GetInt("mage2", 0) == 1)
         {
-            //initialize tier 2 mage skills
             skillList.Add(new SemburApi());
             skillList.Add(new Jimat());
             skillList.Add(new Petir());
         }
         if (PlayerPrefs.GetInt("mage3", 0) == 1)
         {
-            //initialize tier 3 mage skills
             skillList.Add(new BadaiApi());
             skillList.Add(new SakratulMaut());
             skillList.Add(new Bangkit());
+        }
+        int savedLevel = PlayerPrefs.GetInt("mage", 1);
+        for (int i = 2; i <= savedLevel; i++)
+        {
+            friendly.LevelUp();
+        }
+        friendly.HP = PlayerPrefs.GetInt("mageHP");
+        friendly.MP = PlayerPrefs.GetInt("mageMP");
+        friendly.GainExp(PlayerPrefs.GetInt("mageExp"));
+        int equipmentLevel = PlayerPrefs.GetInt("tongkat");
+        equipment.enhanceLevel = equipmentLevel;
+        for (int i = 1; i <= equipmentLevel; i++)
+        {
+            equipment.attackStat += 2;
+            equipment.enhancePrice += 1000;
         }
     }
 }

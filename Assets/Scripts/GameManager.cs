@@ -93,12 +93,12 @@ public class GameManager : MonoBehaviour
         int buildIndex = SceneManager.GetSceneByName(sceneName).buildIndex;
         StartCoroutine(ChangeScene(sceneName, done =>
         {
+            Time.timeScale = 1f;
             player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = spawnPosition;
             player.GetComponent<CharacterController>().enabled = true;
             SaveGame(player);
-            Time.timeScale = 1f;
             loadingCanvas.SetActive(false);
         }));
     }
@@ -109,6 +109,26 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetFloat("posX", player.transform.position.x);
         PlayerPrefs.SetFloat("posY", player.transform.position.y);
         PlayerPrefs.SetFloat("posZ", player.transform.position.z);
+        PlayerPrefs.SetInt("mage", mage.level);
+        PlayerPrefs.SetInt("mageHP", mage.HP);
+        PlayerPrefs.SetInt("mageMP", mage.MP);
+        PlayerPrefs.SetInt("mageExp", mage.exp);
+        PlayerPrefs.SetInt("warrior", warrior.level);
+        PlayerPrefs.SetInt("warriorHP", warrior.HP);
+        PlayerPrefs.SetInt("warriorMP", warrior.MP);
+        PlayerPrefs.SetInt("warriorExp", warrior.exp);
+        PlayerPrefs.SetInt("assassin", assassin.level);
+        PlayerPrefs.SetInt("assassinHP", assassin.HP);
+        PlayerPrefs.SetInt("assassinMP", assassin.MP);
+        PlayerPrefs.SetInt("assassinExp", assassin.exp);
+        PlayerPrefs.SetInt("money", inventory.money);
+        PlayerPrefs.SetInt("pedang", pedang.enhanceLevel);
+        PlayerPrefs.SetInt("keris", keris.enhanceLevel);
+        PlayerPrefs.SetInt("tongkat", tongkat.enhanceLevel);
+        ItemInstance hpPotion = inventory.FindItemInstance(typeof(Jamu));
+        ItemInstance mpPotion = inventory.FindItemInstance(typeof(JamuEnergi));
+        PlayerPrefs.SetInt("hpPotion", hpPotion == null ? 0 : hpPotion.quantity);
+        PlayerPrefs.SetInt("mpPotion", mpPotion == null ? 0 : mpPotion.quantity);
     }
 
     public void NewGame()
@@ -147,6 +167,9 @@ public class GameManager : MonoBehaviour
         mage.InitializeSkills();
         warrior.InitializeSkills();
         assassin.InitializeSkills();
+        inventory.money = PlayerPrefs.GetInt("money");
+        inventory.addItem(Resources.Load<Item>("Items/Item_1"), PlayerPrefs.GetInt("hpPotion"));
+        inventory.addItem(Resources.Load<Item>("Items/Item_2"), PlayerPrefs.GetInt("mpPotion"));
         Time.timeScale = 1f;
         AsyncOperation load = SceneManager.LoadSceneAsync(PlayerPrefs.GetInt("sceneId"));
         load.completed += (asyncOperation) =>
@@ -255,7 +278,7 @@ public class GameManager : MonoBehaviour
         {
             while (GameManager.Instance.gameState != GameManager.State.DEFAULT) yield return null;
             autoSaveTimer += Time.deltaTime;
-            if (autoSaveTimer > 5)
+            if (autoSaveTimer > 10)
             {
                 SaveGame(player);
                 autoSaveTimer = 0;

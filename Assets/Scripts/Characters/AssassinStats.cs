@@ -20,12 +20,7 @@ public class AssassinStats : Stats
         {
             new Sembunyi(),
             new Tusuk(),
-            new BomAsap(),
-            new PisauBeracun(),
-            new SeribuTusukan(),
-            new BomBeracun(),
-            new TusukanMematikan(),
-            new BomMolotov()
+            new BomAsap()
         };
     }
 
@@ -50,6 +45,21 @@ public class AssassinStats : Stats
             //initialize tier 3 assassin skills
             skillList.Add(new TusukanMematikan());
             skillList.Add(new BomMolotov());
+        }
+        int savedLevel = PlayerPrefs.GetInt("assassin", 1);
+        for (int i = 2; i <= savedLevel; i++)
+        {
+            friendly.LevelUp();
+        }
+        friendly.HP = PlayerPrefs.GetInt("assassinHP");
+        friendly.MP = PlayerPrefs.GetInt("assassinMP");
+        friendly.GainExp(PlayerPrefs.GetInt("assassinExp"));
+        int equipmentLevel = PlayerPrefs.GetInt("keris");
+        equipment.enhanceLevel = equipmentLevel;
+        for(int i = 1; i <= equipmentLevel; i++)
+        {
+            equipment.attackStat += 2;
+            equipment.enhancePrice += 1000;
         }
     }
 }
