@@ -13,13 +13,12 @@ public abstract class Interactible : MonoBehaviour
     public TextMeshProUGUI textPanel;
     public TextMeshProUGUI namePanel;
     protected Button textBoxButton;
-    protected int usedText;
+    public int usedText;
     protected int currentPage;
     public int defaultTextId;
 
     protected virtual void Start()
     {
-        this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
         this.textBoxButton = textBox.GetComponent<Button>();
     }
 
@@ -31,7 +30,7 @@ public abstract class Interactible : MonoBehaviour
     public virtual void Interact()
     {
         Time.timeScale = 0f;
-        this.usedText = CheckUsedText();
+        this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
         this.text = DialogueReader.Instance.GetDialoguesByCodeAndId(dialogueCode, usedText);
         textBox.SetActive(true);
         namePanel.text = name;

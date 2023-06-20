@@ -20,6 +20,11 @@ public class DetectInteractible : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.gameState != GameManager.State.DEFAULT)
+        {
+            interactButton.gameObject.SetActive(false);
+            return;
+        }
         closestDist = 9999;
         foreach (GameObject interactible in interactibleList)
         {
