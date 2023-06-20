@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -20,11 +21,13 @@ public class DialogueReader : MonoBehaviour
     private Dictionary<string, Dictionary<int, List<string>>> FetchDialogues()
     {
         Dictionary<string, Dictionary<int, List<string>>> dialogues = new Dictionary<string, Dictionary<int, List<string>>>();
-        StreamReader file = File.OpenText("Assets/Resources/NPC_Dialogues_2.csv");
-        string line = "";
-        while ((line = file.ReadLine()) != null)
+        TextAsset text = Resources.Load<TextAsset>("NPC_Dialogues_2");
+        string textData = text.text;
+        string[] lines = textData.Split(Environment.NewLine);
+        foreach (string line in lines)
         {
-            string[] data = line.Split(';');
+            string trimmed = line.Trim();
+            string[] data = trimmed.Split(';');
             if (!dialogues.ContainsKey(data[0]))
             {
                 dialogues.Add(data[0], new Dictionary<int, List<string>>());
@@ -38,7 +41,6 @@ public class DialogueReader : MonoBehaviour
             }
             dialogues[data[0]].Add(int.Parse(data[1]), pages);
         }
-        file.Close();
         return dialogues;
     }
 

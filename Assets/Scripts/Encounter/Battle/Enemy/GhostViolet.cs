@@ -14,14 +14,20 @@ public class GhostViolet : Enemy
         List<CombatUnit> availableTargets = targets.FindAll(t => !t.IsDead() && t.targetable);
         if (availableTargets.Count > 0)
         {
-            int target = Random.Range(0, availableTargets.Count);
-            CombatUnit targetUnit = availableTargets[target];
-            this.attackTarget = targetUnit.name;
+            int totalDamage = 0;
             int baseDamage = 100;
-            int damage = (int)(GetAttack() * ((float)baseDamage / 100) * Random.Range(0.95f, 1.05f));
             animator.SetTrigger("attack");
-            targetUnit.TakeDamage(this, damage);
-            return damage;
+            foreach (CombatUnit target in availableTargets)
+            {
+                int damage = CombatUnit.CalculateDamage(user, target, baseDamage);
+                if (damage == -1)
+                {
+                    continue;
+                }
+                target.TakeDamage(user, damage);
+                totalDamage += damage;
+            }
+            return totalDamage;
         }
         return -2;
     }

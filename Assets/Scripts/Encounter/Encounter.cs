@@ -32,6 +32,7 @@ public class Encounter : MonoBehaviour
     public GameObject textBox, battleOptions, skillChoice, itemChoice, itemPanel, friendlySelect, questionCanvas, correctImage, incorrectImage, enemySelect, fleeConfirmation, winPanel;
     public GameObject[] attackPanel;
     public GameObject[] friendlyTarget, enemyTarget;
+    public Text currentNameText;
     public TextMeshProUGUI textBoxText, questionText, goldText, hpPotionRemainingText, mpPotionRemainingText;
     public TextMeshProUGUI[] answerText, levelText, expText;
     public GameObject[] friendlyPrefabs;
@@ -166,12 +167,8 @@ public class Encounter : MonoBehaviour
 
         UpdatePotionsCount();
 
-        Debug.Log("hp potions: " + hpPotionRemaining);
-        Debug.Log("mp potions: " + mpPotionRemaining);
-
         hpPotion.onClick.AddListener(delegate 
         {
-            Debug.Log("hp potions: " + hpPotionRemaining);
             if (hpPotionRemaining > 0)
             {
                 OpenFriendlySelect();
@@ -180,7 +177,6 @@ public class Encounter : MonoBehaviour
         });
         mpPotion.onClick.AddListener(delegate
         {
-            Debug.Log("mp potions: " + mpPotionRemaining);
             if (mpPotionRemaining > 0)
             {
                 OpenFriendlySelect();
@@ -203,7 +199,6 @@ public class Encounter : MonoBehaviour
             enemyButton[i].gameObject.SetActive(false);
         }
         StartCoroutine(StartEncounter());
-        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
     }
 
     public void FetchFriendlies()
@@ -223,14 +218,11 @@ public class Encounter : MonoBehaviour
     }
     IEnumerator StartEncounter()
     {
-        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         yield return new WaitForSecondsRealtime(1);
-        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         foreach (Friendly friendly in friendlies)
         {
             if (friendly.IsDead()) friendly.PlayDeadAnimation();
         }
-        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         StartTurn(characterTurn);
         StartCoroutine(PlayerTurn());
         StartCoroutine(AttackPhase());
@@ -260,7 +252,6 @@ public class Encounter : MonoBehaviour
             {
                 if (!action.user.IsDead())
                 {
-                    Debug.Log(action.user.name);
                     int number = action.func(action.user, action.targets);
                     if (action.type == ActionType.FLEE)
                     {
@@ -300,7 +291,6 @@ public class Encounter : MonoBehaviour
                         if (number == -3) text += " Meleset!";
                         else if (number != -1) text += " (" + number + " total poin kesehatan)";
                         textBoxText.text = text;
-                        Debug.Log(action.clip.name);
                         audioSource.clip = action.clip;
                         audioSource.Play();
                         UpdateHPMPBar(0);
@@ -378,7 +368,6 @@ public class Encounter : MonoBehaviour
                 for(int i = enemy.statusEffectList.Count-1; i > -1; i--)
                 {
                     StatusEffect effect = enemy.statusEffectList[i];
-                    Debug.Log(effect.GetType().Name);
                     int number = effect.DecreaseTurn();
                     UpdateRemainingUnits();
                     if (number != -1)
@@ -495,7 +484,6 @@ public class Encounter : MonoBehaviour
             return;
         }
         UpdatePotionsCount();
-        Debug.Log(friendlies[1].name + " " + friendlies[1].statusEffectList.Count);
         InstantiatePanels(friendlies[turn]);
         OpenBattlePanel(friendlies[turn]);
     }
@@ -528,6 +516,7 @@ public class Encounter : MonoBehaviour
     
     private void InstantiatePanels(Friendly friendly)
     {
+        currentNameText.text = friendly.name;
         foreach(GameObject effect in instantiatedEffects)
         {
             Destroy(effect);

@@ -19,7 +19,6 @@ public class CharacterMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(Input.touchSupported);
         playerCanvas = GameObject.Find("PlayerCanvas");
         joystick = GameObject.Find("Joystick");
         joystickRtf = joystick.GetComponent<RectTransform>();
