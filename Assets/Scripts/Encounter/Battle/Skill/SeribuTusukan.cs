@@ -25,17 +25,17 @@ public class SeribuTusukan : Skill
             string trigger;
             if (roll < 50)
             {
-                trigger = "1stab";
+                trigger = "stab1";
             }
             else if (roll < 75)
             {
                 baseDamage += 75;
-                trigger = "2stab";
+                trigger = "stab2";
             }
             else
             {
                 baseDamage += 150;
-                trigger = "3stab";
+                trigger = "stab3";
             }
             caster.animator.SetTrigger(trigger);
             int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);

@@ -21,6 +21,7 @@ public class PisauBeracun : Skill
         if (!target.IsDead() && target.targetable)
         {
             int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
+            caster.animator.SetTrigger("stab2");
             if (damage == -1) return -3;
             target.TakeDamage(caster, damage);
             bool success = Random.Range(0, 100) < 50;

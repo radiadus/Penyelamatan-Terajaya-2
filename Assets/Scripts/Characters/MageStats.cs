@@ -27,6 +27,7 @@ public class MageStats : Stats
 
     public override void InitializeSkills()
     {
+        Reset();
         skillList = new List<Skill>
         {
             new BolaApi(),

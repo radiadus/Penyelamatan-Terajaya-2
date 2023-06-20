@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour
         mage.InitializeSkills();
         warrior.InitializeSkills();
         assassin.InitializeSkills();
+        inventory.emptyInventory();
         inventory.money = PlayerPrefs.GetInt("money");
         inventory.addItem(Resources.Load<Item>("Items/Item_1"), PlayerPrefs.GetInt("hpPotion"));
         inventory.addItem(Resources.Load<Item>("Items/Item_2"), PlayerPrefs.GetInt("mpPotion"));

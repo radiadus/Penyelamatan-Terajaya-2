@@ -21,7 +21,7 @@ public class TusukanMematikan : Skill
         if (!target.IsDead() && target.targetable)
         {
             caster.MP -= mpCost;
-            caster.animator.SetTrigger("3stab");
+            caster.animator.SetTrigger("stab3");
             int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
             if (damage == -1) return -3;
             damage = (int)((float)damage * 100/(100 - target.defense));

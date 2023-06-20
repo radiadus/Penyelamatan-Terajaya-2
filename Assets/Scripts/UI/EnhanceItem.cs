@@ -33,6 +33,6 @@ public class EnhanceItem : MonoBehaviour
     public void Reinitialize()
     {
         itemName.text = equipment.equipmentName + " +" + equipment.enhanceLevel;
-        itemPrice.text = equipment.enhanceLevel == 5 ? "-" : equipment.enhancePrice.ToString();
+        itemPrice.text = "Rp " + (equipment.enhanceLevel == 5 ? "-" : equipment.enhancePrice.ToString());
     }
 }

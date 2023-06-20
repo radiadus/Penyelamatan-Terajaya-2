@@ -26,6 +26,7 @@ public class WarriorStats : Stats
 
     public override void InitializeSkills()
     {
+        Reset();
         skillList = new List<Skill>
         {
             new P3K(),
