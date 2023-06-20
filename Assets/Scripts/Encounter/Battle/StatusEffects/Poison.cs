@@ -9,7 +9,8 @@ public class Poison : StatusEffect
     public override int DecreaseTurn()
     {
         int damage = (int)(unit.HP * (float)dot / 100);
-        unit.HP -= damage;
+        if (damage == 0) damage = 1;
+        unit.TakeDamage(null, damage);
         dot -= 5;
         base.DecreaseTurn();
         return damage;
