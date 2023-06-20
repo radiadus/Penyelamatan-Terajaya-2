@@ -26,6 +26,7 @@ public class AssassinStats : Stats
 
     public override void InitializeSkills()
     {
+        Reset();
         skillList = new List<Skill>
         {
             new Sembunyi(),

@@ -8,6 +8,8 @@ public class Statue : Interactible
 {
     public int id;
     public string statueCode;
+    public string character;
+    public string difficulty;
     private bool solved;
     private bool textBoxDone;
     private Question question;
@@ -106,6 +108,19 @@ public class Statue : Interactible
         correctImage.SetActive(false);
         incorrectImage.SetActive(false);
         questionCanvas.SetActive(false);
+        if (correct)
+        {
+            textBox.SetActive(true);
+            textPanel.text = character + " mempelajari kemampuan baru (tingkat " + difficulty + ")!";
+            textBoxDone = false;
+            textBoxButton.onClick.RemoveAllListeners();
+            textBoxButton.onClick.AddListener(delegate { textBoxDone = true; });
+            while(!textBoxDone)
+            {
+                yield return null;
+            }
+            textBox.SetActive(false);
+        }
         GameManager.Instance.gameState = GameManager.State.DEFAULT;
         Time.timeScale = 1f;
     }
