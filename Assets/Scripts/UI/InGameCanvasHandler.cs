@@ -141,7 +141,6 @@ public class InGameCanvasHandler : MonoBehaviour
         List<Stats> targets = new List<Stats>();
         for (int i = 0; i < itemUserIndicator.Length; i++)
         {
-            Debug.Log(itemUserIndicator[i].activeSelf);
             if (itemUserIndicator[i].activeSelf)
             {
                 targets.Add(stats[i]);

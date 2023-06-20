@@ -90,7 +90,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         loadingCanvas.SetActive(true);
         int buildIndex = SceneManager.GetSceneByName(sceneName).buildIndex;
-        Debug.Log(buildIndex);
         StartCoroutine(ChangeScene(sceneName, done =>
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -143,7 +142,6 @@ public class GameManager : MonoBehaviour
 
     public void Continue()
     {
-        Debug.Log(PlayerPrefs.HasKey("sceneId"));
         if (!PlayerPrefs.HasKey("sceneId")) return;
         mage.InitializeSkills();
         warrior.InitializeSkills();
@@ -258,7 +256,6 @@ public class GameManager : MonoBehaviour
             autoSaveTimer += Time.deltaTime;
             if (autoSaveTimer > 5)
             {
-                Debug.Log("saved game");
                 SaveGame(player);
                 autoSaveTimer = 0;
             }

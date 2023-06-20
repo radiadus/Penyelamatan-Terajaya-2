@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class BatuPusaka : Interactible
 {
+    protected override void Start()
+    {
+        
+    }
     public override void Interact()
     {
         PlayerPrefs.SetInt("batuPusaka", 1);

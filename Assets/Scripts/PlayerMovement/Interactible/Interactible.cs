@@ -58,7 +58,6 @@ public abstract class Interactible : MonoBehaviour
 
     protected virtual IEnumerator ShowText()
     {
-        Debug.Log("CurrentPage: "+currentPage);
         int maxPage = text.Count;
         ShowPage(maxPage);
         while(currentPage < maxPage)

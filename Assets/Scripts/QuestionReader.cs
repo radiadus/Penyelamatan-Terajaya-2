@@ -29,14 +29,15 @@ public class QuestionReader : MonoBehaviour
         questions.Add(1, new List<Question>());
         questions.Add(2, new List<Question>());
         questions.Add(3, new List<Question>());
-        StreamReader file = File.OpenText("Assets/Resources/Soal/SoalTerajaya7.csv");
-        file.ReadLine();
-        string line = "";
-        while ((line = file.ReadLine()) != null)
+        TextAsset text = Resources.Load<TextAsset>("SoalTerajaya8");
+        string textData = text.text;
+        string[] lines = textData.Split(Environment.NewLine);
+        for(int i = 1; i < lines.Length; i++)
         {
+            string line = lines[i].Trim();
             string[] data = line.Split(';');
             Question question = new Question();
-            question.question = System.Text.RegularExpressions.Regex.Unescape(data[0]);
+            question.question = data[0].Replace('@', '\n');
             string[] answers = new string[4];
             answers[0] = data[1];
             answers[1] = data[2];
@@ -45,7 +46,8 @@ public class QuestionReader : MonoBehaviour
             question.answer = answers;
             question.key = data[5][0];
             question.difficulty = int.Parse(data[6]);
-            switch (data[7])
+            string answerCount = data[7];
+            switch (answerCount)
             {
                 case "PG2":
                     question.answerCount = 2;
@@ -56,7 +58,8 @@ public class QuestionReader : MonoBehaviour
                 default:
                     break;
             }
-            switch (data[8])
+            string category = data[8];
+            switch (category)
             {
                 case "Soal Bacaan":
                     question.category = QuestionCategory.PARAGRAPH;
@@ -93,13 +96,13 @@ public class QuestionReader : MonoBehaviour
             }
             questions[question.difficulty].Add(question);
         }
-        file.Close();
         return questions;
     }
 
     public Question GetQuestionByDifficulty(int difficulty)
     {
         List<Question> fetched = questionBank.questions[difficulty].FindAll(q => q.solved == false);
+        Debug.Log(fetched.Count);
         if (fetched.Count == 0)
         {
             ResetByDifficulty(difficulty);

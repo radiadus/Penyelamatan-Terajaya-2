@@ -50,8 +50,6 @@ public class DetectInteractible : MonoBehaviour
     void Interact()
     {
         this.playerCanvas.SetActive(false);
-        Debug.Log(closestInteractible.name);
-        Debug.Log(GameManager.Instance == null ? "hooh" : "kaga");
         GameManager.Instance.gameState = GameManager.State.INTERACT;
         this.closestInteractible.GetComponent<Interactible>().Interact();
         StartCoroutine(Wait());

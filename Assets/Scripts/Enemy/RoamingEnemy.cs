@@ -142,7 +142,9 @@ public class RoamingEnemy : MonoBehaviour
         animator.SetBool("isMoving", true);
         float step = walkSpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, currentTargetLocation, step);
-        transform.rotation = Quaternion.LookRotation(currentTargetLocation - transform.position, Vector3.up);
+        Vector3 rot = currentTargetLocation - transform.position;
+        if (rot != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(rot, Vector3.up);
     }
 
     IEnumerator Idle()
