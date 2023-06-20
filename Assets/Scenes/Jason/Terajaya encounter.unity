@@ -54888,7 +54888,7 @@ PrefabInstance:
     - target: {fileID: 8875261798977585057, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
       propertyPath: hpBar.Array.data[0]
       value: 
-      objectReference: {fileID: 1776523421}
+      objectReference: {fileID: 9177474731920250026}
     - target: {fileID: 8875261798977585057, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
       propertyPath: hpBar.Array.data[1]
       value: 
@@ -54896,11 +54896,11 @@ PrefabInstance:
     - target: {fileID: 8875261798977585057, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
       propertyPath: hpBar.Array.data[2]
       value: 
-      objectReference: {fileID: 9177474731920250026}
+      objectReference: {fileID: 1776523421}
     - target: {fileID: 8875261798977585057, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
       propertyPath: mpBar.Array.data[0]
       value: 
-      objectReference: {fileID: 1776523420}
+      objectReference: {fileID: 9177474731920250025}
     - target: {fileID: 8875261798977585057, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
       propertyPath: mpBar.Array.data[1]
       value: 
@@ -54908,7 +54908,7 @@ PrefabInstance:
     - target: {fileID: 8875261798977585057, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
       propertyPath: mpBar.Array.data[2]
       value: 
-      objectReference: {fileID: 9177474731920250025}
+      objectReference: {fileID: 1776523420}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f20fb5c607a13b948a28c9b4a4d6f785, type: 3}
 --- !u!1001 &2092367662
