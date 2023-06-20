@@ -52,9 +52,10 @@ public class WarriorStats : Stats
         {
             friendly.LevelUp();
         }
-        friendly.HP = PlayerPrefs.GetInt("warriorHP");
-        friendly.MP = PlayerPrefs.GetInt("warriorMP");
+        HP = PlayerPrefs.GetInt("warriorHP");
+        MP = PlayerPrefs.GetInt("warriorMP");
         friendly.GainExp(PlayerPrefs.GetInt("warriorExp"));
+        equipment.Reset();
         int equipmentLevel = PlayerPrefs.GetInt("pedang");
         equipment.enhanceLevel = equipmentLevel;
         for (int i = 1; i <= equipmentLevel; i++)

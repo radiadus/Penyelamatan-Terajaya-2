@@ -14,7 +14,7 @@ public class JamuEnergi : Consumable
         int heal = target.maxMP - target.MP;
         heal = heal < 25 ? heal : 25;
         target.MP += heal;
-        ((Friendly)target).SetStats();
+        ((Friendly)target).SetHPMP();
         inventory.removeItem(instance, 1);
         return heal;
     }

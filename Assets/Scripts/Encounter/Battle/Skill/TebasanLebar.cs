@@ -25,6 +25,7 @@ public class TebasanLebar : Skill
             if (!target.IsDead() && target.targetable)
             {
                 int damage = CombatUnit.CalculateDamage(caster, target, baseDamage);
+                target.TakeDamage(caster, damage);
                 totalDamage += damage == -1 ? 0 : damage;
             }
         }

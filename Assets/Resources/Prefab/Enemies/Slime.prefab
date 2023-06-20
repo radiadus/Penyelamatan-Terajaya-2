@@ -510,6 +510,7 @@ MonoBehaviour:
   evasion: 0
   id: 0
   attackType: 0
+  enemyType: 0
   attackTarget: 0
   goldGain: 60
-  expGain: 12
+  expGain: 50
