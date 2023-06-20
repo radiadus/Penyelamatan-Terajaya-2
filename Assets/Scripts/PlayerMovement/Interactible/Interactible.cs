@@ -19,7 +19,7 @@ public abstract class Interactible : MonoBehaviour
 
     protected virtual void Start()
     {
-        this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
+        //this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
         this.textBoxButton = textBox.GetComponent<Button>();
     }
 
@@ -31,7 +31,7 @@ public abstract class Interactible : MonoBehaviour
     public virtual void Interact()
     {
         Time.timeScale = 0f;
-        this.usedText = CheckUsedText();
+        this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
         this.text = DialogueReader.Instance.GetDialoguesByCodeAndId(dialogueCode, usedText);
         textBox.SetActive(true);
         namePanel.text = name;
