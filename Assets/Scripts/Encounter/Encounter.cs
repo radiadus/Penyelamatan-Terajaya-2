@@ -110,12 +110,12 @@ public class Encounter : MonoBehaviour
             this.type = ActionType.FLEE;
             this.user = friendly;
             this.targets = new List<CombatUnit>();
-            this.fleeRoll = Random.Range(0, 256);
+            this.fleeRoll = Random.Range(0, 100);
             this.priority = 0;
             this.func = delegate (CombatUnit unit, List<CombatUnit> targets)
             {
                 if (enemies.FindIndex(e => ((Enemy)e).enemyType == Enemy.EnemyType.BOSS) >= 0) return 0;
-                if (this.fleeRoll > 0) return 1;
+                if (this.fleeRoll < 35) return 1;
                 return 0;
             };
         }

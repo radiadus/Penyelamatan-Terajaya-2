@@ -15,10 +15,11 @@ public abstract class Interactible : MonoBehaviour
     protected Button textBoxButton;
     protected int usedText;
     protected int currentPage;
+    public int defaultTextId;
 
     protected virtual void Start()
     {
-        this.usedText = CheckUsedText();
+        this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
         this.textBoxButton = textBox.GetComponent<Button>();
     }
 

@@ -55,6 +55,8 @@ public class Friendly : CombatUnit
         if (stats.defenseBonusLevel > 0 && stats.level % stats.defenseBonusLevel == 0) defense++;
         if (stats.speedBonusLevel > 0 && stats.level % stats.speedBonusLevel == 0) speed++;
         stats.requiredExp = (int)(stats.requiredExp * 1.25f);
+        HP = maxHP;
+        MP = maxMP;
         SetStats();
     }
 

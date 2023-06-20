@@ -10,6 +10,7 @@ public class InGameCanvasHandler : MonoBehaviour
     public GameObject[] itemUserIndicator;
     private bool paused;
     public Text hpPotionCountText, mpPotionCountText;
+    public TextMeshProUGUI moneyText;
     public Button hpPotionButton, mpPotionButton, cancelUseItem, confirmUseItem;
     public Button[] chooseItemUser;
     [SerializeField] private Button pauseButton, inventoryButton, settingsButton, exitButton, closeInventory, closeSettings;
@@ -42,6 +43,7 @@ public class InGameCanvasHandler : MonoBehaviour
             attack[i].text = (stats[i].attack + stats[i].equipment.attackStat).ToString();
             defense[i].text = stats[i].defense.ToString();
         }
+        moneyText.text = GameManager.Instance.inventory.money.ToString("N0", new System.Globalization.CultureInfo("id-ID"));
     }
 
     public void TogglePause()

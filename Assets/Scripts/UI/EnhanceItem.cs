@@ -26,7 +26,7 @@ public class EnhanceItem : MonoBehaviour
     void OpenEnhancePanel()
     {
         if (equipment.enhanceLevel == 5) return;
-        enhanceAlertPanel.GetComponent<EnhanceAlertHandler>().Instantiate(equipment, this);
+        enhanceAlertPanel.GetComponent<EnhanceAlertHandler>().Instantiate(equipment, this, canvas.GetComponent<ShopHandler>());
         GameObject.Instantiate(enhanceAlertPanel, canvas.transform.position, Quaternion.identity, canvas.transform);
     }
 

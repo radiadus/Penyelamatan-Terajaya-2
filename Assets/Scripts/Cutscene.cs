@@ -20,6 +20,7 @@ public class Cutscene : MonoBehaviour
     private CutsceneState state;
     private void Start()
     {
+        GameManager.Instance.gameState = GameManager.State.CUTSCENE;
         state = CutsceneState.WAITING;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(delegate { StartCoroutine(Continue()); });

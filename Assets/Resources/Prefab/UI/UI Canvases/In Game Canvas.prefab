@@ -16361,6 +16361,7 @@ MonoBehaviour:
   - {fileID: 862128331051785685}
   hpPotionCountText: {fileID: 8746232962641519886}
   mpPotionCountText: {fileID: 8746232963275234887}
+  moneyText: {fileID: 8884777905789623290}
   hpPotionButton: {fileID: 8746232961617200263}
   mpPotionButton: {fileID: 8746232961798443818}
   cancelUseItem: {fileID: 8746232963713707484}
@@ -25630,3 +25631,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9211572654910456631, guid: 7a3dd4281c81d6143a1bf6911207b500, type: 3}
   m_PrefabInstance: {fileID: 1032506459215087281}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8884777905789623290 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8437811978551663947, guid: 7a3dd4281c81d6143a1bf6911207b500, type: 3}
+  m_PrefabInstance: {fileID: 1032506459215087281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
