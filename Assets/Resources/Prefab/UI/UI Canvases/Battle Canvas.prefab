@@ -3988,7 +3988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1132053461476838511
 Transform:
   m_ObjectHideFlags: 0
@@ -20619,6 +20619,12 @@ MonoBehaviour:
   - {fileID: 828362004710038096}
   - {fileID: 7813669121766784224}
   currentNameText: {fileID: 5302421021200745911}
+  enemyName:
+  - {fileID: 1132053461727143548}
+  - {fileID: 1132053463141701371}
+  - {fileID: 1132053463129481838}
+  - {fileID: 1132053462286901639}
+  - {fileID: 1132053461156296398}
   textBoxText: {fileID: 1132053462429968620}
   questionText: {fileID: 1132053462824592399}
   goldText: {fileID: 7125811806254804778}

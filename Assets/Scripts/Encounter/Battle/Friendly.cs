@@ -71,6 +71,9 @@ public class Friendly : CombatUnit
         return;
     }
 
-    
+    public override int GetAttack()
+    {
+        return attack + equipment.attackStat;
+    }
 
 }

@@ -33,6 +33,7 @@ public class Encounter : MonoBehaviour
     public GameObject[] attackPanel;
     public GameObject[] friendlyTarget, enemyTarget;
     public Text currentNameText;
+    public Text[] enemyName;
     public TextMeshProUGUI textBoxText, questionText, goldText, hpPotionRemainingText, mpPotionRemainingText;
     public TextMeshProUGUI[] answerText, levelText, expText;
     public GameObject[] friendlyPrefabs;
@@ -289,7 +290,7 @@ public class Encounter : MonoBehaviour
                             text += " menggunakan " + action.actionName + "!";
                         }
                         if (number == -3) text += " Meleset!";
-                        else if (number != -1) text += " (" + number + " total poin kesehatan)";
+                        else if (number != -1) text += " (" + number + " total poin)";
                         textBoxText.text = text;
                         audioSource.clip = action.clip;
                         audioSource.Play();
@@ -511,6 +512,7 @@ public class Encounter : MonoBehaviour
             Vector3 spawnVect = new Vector3(position[0], 0.5f, position[1]);
             GameObject enemy = Instantiate(enemyPrefabs[i], spawnVect, Quaternion.Euler(0, 180, 0));
             enemies[i] = enemy.GetComponent<Enemy>().InitializeStats();
+            enemyName[i].text = enemies[i].name;
         }
     }
     
