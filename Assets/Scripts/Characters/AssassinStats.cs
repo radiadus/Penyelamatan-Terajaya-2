@@ -52,9 +52,10 @@ public class AssassinStats : Stats
         {
             friendly.LevelUp();
         }
-        friendly.HP = PlayerPrefs.GetInt("assassinHP");
-        friendly.MP = PlayerPrefs.GetInt("assassinMP");
+        HP = PlayerPrefs.GetInt("assassinHP");
+        MP = PlayerPrefs.GetInt("assassinMP");
         friendly.GainExp(PlayerPrefs.GetInt("assassinExp"));
+        equipment.Reset();
         int equipmentLevel = PlayerPrefs.GetInt("keris");
         equipment.enhanceLevel = equipmentLevel;
         for(int i = 1; i <= equipmentLevel; i++)

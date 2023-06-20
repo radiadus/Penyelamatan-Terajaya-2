@@ -265,7 +265,7 @@ public class Encounter : MonoBehaviour
                             foreach (Friendly friendly in friendlies)
                             {
                                 friendly.SetToBaseStats();
-                                friendly.SetStats();
+                                friendly.SetHPMP();
                             }
                             EncounterManager.Instance.FleeEncounter();
                             yield break;
@@ -425,6 +425,7 @@ public class Encounter : MonoBehaviour
             List<Friendly> dead = friendlies.ToList().FindAll(f => f.IsDead());
             foreach (Friendly friendly in alive)
             {
+                friendly.SetHPMP();
                 friendly.GainExp(exp);
             }
             winPanel.SetActive(true);
@@ -445,11 +446,9 @@ public class Encounter : MonoBehaviour
             foreach(Friendly friendly in dead)
             {
                 friendly.HP = 1;
+                friendly.SetHPMP();
             }
-            foreach (Friendly friendly in friendlies)
-            {
-                friendly.SetStats();
-            }
+            
         }
         if (friendlyRemaining == 0)
         {
@@ -457,7 +456,7 @@ public class Encounter : MonoBehaviour
             {
                 friendly.SetToBaseStats();
                 friendly.HP = (int)(0.25f * friendly.maxHP);
-                friendly.SetStats();
+                friendly.SetHPMP();
             }
             EncounterManager.Instance.LoseEncounter();
         }

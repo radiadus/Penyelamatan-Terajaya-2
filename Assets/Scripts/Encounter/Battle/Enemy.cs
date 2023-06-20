@@ -72,9 +72,9 @@ public abstract class Enemy : CombatUnit
             }
             this.attackTarget = targetUnit.name;
             int baseDamage = 100;
+            animator.SetTrigger("attack");
             int damage = CombatUnit.CalculateDamage(user, targetUnit, baseDamage);
             if (damage == -1) return -3;
-            animator.SetTrigger("attack");
             targetUnit.TakeDamage(this, damage);
             return damage;
         }
