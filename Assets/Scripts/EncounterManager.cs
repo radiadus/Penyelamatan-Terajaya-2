@@ -23,10 +23,12 @@ public class EncounterManager : MonoBehaviour
         lastPosition = player.transform.position;
         lastSceneId = SceneManager.GetActiveScene().buildIndex;
         currentEnemyId = roamingEnemyId;
+        GameManager.Instance.gameState = GameManager.State.ENCOUNTER;
+        Time.timeScale = 0f;
         AsyncOperation load = SceneManager.LoadSceneAsync(sceneId);
         load.completed += (asyncOperation) =>
         {
-            GameManager.Instance.gameState = GameManager.State.ENCOUNTER;
+            Time.timeScale = 1f;
             Encounter encounter = GameObject.FindObjectOfType<Encounter>();
             encounter.enemyPrefabs = enemies;
         };
@@ -103,7 +105,6 @@ public class EncounterManager : MonoBehaviour
 
     private void CheckRoof(GameObject player)
     {
-        Debug.Log("1");
         if (Physics.Raycast(player.transform.position, Vector3.up, out RaycastHit hit, 3, 1 << 6))
         {
             GameObject[] roofObjects = GameObject.FindGameObjectsWithTag("Roof");

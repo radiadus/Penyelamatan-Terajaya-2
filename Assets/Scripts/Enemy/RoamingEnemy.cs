@@ -111,7 +111,7 @@ public class RoamingEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (Distance2D(transform.position, player.transform.position) < 4f && transform.position.y - player.transform.position.y < 0.3f)
+        if (Distance2D(transform.position, player.transform.position) < 4f && Math.Abs(transform.position.y - player.transform.position.y) < 0.3f)
         {
             if (Physics.Raycast(transform.position, player.transform.position - transform.position, out RaycastHit hit))
             {

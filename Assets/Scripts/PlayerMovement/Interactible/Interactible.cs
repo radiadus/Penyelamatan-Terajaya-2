@@ -13,13 +13,12 @@ public abstract class Interactible : MonoBehaviour
     public TextMeshProUGUI textPanel;
     public TextMeshProUGUI namePanel;
     protected Button textBoxButton;
-    protected int usedText;
+    public int usedText;
     protected int currentPage;
     public int defaultTextId;
 
     protected virtual void Start()
     {
-        //this.usedText = defaultTextId == 0 ? CheckUsedText() : defaultTextId;
         this.textBoxButton = textBox.GetComponent<Button>();
     }
 

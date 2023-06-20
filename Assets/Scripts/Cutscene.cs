@@ -30,7 +30,6 @@ public class Cutscene : MonoBehaviour
 
     IEnumerator Continue()
     {
-        Debug.Log("kepencet");
         state = CutsceneState.PRESSED;
         yield return new WaitForEndOfFrame();
         state = CutsceneState.WAITING;
@@ -48,7 +47,7 @@ public class Cutscene : MonoBehaviour
             Color colorText = textUI.color;
             while (a < 1)
             {
-                a += 0.01f;
+                a += 0.02f;
                 colorBG.a = a;
                 colorText.a = a;
                 image.color = colorBG;
@@ -64,7 +63,7 @@ public class Cutscene : MonoBehaviour
             a = 1;
             while (a > 0)
             {
-                a -= 0.01f;
+                a -= 0.02f;
                 colorBG.a = a;
                 colorText.a = a;
                 image.color = colorBG;
