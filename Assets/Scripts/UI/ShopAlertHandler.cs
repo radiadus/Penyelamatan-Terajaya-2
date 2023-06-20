@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopAlertHandler : MonoBehaviour
 {
     public int amount, ownedAmount;
+    public ShopHandler shopHandler;
     [SerializeField] private Item item;
     [SerializeField] private Text amountText, alertText;
     [SerializeField] private Button increment, decrement, buy, cancel;
@@ -22,11 +23,12 @@ public class ShopAlertHandler : MonoBehaviour
         cancel.onClick.AddListener(delegate { Cancel(); });
     }
 
-    public void Instantiate(Item item, int ownedAmount)
+    public void Instantiate(Item item, int ownedAmount, ShopHandler shopHandler)
     {
         this.item = item;
         this.amount = 1;
         this.ownedAmount = ownedAmount;
+        this.shopHandler = shopHandler;
         this.amountText.text = this.amount.ToString();
         this.alertText.text = "Jumlah Pembelian \"" + this.item.itemName + "\"";
     }
@@ -59,6 +61,7 @@ public class ShopAlertHandler : MonoBehaviour
         {
             inventory.money -= price;
             inventory.addItem(this.item, this.amount);
+            shopHandler.UpdateMoney();
             Destroy(self);
         }
     }

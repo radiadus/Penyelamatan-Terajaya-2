@@ -38,7 +38,7 @@ public class ShopItem : MonoBehaviour
             ownedAmount = instance.quantity;
         if (ownedAmount == 99) return;
         Debug.Log(ownedAmount);
-        amountPanel.GetComponent<ShopAlertHandler>().Instantiate(item, ownedAmount);
+        amountPanel.GetComponent<ShopAlertHandler>().Instantiate(item, ownedAmount, canvas.GetComponent<ShopHandler>());
         GameObject.Instantiate(amountPanel, canvas.transform);
     }
 

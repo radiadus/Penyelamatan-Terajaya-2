@@ -12,6 +12,7 @@ public class EnhanceAlertHandler : MonoBehaviour
     [SerializeField] private Inventory inventory;
     public int price;
     public EnhanceItem enhanceButton;
+    public ShopHandler shopHandler;
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +23,12 @@ public class EnhanceAlertHandler : MonoBehaviour
         no.onClick.AddListener(delegate { Cancel(); });
     }
 
-    public void Instantiate(Equipment equipment, EnhanceItem enhanceButton)
+    public void Instantiate(Equipment equipment, EnhanceItem enhanceButton, ShopHandler shopHandler)
     {
         this.equipment = equipment;
         this.price = equipment.enhancePrice;
         this.enhanceButton = enhanceButton;
+        this.shopHandler = shopHandler;
         this.alertText.text = "Ingin melakukan peningkatan pada \"" + equipment.equipmentName + "\"?";
     }
 
@@ -39,6 +41,7 @@ public class EnhanceAlertHandler : MonoBehaviour
             equipment.attackStat += 2;
             equipment.enhancePrice += 1000;
             enhanceButton.Reinitialize();
+            shopHandler.UpdateMoney();
             Destroy(self);
         }
     }

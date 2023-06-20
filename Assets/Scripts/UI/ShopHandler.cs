@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class ShopHandler : MonoBehaviour
 {
     private List<int> itemIds = new List<int>();
+    public TextMeshProUGUI moneyText;
     [SerializeField] private Button shopButton, upgradeButton, exit;
     [SerializeField] private GameObject shop, upgrade, canvas;
     [SerializeField] private GameObject shopItem;
@@ -23,6 +25,7 @@ public class ShopHandler : MonoBehaviour
         itemIds.Add(1);
         itemIds.Add(2);
         shopBGRtf = shop.GetComponent<RectTransform>();
+        UpdateMoney();
         
         int x = 150;
         int y = -150;
@@ -49,6 +52,11 @@ public class ShopHandler : MonoBehaviour
         shopItem.GetComponent<ShopItem>().Instantiate(item);
         GameObject.Instantiate(shopItem, shop.transform);
 
+    }
+
+    public void UpdateMoney()
+    {
+        moneyText.text = GameManager.Instance.inventory.money.ToString("N0", new System.Globalization.CultureInfo("id-ID"));
     }
 
     private void OpenShop()

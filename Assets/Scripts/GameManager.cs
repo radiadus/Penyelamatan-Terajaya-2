@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
         INTERACT,
         SHOPPING,
         ENCOUNTER,
-        MAIN_MENU
+        MAIN_MENU,
+        CUTSCENE
     }
 
     public State gameState;
