@@ -27,6 +27,13 @@ public class Friendly : CombatUnit
         statusEffectList = new List<StatusEffect>();
     }
 
+    public virtual void SetToBaseStats()
+    {
+        attack = baseStats.attack;
+        defense = baseStats.defense;
+        speed = baseStats.speed;
+    }
+
     public void SetStats()
     {
         stats.HP = HP;
@@ -36,6 +43,12 @@ public class Friendly : CombatUnit
         stats.attack = attack;
         stats.defense = defense;
         stats.speed = speed;
+    }
+
+    public void SetHPMP()
+    {
+        stats.HP = HP;
+        stats.MP = MP;
     }
 
     public override void PlayDeadAnimation()
@@ -63,7 +76,7 @@ public class Friendly : CombatUnit
     public virtual void GainExp(int exp)
     {
         stats.exp += exp;
-        while (stats.exp >= stats.requiredExp)
+        while (stats.exp >= stats.requiredExp && stats.level < 15)
         {
             stats.exp -= stats.requiredExp;
             this.LevelUp();
