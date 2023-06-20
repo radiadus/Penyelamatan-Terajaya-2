@@ -264,6 +264,7 @@ public class Encounter : MonoBehaviour
                             textBoxText.text = "Percobaan kabur berhasil!";
                             foreach (Friendly friendly in friendlies)
                             {
+                                friendly.SetToBaseStats();
                                 friendly.SetStats();
                             }
                             EncounterManager.Instance.FleeEncounter();
@@ -310,7 +311,7 @@ public class Encounter : MonoBehaviour
             }
             foreach (Friendly friendly in friendlies)
             {
-                friendly.SetStats();
+                friendly.SetHPMP();
             }
             textBox.SetActive(false);
             actions.Clear();
@@ -416,6 +417,10 @@ public class Encounter : MonoBehaviour
             int gold = 0;
             int exp = 0;
             enemies.ToList().ForEach(e => { gold += e.goldGain; exp += e.expGain; });
+            foreach(Friendly friendly in friendlies)
+            {
+                friendly.SetToBaseStats();
+            }
             List<Friendly> alive = friendlies.ToList().FindAll(f => !f.IsDead());
             List<Friendly> dead = friendlies.ToList().FindAll(f => f.IsDead());
             foreach (Friendly friendly in alive)
@@ -450,6 +455,7 @@ public class Encounter : MonoBehaviour
         {
             foreach (Friendly friendly in friendlies)
             {
+                friendly.SetToBaseStats();
                 friendly.HP = (int)(0.25f * friendly.maxHP);
                 friendly.SetStats();
             }
