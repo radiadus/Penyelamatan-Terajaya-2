@@ -113,13 +113,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5f7babeb6dec749a81b8a1ea089adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 45
-  maxHP: 45
+  HP: 35
+  maxHP: 35
   MP: 0
   maxMP: 0
   attack: 20
   defense: 15
-  speed: 25
+  speed: 20
   animator: {fileID: 0}
   targetable: 0
   name: Kelelawar
@@ -127,6 +127,7 @@ MonoBehaviour:
   evasion: 0
   id: 0
   attackType: 0
+  enemyType: 0
   attackTarget: 0
   goldGain: 250
   expGain: 35

@@ -604,9 +604,10 @@ MonoBehaviour:
   evasion: 0
   id: 0
   attackType: 0
+  enemyType: 0
   attackTarget: 0
   goldGain: 300
-  expGain: 50
+  expGain: 55
 --- !u!1 &7870042165253584468
 GameObject:
   m_ObjectHideFlags: 0
