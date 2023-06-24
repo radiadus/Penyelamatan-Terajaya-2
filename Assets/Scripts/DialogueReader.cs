@@ -24,8 +24,9 @@ public class DialogueReader : MonoBehaviour
         TextAsset text = Resources.Load<TextAsset>("NPC_Dialogues_2");
         string textData = text.text;
         string[] lines = textData.Split(Environment.NewLine);
-        foreach (string line in lines)
+        for (int i=1; i<lines.Length; i++)
         {
+            string line = lines[i];
             string trimmed = line.Trim();
             string[] data = trimmed.Split(';');
             if (!dialogues.ContainsKey(data[0]))
