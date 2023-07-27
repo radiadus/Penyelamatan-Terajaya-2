@@ -7,8 +7,9 @@ using System;
 
 public class MainMenuHandler : MonoBehaviour
 {
-    public Button newGame, continueGame, settingsButton, exitButton, alertYes, alertNo, settingsExit, confirmationNo, confirmationYes;
-    public GameObject exitAlert, settingsPanel, newGameConfirmation;
+    public Button newGame, continueGame, settingsButton, tutorialButton, exitButton, alertYes, alertNo, settingsExit, confirmationNo, confirmationYes;
+    public GameObject exitAlert, settingsPanel, tutorialCanvas, newGameConfirmation;
+    public GameObject[] tutorialImages;
     public Toggle muteToggle;
     public Slider master, effects, music;
 
@@ -31,6 +32,7 @@ public class MainMenuHandler : MonoBehaviour
         master.onValueChanged.AddListener(delegate { ChangeVolume(master.value, "Master"); });
         effects.onValueChanged.AddListener(delegate { ChangeVolume(effects.value, "SFX"); });
         music.onValueChanged.AddListener(delegate { ChangeVolume(music.value, "Music"); });
+        tutorialButton.onClick.AddListener(delegate { Tutorial(); });
         settingsExit.onClick.AddListener(delegate { ExitSettings(); });
 
         exitButton.onClick.AddListener(delegate { OpenAlert(); });
@@ -49,6 +51,27 @@ public class MainMenuHandler : MonoBehaviour
         Debug.Log(soundType + ": " + volume);
         PlayerPrefs.SetFloat(soundType, volume);
         GameManager.Instance.ChangeVolume(volume, soundType);
+    }
+
+    void Tutorial()
+    {
+        foreach (GameObject tutorial in tutorialImages)
+        {
+            tutorial.SetActive(true);
+        }
+        tutorialCanvas.SetActive(true);
+        StartCoroutine(TutorialUpdate());
+    }
+    public IEnumerator TutorialUpdate()
+    {
+        for (int i = 0; i < tutorialImages.Length; i++)
+        {
+            yield return null;
+            while (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Began) yield return null;
+            tutorialImages[i].SetActive(false);
+            yield return null;
+        }
+        tutorialCanvas.SetActive(false);
     }
 
     void OpenSettings()

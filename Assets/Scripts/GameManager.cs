@@ -194,7 +194,8 @@ public class GameManager : MonoBehaviour
 
     public void GetPlayer()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        GameObject go = GameObject.FindGameObjectWithTag("Player");
+        player = go == null ? null : go;
     }
 
     public void UpdateSkills()

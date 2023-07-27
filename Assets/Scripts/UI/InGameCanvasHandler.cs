@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class InGameCanvasHandler : MonoBehaviour
 {
-    public GameObject player, playerCanvas, itemUsePanel;
-    public GameObject[] itemUserIndicator;
+    public GameObject player, playerCanvas, itemUsePanel, tutorialCanvas;
+    public GameObject[] itemUserIndicator, tutorialImages;
     private bool paused;
     public Text hpPotionCountText, mpPotionCountText;
     public TextMeshProUGUI moneyText;
     public Button hpPotionButton, mpPotionButton, cancelUseItem, confirmUseItem;
     public Button[] chooseItemUser;
-    [SerializeField] private Button pauseButton, inventoryButton, settingsButton, exitButton, closeInventory, closeSettings;
+    [SerializeField] private Button pauseButton, inventoryButton, settingsButton, exitButton, tutorialButton, closeInventory, closeSettings;
     [SerializeField] private GameObject backdrop, inventoryPanel, settingsPanel, characterStats;
     [SerializeField] private Stats[] stats;
     [SerializeField] private TextMeshProUGUI[] level, HP, MP, attack, defense;
@@ -27,10 +27,35 @@ public class InGameCanvasHandler : MonoBehaviour
         inventoryButton.onClick.AddListener(delegate { OpenInventory(); });
         settingsButton.onClick.AddListener(delegate { OpenSettings(); });
         exitButton.onClick.AddListener(delegate { Exit(); });
+        tutorialButton.onClick.AddListener(delegate { Tutorial(); });
         closeInventory.onClick.AddListener(delegate { CloseInventory(); });
         closeSettings.onClick.AddListener(delegate { CloseSettings(); });
         cancelUseItem.onClick.AddListener(delegate { ResetItemUser(); itemUsePanel.SetActive(false); });
         InitializeStats();
+    }
+
+    public void Tutorial()
+    {
+        foreach(GameObject tutorial in tutorialImages)
+        {
+            tutorial.SetActive(true);
+        }
+        tutorialCanvas.SetActive(true);
+        settingsPanel.SetActive(false);
+        StartCoroutine(TutorialUpdate());
+    }
+
+    public IEnumerator TutorialUpdate()
+    {
+        for (int i = 0; i < tutorialImages.Length; i++)
+        {
+            yield return null;
+            while (Input.touchCount == 0 || Input.GetTouch(0).phase != TouchPhase.Began) yield return null;
+            tutorialImages[i].SetActive(false);
+            yield return null;
+        }
+        tutorialCanvas.SetActive(false);
+        settingsPanel.SetActive(true);
     }
 
     public void InitializeStats()
