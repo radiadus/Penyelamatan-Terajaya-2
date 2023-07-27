@@ -29,7 +29,7 @@ public class QuestionReader : MonoBehaviour
         questions.Add(1, new List<Question>());
         questions.Add(2, new List<Question>());
         questions.Add(3, new List<Question>());
-        TextAsset text = Resources.Load<TextAsset>("SoalTerajaya8");
+        TextAsset text = Resources.Load<TextAsset>("SoalTerajaya9");
         string textData = text.text;
         string[] lines = textData.Split(Environment.NewLine);
         for(int i = 1; i < lines.Length; i++)
@@ -66,9 +66,6 @@ public class QuestionReader : MonoBehaviour
                     break;
                 case "Soal Sinonim/Antonim":
                     question.category = QuestionCategory.SYNONYM_ANTONYM;
-                    break;
-                case "Peri Bahasa":
-                    question.category = QuestionCategory.PROVERB;
                     break;
                 case "Huruf Kapital":
                     question.category = QuestionCategory.CAPITAL;
