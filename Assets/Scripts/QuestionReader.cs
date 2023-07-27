@@ -29,17 +29,15 @@ public class QuestionReader : MonoBehaviour
         questions.Add(1, new List<Question>());
         questions.Add(2, new List<Question>());
         questions.Add(3, new List<Question>());
-        TextAsset text = Resources.Load<TextAsset>("SoalTerajaya9");
+        TextAsset text = Resources.Load<TextAsset>("SoalTerajaya10");
         string textData = text.text;
         string[] lines = textData.Split(Environment.NewLine);
         for(int i = 1; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
-            Debug.Log(line);
             string[] data = line.Split(';');
             Question question = new Question();
-            question.question = data[0].Replace('@', '\n');
-            Debug.Log(data[0]);
+            question.question = data[0].Replace('@', '\n');      
             string[] answers = new string[4];
             answers[0] = data[1];
             answers[1] = data[2];
