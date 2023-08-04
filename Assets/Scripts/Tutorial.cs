@@ -19,7 +19,7 @@ public class Tutorial : MonoBehaviour
         if (Input.touchCount != 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             i++;
-            if (i != tutorialImages.Length)
+            if (i < tutorialImages.Length)
                 tutorialImages[i-1].SetActive(false);
         }
         if (i == tutorialImages.Length)
